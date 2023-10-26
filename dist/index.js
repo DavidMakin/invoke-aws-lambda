@@ -45,9 +45,9 @@ var __toESM = (mod, isNodeMode, target) => (
   )
 );
 
-// node_modules/aws-sdk/lib/json/builder.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/json/builder.js
 var require_builder = __commonJS({
-  'node_modules/aws-sdk/lib/json/builder.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/json/builder.js'(exports, module2) {
     var util = require_util();
     function JsonBuilder() {}
     JsonBuilder.prototype.build = function (value, shape) {
@@ -67,6 +67,9 @@ var require_builder = __commonJS({
       }
     }
     function translateStructure(structure, shape) {
+      if (shape.isDocument) {
+        return structure;
+      }
       var struct = {};
       util.each(structure, function (name, value) {
         var memberShape = shape.members[name];
@@ -102,9 +105,9 @@ var require_builder = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/json/parser.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/json/parser.js
 var require_parser = __commonJS({
-  'node_modules/aws-sdk/lib/json/parser.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/json/parser.js'(exports, module2) {
     var util = require_util();
     function JsonParser() {}
     JsonParser.prototype.parse = function (value, shape) {
@@ -125,6 +128,7 @@ var require_parser = __commonJS({
     }
     function translateStructure(structure, shape) {
       if (structure == null) return void 0;
+      if (shape.isDocument) return structure;
       var struct = {};
       var shapeMembers = shape.members;
       util.each(shapeMembers, function (name, memberShape) {
@@ -164,9 +168,9 @@ var require_parser = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/protocol/helpers.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/protocol/helpers.js
 var require_helpers = __commonJS({
-  'node_modules/aws-sdk/lib/protocol/helpers.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/protocol/helpers.js'(exports, module2) {
     var util = require_util();
     var AWS3 = require_core();
     function populateHostPrefix(request) {
@@ -236,9 +240,9 @@ var require_helpers = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/protocol/json.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/protocol/json.js
 var require_json = __commonJS({
-  'node_modules/aws-sdk/lib/protocol/json.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/protocol/json.js'(exports, module2) {
     var util = require_util();
     var JsonBuilder = require_builder();
     var JsonParser = require_parser();
@@ -251,6 +255,12 @@ var require_json = __commonJS({
       var input = api.operations[req.operation].input;
       var builder = new JsonBuilder();
       if (version === 1) version = '1.0';
+      if (api.awsQueryCompatible) {
+        if (!httpRequest.params) {
+          httpRequest.params = {};
+        }
+        Object.assign(httpRequest.params, req.params);
+      }
       httpRequest.body = builder.build(req.params || {}, input);
       httpRequest.headers['Content-Type'] = 'application/x-amz-json-' + version;
       httpRequest.headers['X-Amz-Target'] = target;
@@ -274,6 +284,17 @@ var require_json = __commonJS({
             error.message = 'Request body must be less than 1 MB';
           } else {
             error.message = e.message || e.Message || null;
+          }
+          for (var key in e || {}) {
+            if (key === 'code' || key === 'message') {
+              continue;
+            }
+            error['[' + key + ']'] = 'See error.' + key + ' for details.';
+            Object.defineProperty(error, key, {
+              value: e[key],
+              enumerable: false,
+              writable: true,
+            });
           }
         } catch (e2) {
           error.statusCode = httpResponse.statusCode;
@@ -304,9 +325,9 @@ var require_json = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/query/query_param_serializer.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/query/query_param_serializer.js
 var require_query_param_serializer = __commonJS({
-  'node_modules/aws-sdk/lib/query/query_param_serializer.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/query/query_param_serializer.js'(exports, module2) {
     var util = require_util();
     function QueryParamSerializer() {}
     QueryParamSerializer.prototype.serialize = function (params, shape, fn) {
@@ -378,9 +399,9 @@ var require_query_param_serializer = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/model/collection.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/model/collection.js
 var require_collection = __commonJS({
-  'node_modules/aws-sdk/lib/model/collection.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/model/collection.js'(exports, module2) {
     var memoizedProperty = require_util().memoizedProperty;
     function memoize(name, value, factory, nameTr) {
       memoizedProperty(this, nameTr(name), function () {
@@ -401,9 +422,9 @@ var require_collection = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/model/shape.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/model/shape.js
 var require_shape = __commonJS({
-  'node_modules/aws-sdk/lib/model/shape.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/model/shape.js'(exports, module2) {
     var Collection = require_collection();
     var util = require_util();
     function property(obj, name, value) {
@@ -555,6 +576,7 @@ var require_shape = __commonJS({
         property(this, 'isRequired', function () {
           return false;
         });
+        property(this, 'isDocument', Boolean(shape.document));
       }
       if (shape.members) {
         property(
@@ -760,9 +782,9 @@ var require_shape = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/protocol/query.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/protocol/query.js
 var require_query = __commonJS({
-  'node_modules/aws-sdk/lib/protocol/query.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/protocol/query.js'(exports, module2) {
     var AWS3 = require_core();
     var util = require_util();
     var QueryParamSerializer = require_query_param_serializer();
@@ -852,9 +874,9 @@ var require_query = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/protocol/rest.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/protocol/rest.js
 var require_rest = __commonJS({
-  'node_modules/aws-sdk/lib/protocol/rest.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/protocol/rest.js'(exports, module2) {
     var util = require_util();
     var populateHostPrefix = require_helpers().populateHostPrefix;
     function populateMethod(req) {
@@ -983,14 +1005,21 @@ var require_rest = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/protocol/rest_json.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/protocol/rest_json.js
 var require_rest_json = __commonJS({
-  'node_modules/aws-sdk/lib/protocol/rest_json.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/protocol/rest_json.js'(exports, module2) {
     var util = require_util();
     var Rest = require_rest();
     var Json = require_json();
     var JsonBuilder = require_builder();
     var JsonParser = require_parser();
+    var METHODS_WITHOUT_BODY = ['GET', 'HEAD', 'DELETE'];
+    function unsetContentLength(req) {
+      var payloadMember = util.getRequestPayloadShape(req);
+      if (payloadMember === void 0 && METHODS_WITHOUT_BODY.indexOf(req.httpRequest.method) >= 0) {
+        delete req.httpRequest.headers['Content-Length'];
+      }
+    }
     function populateBody(req) {
       var builder = new JsonBuilder();
       var input = req.service.api.operations[req.operation].input;
@@ -998,27 +1027,21 @@ var require_rest_json = __commonJS({
         var params = {};
         var payloadShape = input.members[input.payload];
         params = req.params[input.payload];
-        if (params === void 0) return;
         if (payloadShape.type === 'structure') {
-          req.httpRequest.body = builder.build(params, payloadShape);
+          req.httpRequest.body = builder.build(params || {}, payloadShape);
           applyContentTypeHeader(req);
-        } else {
+        } else if (params !== void 0) {
           req.httpRequest.body = params;
           if (payloadShape.type === 'binary' || payloadShape.isStreaming) {
             applyContentTypeHeader(req, true);
           }
         }
       } else {
-        var body = builder.build(req.params, input);
-        if (body !== '{}' || req.httpRequest.method !== 'GET') {
-          req.httpRequest.body = body;
-        }
+        req.httpRequest.body = builder.build(req.params, input);
         applyContentTypeHeader(req);
       }
     }
     function applyContentTypeHeader(req, isBinary) {
-      var operation = req.service.api.operations[req.operation];
-      var input = operation.input;
       if (!req.httpRequest.headers['Content-Type']) {
         var type = isBinary ? 'binary/octet-stream' : 'application/json';
         req.httpRequest.headers['Content-Type'] = type;
@@ -1026,7 +1049,7 @@ var require_rest_json = __commonJS({
     }
     function buildRequest(req) {
       Rest.buildRequest(req);
-      if (['HEAD', 'DELETE'].indexOf(req.httpRequest.method) < 0) {
+      if (METHODS_WITHOUT_BODY.indexOf(req.httpRequest.method) < 0) {
         populateBody(req);
       }
     }
@@ -1068,13 +1091,14 @@ var require_rest_json = __commonJS({
       buildRequest,
       extractError,
       extractData,
+      unsetContentLength,
     };
   },
 });
 
-// node_modules/aws-sdk/lib/protocol/rest_xml.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/protocol/rest_xml.js
 var require_rest_xml = __commonJS({
-  'node_modules/aws-sdk/lib/protocol/rest_xml.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/protocol/rest_xml.js'(exports, module2) {
     var AWS3 = require_core();
     var util = require_util();
     var Rest = require_rest();
@@ -1172,9 +1196,9 @@ var require_rest_xml = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/xml/escape-attribute.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/xml/escape-attribute.js
 var require_escape_attribute = __commonJS({
-  'node_modules/aws-sdk/lib/xml/escape-attribute.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/xml/escape-attribute.js'(exports, module2) {
     function escapeAttribute(value) {
       return value
         .replace(/&/g, '&amp;')
@@ -1189,9 +1213,9 @@ var require_escape_attribute = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/xml/xml-node.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/xml/xml-node.js
 var require_xml_node = __commonJS({
-  'node_modules/aws-sdk/lib/xml/xml-node.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/xml/xml-node.js'(exports, module2) {
     var escapeAttribute = require_escape_attribute().escapeAttribute;
     function XmlNode(name, children) {
       if (children === void 0) {
@@ -1242,11 +1266,18 @@ var require_xml_node = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/xml/escape-element.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/xml/escape-element.js
 var require_escape_element = __commonJS({
-  'node_modules/aws-sdk/lib/xml/escape-element.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/xml/escape-element.js'(exports, module2) {
     function escapeElement(value) {
-      return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      return value
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/\r/g, '&#x0D;')
+        .replace(/\n/g, '&#x0A;')
+        .replace(/\u0085/g, '&#x85;')
+        .replace(/\u2028/, '&#x2028;');
     }
     module2.exports = {
       escapeElement,
@@ -1254,9 +1285,9 @@ var require_escape_element = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/xml/xml-text.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/xml/xml-text.js
 var require_xml_text = __commonJS({
-  'node_modules/aws-sdk/lib/xml/xml-text.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/xml/xml-text.js'(exports, module2) {
     var escapeElement = require_escape_element().escapeElement;
     function XmlText(value) {
       this.value = value;
@@ -1270,9 +1301,9 @@ var require_xml_text = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/xml/builder.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/xml/builder.js
 var require_builder2 = __commonJS({
-  'node_modules/aws-sdk/lib/xml/builder.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/xml/builder.js'(exports, module2) {
     var util = require_util();
     var XmlNode = require_xml_node().XmlNode;
     var XmlText = require_xml_text().XmlText;
@@ -1364,9 +1395,9 @@ var require_builder2 = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/model/operation.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/model/operation.js
 var require_operation = __commonJS({
-  'node_modules/aws-sdk/lib/model/operation.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/model/operation.js'(exports, module2) {
     var Shape = require_shape();
     var util = require_util();
     var property = util.property;
@@ -1386,6 +1417,9 @@ var require_operation = __commonJS({
         'endpointDiscoveryRequired',
         operation.endpointdiscovery ? (operation.endpointdiscovery.required ? 'REQUIRED' : 'OPTIONAL') : 'NULL'
       );
+      var httpChecksumRequired =
+        operation.httpChecksumRequired || (operation.httpChecksum && operation.httpChecksum.requestChecksumRequired);
+      property(this, 'httpChecksumRequired', httpChecksumRequired, false);
       memoizedProperty(this, 'input', function () {
         if (!operation.input) {
           return new Shape.create({ type: 'structure' }, options);
@@ -1458,9 +1492,9 @@ var require_operation = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/model/paginator.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/model/paginator.js
 var require_paginator = __commonJS({
-  'node_modules/aws-sdk/lib/model/paginator.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/model/paginator.js'(exports, module2) {
     var property = require_util().property;
     function Paginator(name, paginator) {
       property(this, 'inputToken', paginator.input_token);
@@ -1473,9 +1507,9 @@ var require_paginator = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/model/resource_waiter.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/model/resource_waiter.js
 var require_resource_waiter = __commonJS({
-  'node_modules/aws-sdk/lib/model/resource_waiter.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/model/resource_waiter.js'(exports, module2) {
     var util = require_util();
     var property = util.property;
     function ResourceWaiter(name, waiter, options) {
@@ -1498,9 +1532,9 @@ var require_resource_waiter = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/apis/metadata.json
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/apis/metadata.json
 var require_metadata = __commonJS({
-  'node_modules/aws-sdk/apis/metadata.json'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/apis/metadata.json'(exports, module2) {
     module2.exports = {
       acm: {
         name: 'ACM',
@@ -1939,6 +1973,7 @@ var require_metadata = __commonJS({
       },
       athena: {
         name: 'Athena',
+        cors: true,
       },
       greengrass: {
         name: 'Greengrass',
@@ -1952,6 +1987,7 @@ var require_metadata = __commonJS({
       },
       cloudhsmv2: {
         name: 'CloudHSMV2',
+        cors: true,
       },
       glue: {
         name: 'Glue',
@@ -2277,6 +2313,7 @@ var require_metadata = __commonJS({
       marketplacecatalog: {
         prefix: 'marketplace-catalog',
         name: 'MarketplaceCatalog',
+        cors: true,
       },
       dataexchange: {
         name: 'DataExchange',
@@ -2460,6 +2497,7 @@ var require_metadata = __commonJS({
       },
       amp: {
         name: 'Amp',
+        cors: true,
       },
       greengrassv2: {
         name: 'GreengrassV2',
@@ -2475,17 +2513,365 @@ var require_metadata = __commonJS({
       },
       location: {
         name: 'Location',
+        cors: true,
       },
       wellarchitected: {
         name: 'WellArchitected',
+      },
+      lexmodelsv2: {
+        prefix: 'models.lex.v2',
+        name: 'LexModelsV2',
+      },
+      lexruntimev2: {
+        prefix: 'runtime.lex.v2',
+        name: 'LexRuntimeV2',
+        cors: true,
+      },
+      fis: {
+        name: 'Fis',
+      },
+      lookoutmetrics: {
+        name: 'LookoutMetrics',
+      },
+      mgn: {
+        name: 'Mgn',
+      },
+      lookoutequipment: {
+        name: 'LookoutEquipment',
+      },
+      nimble: {
+        name: 'Nimble',
+      },
+      finspace: {
+        name: 'Finspace',
+      },
+      finspacedata: {
+        prefix: 'finspace-data',
+        name: 'Finspacedata',
+      },
+      ssmcontacts: {
+        prefix: 'ssm-contacts',
+        name: 'SSMContacts',
+      },
+      ssmincidents: {
+        prefix: 'ssm-incidents',
+        name: 'SSMIncidents',
+      },
+      applicationcostprofiler: {
+        name: 'ApplicationCostProfiler',
+      },
+      apprunner: {
+        name: 'AppRunner',
+      },
+      proton: {
+        name: 'Proton',
+      },
+      route53recoverycluster: {
+        prefix: 'route53-recovery-cluster',
+        name: 'Route53RecoveryCluster',
+      },
+      route53recoverycontrolconfig: {
+        prefix: 'route53-recovery-control-config',
+        name: 'Route53RecoveryControlConfig',
+      },
+      route53recoveryreadiness: {
+        prefix: 'route53-recovery-readiness',
+        name: 'Route53RecoveryReadiness',
+      },
+      chimesdkidentity: {
+        prefix: 'chime-sdk-identity',
+        name: 'ChimeSDKIdentity',
+      },
+      chimesdkmessaging: {
+        prefix: 'chime-sdk-messaging',
+        name: 'ChimeSDKMessaging',
+      },
+      snowdevicemanagement: {
+        prefix: 'snow-device-management',
+        name: 'SnowDeviceManagement',
+      },
+      memorydb: {
+        name: 'MemoryDB',
+      },
+      opensearch: {
+        name: 'OpenSearch',
+      },
+      kafkaconnect: {
+        name: 'KafkaConnect',
+      },
+      voiceid: {
+        prefix: 'voice-id',
+        name: 'VoiceID',
+      },
+      wisdom: {
+        name: 'Wisdom',
+      },
+      account: {
+        name: 'Account',
+      },
+      cloudcontrol: {
+        name: 'CloudControl',
+      },
+      grafana: {
+        name: 'Grafana',
+      },
+      panorama: {
+        name: 'Panorama',
+      },
+      chimesdkmeetings: {
+        prefix: 'chime-sdk-meetings',
+        name: 'ChimeSDKMeetings',
+      },
+      resiliencehub: {
+        name: 'Resiliencehub',
+      },
+      migrationhubstrategy: {
+        name: 'MigrationHubStrategy',
+      },
+      appconfigdata: {
+        name: 'AppConfigData',
+      },
+      drs: {
+        name: 'Drs',
+      },
+      migrationhubrefactorspaces: {
+        prefix: 'migration-hub-refactor-spaces',
+        name: 'MigrationHubRefactorSpaces',
+      },
+      evidently: {
+        name: 'Evidently',
+      },
+      inspector2: {
+        name: 'Inspector2',
+      },
+      rbin: {
+        name: 'Rbin',
+      },
+      rum: {
+        name: 'RUM',
+      },
+      backupgateway: {
+        prefix: 'backup-gateway',
+        name: 'BackupGateway',
+      },
+      iottwinmaker: {
+        name: 'IoTTwinMaker',
+      },
+      workspacesweb: {
+        prefix: 'workspaces-web',
+        name: 'WorkSpacesWeb',
+      },
+      amplifyuibuilder: {
+        name: 'AmplifyUIBuilder',
+      },
+      keyspaces: {
+        name: 'Keyspaces',
+      },
+      billingconductor: {
+        name: 'Billingconductor',
+      },
+      pinpointsmsvoicev2: {
+        prefix: 'pinpoint-sms-voice-v2',
+        name: 'PinpointSMSVoiceV2',
+      },
+      ivschat: {
+        name: 'Ivschat',
+      },
+      chimesdkmediapipelines: {
+        prefix: 'chime-sdk-media-pipelines',
+        name: 'ChimeSDKMediaPipelines',
+      },
+      emrserverless: {
+        prefix: 'emr-serverless',
+        name: 'EMRServerless',
+      },
+      m2: {
+        name: 'M2',
+      },
+      connectcampaigns: {
+        name: 'ConnectCampaigns',
+      },
+      redshiftserverless: {
+        prefix: 'redshift-serverless',
+        name: 'RedshiftServerless',
+      },
+      rolesanywhere: {
+        name: 'RolesAnywhere',
+      },
+      licensemanagerusersubscriptions: {
+        prefix: 'license-manager-user-subscriptions',
+        name: 'LicenseManagerUserSubscriptions',
+      },
+      backupstorage: {
+        name: 'BackupStorage',
+      },
+      privatenetworks: {
+        name: 'PrivateNetworks',
+      },
+      supportapp: {
+        prefix: 'support-app',
+        name: 'SupportApp',
+      },
+      controltower: {
+        name: 'ControlTower',
+      },
+      iotfleetwise: {
+        name: 'IoTFleetWise',
+      },
+      migrationhuborchestrator: {
+        name: 'MigrationHubOrchestrator',
+      },
+      connectcases: {
+        name: 'ConnectCases',
+      },
+      resourceexplorer2: {
+        prefix: 'resource-explorer-2',
+        name: 'ResourceExplorer2',
+      },
+      scheduler: {
+        name: 'Scheduler',
+      },
+      chimesdkvoice: {
+        prefix: 'chime-sdk-voice',
+        name: 'ChimeSDKVoice',
+      },
+      iotroborunner: {
+        prefix: 'iot-roborunner',
+        name: 'IoTRoboRunner',
+      },
+      ssmsap: {
+        prefix: 'ssm-sap',
+        name: 'SsmSap',
+      },
+      oam: {
+        name: 'OAM',
+      },
+      arczonalshift: {
+        prefix: 'arc-zonal-shift',
+        name: 'ARCZonalShift',
+      },
+      omics: {
+        name: 'Omics',
+      },
+      opensearchserverless: {
+        name: 'OpenSearchServerless',
+      },
+      securitylake: {
+        name: 'SecurityLake',
+      },
+      simspaceweaver: {
+        name: 'SimSpaceWeaver',
+      },
+      docdbelastic: {
+        prefix: 'docdb-elastic',
+        name: 'DocDBElastic',
+      },
+      sagemakergeospatial: {
+        prefix: 'sagemaker-geospatial',
+        name: 'SageMakerGeospatial',
+      },
+      codecatalyst: {
+        name: 'CodeCatalyst',
+      },
+      pipes: {
+        name: 'Pipes',
+      },
+      sagemakermetrics: {
+        prefix: 'sagemaker-metrics',
+        name: 'SageMakerMetrics',
+      },
+      kinesisvideowebrtcstorage: {
+        prefix: 'kinesis-video-webrtc-storage',
+        name: 'KinesisVideoWebRTCStorage',
+      },
+      licensemanagerlinuxsubscriptions: {
+        prefix: 'license-manager-linux-subscriptions',
+        name: 'LicenseManagerLinuxSubscriptions',
+      },
+      kendraranking: {
+        prefix: 'kendra-ranking',
+        name: 'KendraRanking',
+      },
+      cleanrooms: {
+        name: 'CleanRooms',
+      },
+      cloudtraildata: {
+        prefix: 'cloudtrail-data',
+        name: 'CloudTrailData',
+      },
+      tnb: {
+        name: 'Tnb',
+      },
+      internetmonitor: {
+        name: 'InternetMonitor',
+      },
+      ivsrealtime: {
+        prefix: 'ivs-realtime',
+        name: 'IVSRealTime',
+      },
+      vpclattice: {
+        prefix: 'vpc-lattice',
+        name: 'VPCLattice',
+      },
+      osis: {
+        name: 'OSIS',
+      },
+      mediapackagev2: {
+        name: 'MediaPackageV2',
+      },
+      paymentcryptography: {
+        prefix: 'payment-cryptography',
+        name: 'PaymentCryptography',
+      },
+      paymentcryptographydata: {
+        prefix: 'payment-cryptography-data',
+        name: 'PaymentCryptographyData',
+      },
+      codegurusecurity: {
+        prefix: 'codeguru-security',
+        name: 'CodeGuruSecurity',
+      },
+      verifiedpermissions: {
+        name: 'VerifiedPermissions',
+      },
+      appfabric: {
+        name: 'AppFabric',
+      },
+      medicalimaging: {
+        prefix: 'medical-imaging',
+        name: 'MedicalImaging',
+      },
+      entityresolution: {
+        name: 'EntityResolution',
+      },
+      managedblockchainquery: {
+        prefix: 'managedblockchain-query',
+        name: 'ManagedBlockchainQuery',
+      },
+      neptunedata: {
+        name: 'Neptunedata',
+      },
+      pcaconnectorad: {
+        prefix: 'pca-connector-ad',
+        name: 'PcaConnectorAd',
+      },
+      bedrock: {
+        name: 'Bedrock',
+      },
+      bedrockruntime: {
+        prefix: 'bedrock-runtime',
+        name: 'BedrockRuntime',
+      },
+      datazone: {
+        name: 'DataZone',
       },
     };
   },
 });
 
-// node_modules/aws-sdk/lib/model/api.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/model/api.js
 var require_api = __commonJS({
-  'node_modules/aws-sdk/lib/model/api.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/model/api.js'(exports, module2) {
     var Collection = require_collection();
     var Operation = require_operation();
     var Shape = require_shape();
@@ -2578,14 +2964,15 @@ var require_api = __commonJS({
         property(this, 'documentation', api.documentation);
         property(this, 'documentationUrl', api.documentationUrl);
       }
+      property(this, 'awsQueryCompatible', api.metadata.awsQueryCompatible);
     }
     module2.exports = Api;
   },
 });
 
-// node_modules/aws-sdk/lib/api_loader.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/api_loader.js
 var require_api_loader = __commonJS({
-  'node_modules/aws-sdk/lib/api_loader.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/api_loader.js'(exports, module2) {
     function apiLoader(svc, version) {
       if (!apiLoader.services.hasOwnProperty(svc)) {
         throw new Error('InvalidService: Failed to load api for ' + svc);
@@ -2597,9 +2984,9 @@ var require_api_loader = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/vendor/endpoint-cache/utils/LRU.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/vendor/endpoint-cache/utils/LRU.js
 var require_LRU = __commonJS({
-  'node_modules/aws-sdk/vendor/endpoint-cache/utils/LRU.js'(exports) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/vendor/endpoint-cache/utils/LRU.js'(exports) {
     'use strict';
     Object.defineProperty(exports, '__esModule', { value: true });
     var LinkedListNode = (function () {
@@ -2708,9 +3095,9 @@ var require_LRU = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/vendor/endpoint-cache/index.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/vendor/endpoint-cache/index.js
 var require_endpoint_cache = __commonJS({
-  'node_modules/aws-sdk/vendor/endpoint-cache/index.js'(exports) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/vendor/endpoint-cache/index.js'(exports) {
     'use strict';
     Object.defineProperty(exports, '__esModule', { value: true });
     var LRU_1 = require_LRU();
@@ -2740,12 +3127,15 @@ var require_endpoint_cache = __commonJS({
         var now = Date.now();
         var records = this.cache.get(keyString);
         if (records) {
-          for (var i = 0; i < records.length; i++) {
+          for (var i = records.length - 1; i >= 0; i--) {
             var record = records[i];
             if (record.Expire < now) {
-              this.cache.remove(keyString);
-              return void 0;
+              records.splice(i, 1);
             }
+          }
+          if (records.length === 0) {
+            this.cache.remove(keyString);
+            return void 0;
           }
         }
         return records;
@@ -2782,9 +3172,9 @@ var require_endpoint_cache = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/sequential_executor.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/sequential_executor.js
 var require_sequential_executor = __commonJS({
-  'node_modules/aws-sdk/lib/sequential_executor.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/sequential_executor.js'(exports, module2) {
     var AWS3 = require_core();
     AWS3.SequentialExecutor = AWS3.util.inherit({
       constructor: function SequentialExecutor() {
@@ -2905,9 +3295,9 @@ var require_sequential_executor = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/region_config_data.json
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/region_config_data.json
 var require_region_config_data = __commonJS({
-  'node_modules/aws-sdk/lib/region_config_data.json'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/region_config_data.json'(exports, module2) {
     module2.exports = {
       rules: {
         '*/*': {
@@ -2916,12 +3306,8 @@ var require_region_config_data = __commonJS({
         'cn-*/*': {
           endpoint: '{service}.{region}.amazonaws.com.cn',
         },
-        'us-iso-*/*': {
-          endpoint: '{service}.{region}.c2s.ic.gov',
-        },
-        'us-isob-*/*': {
-          endpoint: '{service}.{region}.sc2s.sgov.gov',
-        },
+        'us-iso-*/*': 'usIso',
+        'us-isob-*/*': 'usIsob',
         '*/budgets': 'globalSSL',
         '*/cloudfront': 'globalSSL',
         '*/sts': 'globalSSL',
@@ -2937,6 +3323,16 @@ var require_region_config_data = __commonJS({
           signingRegion: 'cn-northwest-1',
         },
         'us-gov-*/route53': 'globalGovCloud',
+        'us-iso-*/route53': {
+          endpoint: '{service}.c2s.ic.gov',
+          globalEndpoint: true,
+          signingRegion: 'us-iso-east-1',
+        },
+        'us-isob-*/route53': {
+          endpoint: '{service}.sc2s.sgov.gov',
+          globalEndpoint: true,
+          signingRegion: 'us-isob-east-1',
+        },
         '*/waf': 'globalSSL',
         '*/iam': 'globalSSL',
         'cn-*/iam': {
@@ -2944,7 +3340,22 @@ var require_region_config_data = __commonJS({
           globalEndpoint: true,
           signingRegion: 'cn-north-1',
         },
+        'us-iso-*/iam': {
+          endpoint: '{service}.us-iso-east-1.c2s.ic.gov',
+          globalEndpoint: true,
+          signingRegion: 'us-iso-east-1',
+        },
         'us-gov-*/iam': 'globalGovCloud',
+        '*/ce': {
+          endpoint: '{service}.us-east-1.amazonaws.com',
+          globalEndpoint: true,
+          signingRegion: 'us-east-1',
+        },
+        'cn-*/ce': {
+          endpoint: '{service}.cn-northwest-1.amazonaws.com.cn',
+          globalEndpoint: true,
+          signingRegion: 'cn-northwest-1',
+        },
         'us-gov-*/sts': {
           endpoint: '{service}.{region}.amazonaws.com',
         },
@@ -2968,6 +3379,103 @@ var require_region_config_data = __commonJS({
           endpoint: '{service}.{region}.amazonaws.com',
           signatureVersion: 'v2',
         },
+        '*/resource-explorer-2': 'dualstackByDefault',
+        '*/kendra-ranking': 'dualstackByDefault',
+        '*/internetmonitor': 'dualstackByDefault',
+        '*/codecatalyst': 'globalDualstackByDefault',
+      },
+      fipsRules: {
+        '*/*': 'fipsStandard',
+        'us-gov-*/*': 'fipsStandard',
+        'us-iso-*/*': {
+          endpoint: '{service}-fips.{region}.c2s.ic.gov',
+        },
+        'us-iso-*/dms': 'usIso',
+        'us-isob-*/*': {
+          endpoint: '{service}-fips.{region}.sc2s.sgov.gov',
+        },
+        'us-isob-*/dms': 'usIsob',
+        'cn-*/*': {
+          endpoint: '{service}-fips.{region}.amazonaws.com.cn',
+        },
+        '*/api.ecr': 'fips.api.ecr',
+        '*/api.sagemaker': 'fips.api.sagemaker',
+        '*/batch': 'fipsDotPrefix',
+        '*/eks': 'fipsDotPrefix',
+        '*/models.lex': 'fips.models.lex',
+        '*/runtime.lex': 'fips.runtime.lex',
+        '*/runtime.sagemaker': {
+          endpoint: 'runtime-fips.sagemaker.{region}.amazonaws.com',
+        },
+        '*/iam': 'fipsWithoutRegion',
+        '*/route53': 'fipsWithoutRegion',
+        '*/transcribe': 'fipsDotPrefix',
+        '*/waf': 'fipsWithoutRegion',
+        'us-gov-*/transcribe': 'fipsDotPrefix',
+        'us-gov-*/api.ecr': 'fips.api.ecr',
+        'us-gov-*/api.sagemaker': 'fips.api.sagemaker',
+        'us-gov-*/models.lex': 'fips.models.lex',
+        'us-gov-*/runtime.lex': 'fips.runtime.lex',
+        'us-gov-*/acm-pca': 'fipsWithServiceOnly',
+        'us-gov-*/batch': 'fipsWithServiceOnly',
+        'us-gov-*/cloudformation': 'fipsWithServiceOnly',
+        'us-gov-*/config': 'fipsWithServiceOnly',
+        'us-gov-*/eks': 'fipsWithServiceOnly',
+        'us-gov-*/elasticmapreduce': 'fipsWithServiceOnly',
+        'us-gov-*/identitystore': 'fipsWithServiceOnly',
+        'us-gov-*/dynamodb': 'fipsWithServiceOnly',
+        'us-gov-*/elasticloadbalancing': 'fipsWithServiceOnly',
+        'us-gov-*/guardduty': 'fipsWithServiceOnly',
+        'us-gov-*/monitoring': 'fipsWithServiceOnly',
+        'us-gov-*/resource-groups': 'fipsWithServiceOnly',
+        'us-gov-*/runtime.sagemaker': 'fipsWithServiceOnly',
+        'us-gov-*/servicecatalog-appregistry': 'fipsWithServiceOnly',
+        'us-gov-*/servicequotas': 'fipsWithServiceOnly',
+        'us-gov-*/ssm': 'fipsWithServiceOnly',
+        'us-gov-*/sts': 'fipsWithServiceOnly',
+        'us-gov-*/support': 'fipsWithServiceOnly',
+        'us-gov-west-1/states': 'fipsWithServiceOnly',
+        'us-iso-east-1/elasticfilesystem': {
+          endpoint: 'elasticfilesystem-fips.{region}.c2s.ic.gov',
+        },
+        'us-gov-west-1/organizations': 'fipsWithServiceOnly',
+        'us-gov-west-1/route53': {
+          endpoint: 'route53.us-gov.amazonaws.com',
+        },
+        '*/resource-explorer-2': 'fipsDualstackByDefault',
+        '*/kendra-ranking': 'dualstackByDefault',
+        '*/internetmonitor': 'dualstackByDefault',
+        '*/codecatalyst': 'fipsGlobalDualstackByDefault',
+      },
+      dualstackRules: {
+        '*/*': {
+          endpoint: '{service}.{region}.api.aws',
+        },
+        'cn-*/*': {
+          endpoint: '{service}.{region}.api.amazonwebservices.com.cn',
+        },
+        '*/s3': 'dualstackLegacy',
+        'cn-*/s3': 'dualstackLegacyCn',
+        '*/s3-control': 'dualstackLegacy',
+        'cn-*/s3-control': 'dualstackLegacyCn',
+        'ap-south-1/ec2': 'dualstackLegacyEc2',
+        'eu-west-1/ec2': 'dualstackLegacyEc2',
+        'sa-east-1/ec2': 'dualstackLegacyEc2',
+        'us-east-1/ec2': 'dualstackLegacyEc2',
+        'us-east-2/ec2': 'dualstackLegacyEc2',
+        'us-west-2/ec2': 'dualstackLegacyEc2',
+      },
+      dualstackFipsRules: {
+        '*/*': {
+          endpoint: '{service}-fips.{region}.api.aws',
+        },
+        'cn-*/*': {
+          endpoint: '{service}-fips.{region}.api.amazonwebservices.com.cn',
+        },
+        '*/s3': 'dualstackFipsLegacy',
+        'cn-*/s3': 'dualstackFipsLegacyCn',
+        '*/s3-control': 'dualstackFipsLegacy',
+        'cn-*/s3-control': 'dualstackFipsLegacyCn',
       },
       patterns: {
         globalSSL: {
@@ -2984,14 +3492,71 @@ var require_region_config_data = __commonJS({
           endpoint: '{service}.{region}.amazonaws.com',
           signatureVersion: 's3',
         },
+        usIso: {
+          endpoint: '{service}.{region}.c2s.ic.gov',
+        },
+        usIsob: {
+          endpoint: '{service}.{region}.sc2s.sgov.gov',
+        },
+        fipsStandard: {
+          endpoint: '{service}-fips.{region}.amazonaws.com',
+        },
+        fipsDotPrefix: {
+          endpoint: 'fips.{service}.{region}.amazonaws.com',
+        },
+        fipsWithoutRegion: {
+          endpoint: '{service}-fips.amazonaws.com',
+        },
+        'fips.api.ecr': {
+          endpoint: 'ecr-fips.{region}.amazonaws.com',
+        },
+        'fips.api.sagemaker': {
+          endpoint: 'api-fips.sagemaker.{region}.amazonaws.com',
+        },
+        'fips.models.lex': {
+          endpoint: 'models-fips.lex.{region}.amazonaws.com',
+        },
+        'fips.runtime.lex': {
+          endpoint: 'runtime-fips.lex.{region}.amazonaws.com',
+        },
+        fipsWithServiceOnly: {
+          endpoint: '{service}.{region}.amazonaws.com',
+        },
+        dualstackLegacy: {
+          endpoint: '{service}.dualstack.{region}.amazonaws.com',
+        },
+        dualstackLegacyCn: {
+          endpoint: '{service}.dualstack.{region}.amazonaws.com.cn',
+        },
+        dualstackFipsLegacy: {
+          endpoint: '{service}-fips.dualstack.{region}.amazonaws.com',
+        },
+        dualstackFipsLegacyCn: {
+          endpoint: '{service}-fips.dualstack.{region}.amazonaws.com.cn',
+        },
+        dualstackLegacyEc2: {
+          endpoint: 'api.ec2.{region}.aws',
+        },
+        dualstackByDefault: {
+          endpoint: '{service}.{region}.api.aws',
+        },
+        fipsDualstackByDefault: {
+          endpoint: '{service}-fips.{region}.api.aws',
+        },
+        globalDualstackByDefault: {
+          endpoint: '{service}.global.api.aws',
+        },
+        fipsGlobalDualstackByDefault: {
+          endpoint: '{service}-fips.global.api.aws',
+        },
       },
     };
   },
 });
 
-// node_modules/aws-sdk/lib/region_config.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/region_config.js
 var require_region_config = __commonJS({
-  'node_modules/aws-sdk/lib/region_config.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/region_config.js'(exports, module2) {
     var util = require_util();
     var regionConfig = require_region_config_data();
     function generateRegionPrefix(region) {
@@ -3010,6 +3575,7 @@ var require_region_config = __commonJS({
         [region, '*'],
         [regionPrefix, '*'],
         ['*', endpointPrefix],
+        [region, 'internal-*'],
         ['*', '*'],
       ].map(function (item) {
         return item[0] && item[1] ? item.join('/') : null;
@@ -3025,24 +3591,35 @@ var require_region_config = __commonJS({
     }
     function configureEndpoint(service) {
       var keys = derivedKeys(service);
+      var useFipsEndpoint = service.config.useFipsEndpoint;
+      var useDualstackEndpoint = service.config.useDualstackEndpoint;
       for (var i = 0; i < keys.length; i++) {
         var key = keys[i];
         if (!key) continue;
-        if (Object.prototype.hasOwnProperty.call(regionConfig.rules, key)) {
-          var config = regionConfig.rules[key];
+        var rules = useFipsEndpoint
+          ? useDualstackEndpoint
+            ? regionConfig.dualstackFipsRules
+            : regionConfig.fipsRules
+          : useDualstackEndpoint
+          ? regionConfig.dualstackRules
+          : regionConfig.rules;
+        if (Object.prototype.hasOwnProperty.call(rules, key)) {
+          var config = rules[key];
           if (typeof config === 'string') {
             config = regionConfig.patterns[config];
-          }
-          if (service.config.useDualstack && util.isDualstackAvailable(service)) {
-            config = util.copy(config);
-            config.endpoint = config.endpoint.replace(/{service}\.({region}\.)?/, '{service}.dualstack.{region}.');
           }
           service.isGlobalEndpoint = !!config.globalEndpoint;
           if (config.signingRegion) {
             service.signingRegion = config.signingRegion;
           }
-          if (!config.signatureVersion) config.signatureVersion = 'v4';
-          applyConfig(service, config);
+          if (!config.signatureVersion) {
+            config.signatureVersion = 'v4';
+          }
+          var useBearer = (service.api && service.api.signatureVersion) === 'bearer';
+          applyConfig(
+            service,
+            Object.assign({}, config, { signatureVersion: useBearer ? 'bearer' : config.signatureVersion })
+          );
           return;
         }
       }
@@ -3071,18 +3648,58 @@ var require_region_config = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/service.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/region/utils.js
+var require_utils = __commonJS({
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/region/utils.js'(exports, module2) {
+    function isFipsRegion(region) {
+      return typeof region === 'string' && (region.startsWith('fips-') || region.endsWith('-fips'));
+    }
+    function isGlobalRegion(region) {
+      return typeof region === 'string' && ['aws-global', 'aws-us-gov-global'].includes(region);
+    }
+    function getRealRegion(region) {
+      return ['fips-aws-global', 'aws-fips', 'aws-global'].includes(region)
+        ? 'us-east-1'
+        : ['fips-aws-us-gov-global', 'aws-us-gov-global'].includes(region)
+        ? 'us-gov-west-1'
+        : region.replace(/fips-(dkr-|prod-)?|-fips/, '');
+    }
+    module2.exports = {
+      isFipsRegion,
+      isGlobalRegion,
+      getRealRegion,
+    };
+  },
+});
+
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/service.js
 var require_service = __commonJS({
-  'node_modules/aws-sdk/lib/service.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/service.js'(exports, module2) {
     var AWS3 = require_core();
     var Api = require_api();
     var regionConfig = require_region_config();
     var inherit = AWS3.util.inherit;
     var clientCount = 0;
+    var region_utils = require_utils();
     AWS3.Service = inherit({
       constructor: function Service(config) {
         if (!this.loadServiceClass) {
           throw AWS3.util.error(new Error(), "Service must be constructed with `new' operator");
+        }
+        if (config) {
+          if (config.region) {
+            var region = config.region;
+            if (region_utils.isFipsRegion(region)) {
+              config.region = region_utils.getRealRegion(region);
+              config.useFipsEndpoint = true;
+            }
+            if (region_utils.isGlobalRegion(region)) {
+              config.region = region_utils.getRealRegion(region);
+            }
+          }
+          if (typeof config.useDualstack === 'boolean' && typeof config.useDualstackEndpoint !== 'boolean') {
+            config.useDualstackEndpoint = config.useDualstack;
+          }
         }
         var ServiceClass = this.loadServiceClass(config || {});
         if (ServiceClass) {
@@ -3409,6 +4026,8 @@ var require_service = __commonJS({
           version = this.config.signatureVersion;
         } else if (authtype === 'v4' || authtype === 'v4-unsigned-body') {
           version = 'v4';
+        } else if (authtype === 'bearer') {
+          version = 'bearer';
         } else {
           version = this.api.signatureVersion;
         }
@@ -3637,9 +4256,9 @@ var require_service = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/credentials.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials.js
 var require_credentials = __commonJS({
-  'node_modules/aws-sdk/lib/credentials.js'() {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials.js'() {
     var AWS3 = require_core();
     AWS3.Credentials = AWS3.util.inherit({
       constructor: function Credentials() {
@@ -3716,9 +4335,9 @@ var require_credentials = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/credentials/credential_provider_chain.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials/credential_provider_chain.js
 var require_credential_provider_chain = __commonJS({
-  'node_modules/aws-sdk/lib/credentials/credential_provider_chain.js'() {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials/credential_provider_chain.js'() {
     var AWS3 = require_core();
     AWS3.CredentialProviderChain = AWS3.util.inherit(AWS3.Credentials, {
       constructor: function CredentialProviderChain(providers) {
@@ -3777,9 +4396,9 @@ var require_credential_provider_chain = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/config.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/config.js
 var require_config = __commonJS({
-  'node_modules/aws-sdk/lib/config.js'() {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/config.js'() {
     var AWS3 = require_core();
     require_credentials();
     require_credential_provider_chain();
@@ -3836,6 +4455,52 @@ var require_config = __commonJS({
           });
         } else {
           finish(credError('No credentials to load'));
+        }
+      },
+      getToken: function getToken(callback) {
+        var self = this;
+        function finish(err) {
+          callback(err, err ? null : self.token);
+        }
+        function tokenError(msg, err) {
+          return new AWS3.util.error(err || new Error(), {
+            code: 'TokenError',
+            message: msg,
+            name: 'TokenError',
+          });
+        }
+        function getAsyncToken() {
+          self.token.get(function (err) {
+            if (err) {
+              var msg = 'Could not load token from ' + self.token.constructor.name;
+              err = tokenError(msg, err);
+            }
+            finish(err);
+          });
+        }
+        function getStaticToken() {
+          var err = null;
+          if (!self.token.token) {
+            err = tokenError('Missing token');
+          }
+          finish(err);
+        }
+        if (self.token) {
+          if (typeof self.token.get === 'function') {
+            getAsyncToken();
+          } else {
+            getStaticToken();
+          }
+        } else if (self.tokenProvider) {
+          self.tokenProvider.resolve(function (err, token) {
+            if (err) {
+              err = tokenError('Could not load token from any providers', err);
+            }
+            self.token = token;
+            finish(err);
+          });
+        } else {
+          finish(tokenError('No token to load'));
         }
       },
       update: function update(options, allowUnknownKeys) {
@@ -3922,6 +4587,9 @@ var require_config = __commonJS({
         endpointCacheSize: 1e3,
         hostPrefixEnabled: true,
         stsRegionalEndpoints: 'legacy',
+        useFipsEndpoint: false,
+        useDualstackEndpoint: false,
+        token: null,
       },
       extractCredentials: function extractCredentials(options) {
         if (options.accessKeyId && options.secretAccessKey) {
@@ -3952,9 +4620,9 @@ var require_config = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/http.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/http.js
 var require_http = __commonJS({
-  'node_modules/aws-sdk/lib/http.js'() {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/http.js'() {
     var AWS3 = require_core();
     var inherit = AWS3.util.inherit;
     AWS3.Endpoint = inherit({
@@ -4048,9 +4716,9 @@ var require_http = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/discover_endpoint.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/discover_endpoint.js
 var require_discover_endpoint = __commonJS({
-  'node_modules/aws-sdk/lib/discover_endpoint.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/discover_endpoint.js'(exports, module2) {
     var AWS3 = require_core();
     var util = require_util();
     var endpointDiscoveryEnabledEnvs = ['AWS_ENABLE_ENDPOINT_DISCOVERY', 'AWS_ENDPOINT_DISCOVERY_ENABLED'];
@@ -4329,9 +4997,9 @@ var require_discover_endpoint = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/event_listeners.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/event_listeners.js
 var require_event_listeners = __commonJS({
-  'node_modules/aws-sdk/lib/event_listeners.js'() {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/event_listeners.js'() {
     var AWS3 = require_core();
     var SequentialExecutor = require_sequential_executor();
     var DISCOVER_ENDPOINT = require_discover_endpoint().discoverEndpoint;
@@ -4345,10 +5013,30 @@ var require_event_listeners = __commonJS({
       var operation = req.service.api.operations[req.operation];
       return operation ? operation.authtype : '';
     }
+    function getIdentityType(req) {
+      var service = req.service;
+      if (service.config.signatureVersion) {
+        return service.config.signatureVersion;
+      }
+      if (service.api.signatureVersion) {
+        return service.api.signatureVersion;
+      }
+      return getOperationAuthtype(req);
+    }
     AWS3.EventListeners = {
       Core: new SequentialExecutor().addNamedListeners(function (add, addAsync) {
         addAsync('VALIDATE_CREDENTIALS', 'validate', function VALIDATE_CREDENTIALS(req, done) {
           if (!req.service.api.signatureVersion && !req.service.config.signatureVersion) return done();
+          var identityType = getIdentityType(req);
+          if (identityType === 'bearer') {
+            req.service.config.getToken(function (err) {
+              if (err) {
+                req.response.error = AWS3.util.error(err, { code: 'TokenError' });
+              }
+              done();
+            });
+            return;
+          }
           req.service.config.getCredentials(function (err) {
             if (err) {
               req.response.error = AWS3.util.error(err, {
@@ -4403,6 +5091,27 @@ var require_event_listeners = __commonJS({
           var validation = req.service.config.paramValidation;
           new AWS3.ParamValidator(validation).validate(rules, req.params);
         });
+        add('COMPUTE_CHECKSUM', 'afterBuild', function COMPUTE_CHECKSUM(req) {
+          if (!req.service.api.operations) {
+            return;
+          }
+          var operation = req.service.api.operations[req.operation];
+          if (!operation) {
+            return;
+          }
+          var body = req.httpRequest.body;
+          var isNonStreamingPayload = body && (AWS3.util.Buffer.isBuffer(body) || typeof body === 'string');
+          var headers = req.httpRequest.headers;
+          if (
+            operation.httpChecksumRequired &&
+            req.service.config.computeChecksums &&
+            isNonStreamingPayload &&
+            !headers['Content-MD5']
+          ) {
+            var md5 = AWS3.util.crypto.md5(body, 'base64');
+            headers['Content-MD5'] = md5;
+          }
+        });
         addAsync('COMPUTE_SHA256', 'afterBuild', function COMPUTE_SHA256(req, done) {
           req.haltHandlersOnError();
           if (!req.service.api.operations) {
@@ -4454,6 +5163,23 @@ var require_event_listeners = __commonJS({
         add('SET_HTTP_HOST', 'afterBuild', function SET_HTTP_HOST(req) {
           req.httpRequest.headers['Host'] = req.httpRequest.endpoint.host;
         });
+        add('SET_TRACE_ID', 'afterBuild', function SET_TRACE_ID(req) {
+          var traceIdHeaderName = 'X-Amzn-Trace-Id';
+          if (AWS3.util.isNode() && !Object.hasOwnProperty.call(req.httpRequest.headers, traceIdHeaderName)) {
+            var ENV_LAMBDA_FUNCTION_NAME = 'AWS_LAMBDA_FUNCTION_NAME';
+            var ENV_TRACE_ID = '_X_AMZN_TRACE_ID';
+            var functionName = process.env[ENV_LAMBDA_FUNCTION_NAME];
+            var traceId = process.env[ENV_TRACE_ID];
+            if (
+              typeof functionName === 'string' &&
+              functionName.length > 0 &&
+              typeof traceId === 'string' &&
+              traceId.length > 0
+            ) {
+              req.httpRequest.headers[traceIdHeaderName] = traceId;
+            }
+          }
+        });
         add('RESTART', 'restart', function RESTART() {
           var err = this.response.error;
           if (!err || !err.retryable) return;
@@ -4468,34 +5194,51 @@ var require_event_listeners = __commonJS({
         addAsync('DISCOVER_ENDPOINT', 'sign', DISCOVER_ENDPOINT, addToHead);
         addAsync('SIGN', 'sign', function SIGN(req, done) {
           var service = req.service;
-          var operations = req.service.api.operations || {};
-          var operation = operations[req.operation];
-          var authtype = operation ? operation.authtype : '';
-          if (!service.api.signatureVersion && !authtype && !service.config.signatureVersion) return done();
-          service.config.getCredentials(function (err, credentials) {
-            if (err) {
-              req.response.error = err;
-              return done();
-            }
-            try {
-              var date = service.getSkewCorrectedDate();
-              var SignerClass = service.getSignerClass(req);
-              var signer = new SignerClass(req.httpRequest, service.getSigningName(), {
-                signatureCache: service.config.signatureCache,
-                operation,
-                signatureVersion: service.api.signatureVersion,
-              });
-              signer.setServiceClientId(service._clientId);
-              delete req.httpRequest.headers['Authorization'];
-              delete req.httpRequest.headers['Date'];
-              delete req.httpRequest.headers['X-Amz-Date'];
-              signer.addAuthorization(credentials, date);
-              req.signedAt = date;
-            } catch (e) {
-              req.response.error = e;
-            }
-            done();
-          });
+          var identityType = getIdentityType(req);
+          if (!identityType || identityType.length === 0) return done();
+          if (identityType === 'bearer') {
+            service.config.getToken(function (err, token) {
+              if (err) {
+                req.response.error = err;
+                return done();
+              }
+              try {
+                var SignerClass = service.getSignerClass(req);
+                var signer = new SignerClass(req.httpRequest);
+                signer.addAuthorization(token);
+              } catch (e) {
+                req.response.error = e;
+              }
+              done();
+            });
+          } else {
+            service.config.getCredentials(function (err, credentials) {
+              if (err) {
+                req.response.error = err;
+                return done();
+              }
+              try {
+                var date = service.getSkewCorrectedDate();
+                var SignerClass = service.getSignerClass(req);
+                var operations = req.service.api.operations || {};
+                var operation = operations[req.operation];
+                var signer = new SignerClass(req.httpRequest, service.getSigningName(req), {
+                  signatureCache: service.config.signatureCache,
+                  operation,
+                  signatureVersion: service.api.signatureVersion,
+                });
+                signer.setServiceClientId(service._clientId);
+                delete req.httpRequest.headers['Authorization'];
+                delete req.httpRequest.headers['Date'];
+                delete req.httpRequest.headers['X-Amz-Date'];
+                signer.addAuthorization(credentials, date);
+                req.signedAt = date;
+              } catch (e) {
+                req.response.error = e;
+              }
+              done();
+            });
+          }
         });
         add('VALIDATE_RESPONSE', 'validateResponse', function VALIDATE_RESPONSE(resp) {
           if (this.service.successfulResponse(resp, this)) {
@@ -4506,6 +5249,21 @@ var require_event_listeners = __commonJS({
             resp.error = AWS3.util.error(new Error(), { code: 'UnknownError', message: 'An unknown error occurred.' });
           }
         });
+        add(
+          'ERROR',
+          'error',
+          function ERROR(err, resp) {
+            var awsQueryCompatible = resp.request.service.api.awsQueryCompatible;
+            if (awsQueryCompatible) {
+              var headers = resp.httpResponse.headers;
+              var queryErrorCode = headers ? headers['x-amzn-query-error'] : void 0;
+              if (queryErrorCode && queryErrorCode.includes(';')) {
+                resp.error.code = queryErrorCode.split(';')[0];
+              }
+            }
+          },
+          true
+        );
         addAsync('SEND', 'send', function SEND(resp, done) {
           resp.httpResponse._abortCallback = done;
           resp.error = null;
@@ -4723,6 +5481,8 @@ var require_event_listeners = __commonJS({
             var message =
               'Inaccessible host: `' +
               err.hostname +
+              "' at port `" +
+              err.port +
               "'. This service may not be available in the `" +
               err.region +
               "' region.";
@@ -4825,6 +5585,7 @@ var require_event_listeners = __commonJS({
         add('BUILD', 'build', svc.buildRequest);
         add('EXTRACT_DATA', 'extractData', svc.extractData);
         add('EXTRACT_ERROR', 'extractError', svc.extractError);
+        add('UNSET_CONTENT_LENGTH', 'afterBuild', svc.unsetContentLength);
       }),
       RestXml: new SequentialExecutor().addNamedListeners(function (add) {
         var svc = require_rest_xml();
@@ -4842,9 +5603,9 @@ var require_event_listeners = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/state_machine.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/state_machine.js
 var require_state_machine = __commonJS({
-  'node_modules/aws-sdk/lib/state_machine.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/state_machine.js'(exports, module2) {
     function AcceptorStateMachine(states, state) {
       this.currentState = state || null;
       this.states = states || {};
@@ -6382,9 +7143,9 @@ var require_jmespath = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/request.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/request.js
 var require_request = __commonJS({
-  'node_modules/aws-sdk/lib/request.js'() {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/request.js'() {
     var AWS3 = require_core();
     var AcceptorStateMachine = require_state_machine();
     var inherit = AWS3.util.inherit;
@@ -6440,12 +7201,10 @@ var require_request = __commonJS({
         var endpoint = service.endpoint;
         var region = service.config.region;
         var customUserAgent = service.config.customUserAgent;
-        if (service.isGlobalEndpoint) {
-          if (service.signingRegion) {
-            region = service.signingRegion;
-          } else {
-            region = 'us-east-1';
-          }
+        if (service.signingRegion) {
+          region = service.signingRegion;
+        } else if (service.isGlobalEndpoint) {
+          region = 'us-east-1';
         }
         this.domain = domain && domain.active;
         this.service = service;
@@ -6720,9 +7479,9 @@ var require_request = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/response.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/response.js
 var require_response = __commonJS({
-  'node_modules/aws-sdk/lib/response.js'() {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/response.js'() {
     var AWS3 = require_core();
     var inherit = AWS3.util.inherit;
     var jmespath = require_jmespath();
@@ -6797,9 +7556,9 @@ var require_response = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/resource_waiter.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/resource_waiter.js
 var require_resource_waiter2 = __commonJS({
-  'node_modules/aws-sdk/lib/resource_waiter.js'() {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/resource_waiter.js'() {
     var AWS3 = require_core();
     var inherit = AWS3.util.inherit;
     var jmespath = require_jmespath();
@@ -6942,9 +7701,9 @@ var require_resource_waiter2 = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/signers/v2.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/signers/v2.js
 var require_v2 = __commonJS({
-  'node_modules/aws-sdk/lib/signers/v2.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/signers/v2.js'(exports, module2) {
     var AWS3 = require_core();
     var inherit = AWS3.util.inherit;
     AWS3.Signers.V2 = inherit(AWS3.Signers.RequestSigner, {
@@ -6979,9 +7738,9 @@ var require_v2 = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/signers/v3.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/signers/v3.js
 var require_v3 = __commonJS({
-  'node_modules/aws-sdk/lib/signers/v3.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/signers/v3.js'(exports, module2) {
     var AWS3 = require_core();
     var inherit = AWS3.util.inherit;
     AWS3.Signers.V3 = inherit(AWS3.Signers.RequestSigner, {
@@ -7044,9 +7803,9 @@ var require_v3 = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/signers/v3https.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/signers/v3https.js
 var require_v3https = __commonJS({
-  'node_modules/aws-sdk/lib/signers/v3https.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/signers/v3https.js'(exports, module2) {
     var AWS3 = require_core();
     var inherit = AWS3.util.inherit;
     require_v3();
@@ -7067,9 +7826,9 @@ var require_v3https = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/signers/v4_credentials.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/signers/v4_credentials.js
 var require_v4_credentials = __commonJS({
-  'node_modules/aws-sdk/lib/signers/v4_credentials.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/signers/v4_credentials.js'(exports, module2) {
     var AWS3 = require_core();
     var cachedSecret = {};
     var cacheQueue = [];
@@ -7107,9 +7866,9 @@ var require_v4_credentials = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/signers/v4.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/signers/v4.js
 var require_v4 = __commonJS({
-  'node_modules/aws-sdk/lib/signers/v4.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/signers/v4.js'(exports, module2) {
     var AWS3 = require_core();
     var v4Credentials = require_v4_credentials();
     var inherit = AWS3.util.inherit;
@@ -7254,7 +8013,7 @@ var require_v4 = __commonJS({
       },
       hexEncodedBodyHash: function hexEncodedBodyHash() {
         var request = this.request;
-        if (this.isPresigned() && this.serviceName === 's3' && !request.body) {
+        if (this.isPresigned() && ['s3', 's3-object-lambda'].indexOf(this.serviceName) > -1 && !request.body) {
           return 'UNSIGNED-PAYLOAD';
         } else if (request.headers['X-Amz-Content-Sha256']) {
           return request.headers['X-Amz-Content-Sha256'];
@@ -7283,9 +8042,9 @@ var require_v4 = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/signers/s3.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/signers/s3.js
 var require_s3 = __commonJS({
-  'node_modules/aws-sdk/lib/signers/s3.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/signers/s3.js'(exports, module2) {
     var AWS3 = require_core();
     var inherit = AWS3.util.inherit;
     AWS3.Signers.S3 = inherit(AWS3.Signers.RequestSigner, {
@@ -7410,9 +8169,9 @@ var require_s3 = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/signers/presign.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/signers/presign.js
 var require_presign = __commonJS({
-  'node_modules/aws-sdk/lib/signers/presign.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/signers/presign.js'(exports, module2) {
     var AWS3 = require_core();
     var inherit = AWS3.util.inherit;
     var expiresHeader = 'presigned-expires';
@@ -7504,9 +8263,24 @@ var require_presign = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/signers/request_signer.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/signers/bearer.js
+var require_bearer = __commonJS({
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/signers/bearer.js'() {
+    var AWS3 = require_core();
+    AWS3.Signers.Bearer = AWS3.util.inherit(AWS3.Signers.RequestSigner, {
+      constructor: function Bearer(request) {
+        AWS3.Signers.RequestSigner.call(this, request);
+      },
+      addAuthorization: function addAuthorization(token) {
+        this.request.headers['Authorization'] = 'Bearer ' + token.token;
+      },
+    });
+  },
+});
+
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/signers/request_signer.js
 var require_request_signer = __commonJS({
-  'node_modules/aws-sdk/lib/signers/request_signer.js'() {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/signers/request_signer.js'() {
     var AWS3 = require_core();
     var inherit = AWS3.util.inherit;
     AWS3.Signers.RequestSigner = inherit({
@@ -7534,6 +8308,8 @@ var require_request_signer = __commonJS({
           return AWS3.Signers.S3;
         case 'v3https':
           return AWS3.Signers.V3Https;
+        case 'bearer':
+          return AWS3.Signers.Bearer;
       }
       throw new Error('Unknown signing version ' + version);
     };
@@ -7543,12 +8319,13 @@ var require_request_signer = __commonJS({
     require_v4();
     require_s3();
     require_presign();
+    require_bearer();
   },
 });
 
-// node_modules/aws-sdk/lib/param_validator.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/param_validator.js
 var require_param_validator = __commonJS({
-  'node_modules/aws-sdk/lib/param_validator.js'() {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/param_validator.js'() {
     var AWS3 = require_core();
     AWS3.ParamValidator = AWS3.util.inherit({
       constructor: function ParamValidator(validation) {
@@ -7574,6 +8351,7 @@ var require_param_validator = __commonJS({
         this.errors.push(AWS3.util.error(new Error(message), { code }));
       },
       validateStructure: function validateStructure(shape, params, context) {
+        if (shape.isDocument) return true;
         this.validateType(params, context, ['object'], 'structure');
         var paramName;
         for (var i = 0; shape.required && i < shape.required.length; i++) {
@@ -7590,7 +8368,7 @@ var require_param_validator = __commonJS({
           if (memberShape !== void 0) {
             var memberContext = [context, paramName].join('.');
             this.validateMember(memberShape, paramValue, memberContext);
-          } else {
+          } else if (paramValue !== void 0 && paramValue !== null) {
             this.fail('UnexpectedParameter', "Unexpected key '" + paramName + "' found in " + context);
           }
         }
@@ -7773,15 +8551,55 @@ var require_param_validator = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/core.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/maintenance_mode_message.js
+var require_maintenance_mode_message = __commonJS({
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/maintenance_mode_message.js'(exports, module2) {
+    var warning = [
+      'We are formalizing our plans to enter AWS SDK for JavaScript (v2) into maintenance mode in 2023.\n',
+      'Please migrate your code to use AWS SDK for JavaScript (v3).',
+      'For more information, check the migration guide at https://a.co/7PzMCcy',
+    ].join('\n');
+    module2.exports = {
+      suppress: false,
+    };
+    function emitWarning() {
+      if (typeof process === 'undefined') return;
+      if (
+        typeof process.env === 'object' &&
+        typeof process.env.AWS_EXECUTION_ENV !== 'undefined' &&
+        process.env.AWS_EXECUTION_ENV.indexOf('AWS_Lambda_') === 0
+      ) {
+        return;
+      }
+      if (
+        typeof process.env === 'object' &&
+        typeof process.env.AWS_SDK_JS_SUPPRESS_MAINTENANCE_MODE_MESSAGE !== 'undefined'
+      ) {
+        return;
+      }
+      if (typeof process.emitWarning === 'function') {
+        process.emitWarning(warning, {
+          type: 'NOTE',
+        });
+      }
+    }
+    setTimeout(function () {
+      if (!module2.exports.suppress) {
+        emitWarning();
+      }
+    }, 0);
+  },
+});
+
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/core.js
 var require_core = __commonJS({
-  'node_modules/aws-sdk/lib/core.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/core.js'(exports, module2) {
     var AWS3 = { util: require_util() };
     var _hidden = {};
     _hidden.toString();
     module2.exports = AWS3;
     AWS3.util.update(AWS3, {
-      VERSION: '2.814.0',
+      VERSION: '2.1481.0',
       Signers: {},
       Protocol: {
         Json: require_json(),
@@ -7818,6 +8636,7 @@ var require_core = __commonJS({
     require_resource_waiter2();
     require_request_signer();
     require_param_validator();
+    require_maintenance_mode_message();
     AWS3.events = new AWS3.SequentialExecutor();
     AWS3.util.memoizedProperty(
       AWS3,
@@ -8342,9 +9161,9 @@ var require_dist = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/util.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/util.js
 var require_util = __commonJS({
-  'node_modules/aws-sdk/lib/util.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/util.js'(exports, module2) {
     var AWS3;
     var util = {
       environment: 'nodejs',
@@ -8512,18 +9331,23 @@ var require_util = __commonJS({
           var currentSection,
             map = {};
           util.arrayEach(ini.split(/\r?\n/), function (line) {
-            line = line.split(/(^|\s)[;#]/)[0];
-            var section = line.match(/^\s*\[([^\[\]]+)\]\s*$/);
-            if (section) {
-              currentSection = section[1];
+            line = line.split(/(^|\s)[;#]/)[0].trim();
+            var isSection = line[0] === '[' && line[line.length - 1] === ']';
+            if (isSection) {
+              currentSection = line.substring(1, line.length - 1);
               if (currentSection === '__proto__' || currentSection.split(/\s/)[1] === '__proto__') {
                 throw util.error(new Error("Cannot load profile name '" + currentSection + "' from shared ini file."));
               }
             } else if (currentSection) {
-              var item = line.match(/^\s*(.+?)\s*=\s*(.+?)\s*$/);
-              if (item) {
+              var indexOfEqualsSign = line.indexOf('=');
+              var start = 0;
+              var end = line.length - 1;
+              var isAssignment = indexOfEqualsSign !== -1 && indexOfEqualsSign !== start && indexOfEqualsSign !== end;
+              if (isAssignment) {
+                var name = line.substring(0, indexOfEqualsSign).trim();
+                var value = line.substring(indexOfEqualsSign + 1).trim();
                 map[currentSection] = map[currentSection] || {};
-                map[currentSection][item[1]] = item[2];
+                map[currentSection][name] = value;
               }
             }
           });
@@ -8803,7 +9627,23 @@ var require_util = __commonJS({
         }
         err.name = String((options && options.name) || err.name || err.code || 'Error');
         err.time = new Date();
-        if (originalError) err.originalError = originalError;
+        if (originalError) {
+          err.originalError = originalError;
+        }
+        for (var key in options || {}) {
+          if (key[0] === '[' && key[key.length - 1] === ']') {
+            key = key.slice(1, -1);
+            if (key === 'code' || key === 'message') {
+              continue;
+            }
+            err['[' + key + ']'] = 'See error.' + key + ' for details.';
+            Object.defineProperty(err, key, {
+              value: err[key] || (options && options[key]) || (originalError && originalError[key]),
+              enumerable: false,
+              writable: true,
+            });
+          }
+        }
         return err;
       },
       inherit: function inherit(klass, features) {
@@ -9148,9 +9988,12 @@ var require_util = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/event-stream/event-message-chunker-stream.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/event-stream/event-message-chunker-stream.js
 var require_event_message_chunker_stream = __commonJS({
-  'node_modules/aws-sdk/lib/event-stream/event-message-chunker-stream.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/event-stream/event-message-chunker-stream.js'(
+    exports,
+    module2
+  ) {
     var util = require_core().util;
     var Transform = require('stream').Transform;
     var allocBuffer = util.buffer.alloc;
@@ -9233,9 +10076,9 @@ var require_event_message_chunker_stream = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/event-stream/int64.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/event-stream/int64.js
 var require_int64 = __commonJS({
-  'node_modules/aws-sdk/lib/event-stream/int64.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/event-stream/int64.js'(exports, module2) {
     var util = require_core().util;
     var toBuffer = util.buffer.toBuffer;
     function Int64(bytes) {
@@ -9286,9 +10129,9 @@ var require_int64 = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/event-stream/split-message.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/event-stream/split-message.js
 var require_split_message = __commonJS({
-  'node_modules/aws-sdk/lib/event-stream/split-message.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/event-stream/split-message.js'(exports, module2) {
     var util = require_core().util;
     var toBuffer = util.buffer.toBuffer;
     var PRELUDE_MEMBER_LENGTH = 4;
@@ -9328,9 +10171,9 @@ var require_split_message = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/event-stream/parse-message.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/event-stream/parse-message.js
 var require_parse_message = __commonJS({
-  'node_modules/aws-sdk/lib/event-stream/parse-message.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/event-stream/parse-message.js'(exports, module2) {
     var Int64 = require_int64().Int64;
     var splitMessage = require_split_message().splitMessage;
     var BOOLEAN_TAG = 'boolean';
@@ -9447,9 +10290,9 @@ var require_parse_message = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/event-stream/parse-event.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/event-stream/parse-event.js
 var require_parse_event = __commonJS({
-  'node_modules/aws-sdk/lib/event-stream/parse-event.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/event-stream/parse-event.js'(exports, module2) {
     var parseMessage = require_parse_message().parseMessage;
     function parseEvent(parser, message, shape) {
       var parsedMessage = parseMessage(message);
@@ -9500,9 +10343,12 @@ var require_parse_event = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/event-stream/event-message-unmarshaller-stream.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/event-stream/event-message-unmarshaller-stream.js
 var require_event_message_unmarshaller_stream = __commonJS({
-  'node_modules/aws-sdk/lib/event-stream/event-message-unmarshaller-stream.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/event-stream/event-message-unmarshaller-stream.js'(
+    exports,
+    module2
+  ) {
     var Transform = require('stream').Transform;
     var parseEvent = require_parse_event().parseEvent;
     function EventUnmarshallerStream(options) {
@@ -9529,9 +10375,12 @@ var require_event_message_unmarshaller_stream = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/event-stream/streaming-create-event-stream.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/event-stream/streaming-create-event-stream.js
 var require_streaming_create_event_stream = __commonJS({
-  'node_modules/aws-sdk/lib/event-stream/streaming-create-event-stream.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/event-stream/streaming-create-event-stream.js'(
+    exports,
+    module2
+  ) {
     var EventMessageChunkerStream = require_event_message_chunker_stream().EventMessageChunkerStream;
     var EventUnmarshallerStream = require_event_message_unmarshaller_stream().EventUnmarshallerStream;
     function createEventStream(stream, parser, model) {
@@ -9555,9 +10404,12 @@ var require_streaming_create_event_stream = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/event-stream/event-message-chunker.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/event-stream/event-message-chunker.js
 var require_event_message_chunker = __commonJS({
-  'node_modules/aws-sdk/lib/event-stream/event-message-chunker.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/event-stream/event-message-chunker.js'(
+    exports,
+    module2
+  ) {
     function eventMessageChunker(buffer) {
       var messages = [];
       var offset = 0;
@@ -9575,9 +10427,12 @@ var require_event_message_chunker = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/event-stream/buffered-create-event-stream.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/event-stream/buffered-create-event-stream.js
 var require_buffered_create_event_stream = __commonJS({
-  'node_modules/aws-sdk/lib/event-stream/buffered-create-event-stream.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/event-stream/buffered-create-event-stream.js'(
+    exports,
+    module2
+  ) {
     var eventMessageChunker = require_event_message_chunker().eventMessageChunker;
     var parseEvent = require_parse_event().parseEvent;
     function createEventStream(body, parser, model) {
@@ -9594,9 +10449,9 @@ var require_buffered_create_event_stream = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/realclock/nodeClock.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/realclock/nodeClock.js
 var require_nodeClock = __commonJS({
-  'node_modules/aws-sdk/lib/realclock/nodeClock.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/realclock/nodeClock.js'(exports, module2) {
     module2.exports = {
       now: function now() {
         var second = process.hrtime();
@@ -9606,9 +10461,9 @@ var require_nodeClock = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/publisher/index.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/publisher/index.js
 var require_publisher = __commonJS({
-  'node_modules/aws-sdk/lib/publisher/index.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/publisher/index.js'(exports, module2) {
     var util = require_core().util;
     var dgram = require('dgram');
     var stringToBuffer = util.buffer.toBuffer;
@@ -9686,9 +10541,9 @@ var require_publisher = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/publisher/configuration.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/publisher/configuration.js
 var require_configuration = __commonJS({
-  'node_modules/aws-sdk/lib/publisher/configuration.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/publisher/configuration.js'(exports, module2) {
     var AWS3 = require_core();
     function resolveMonitoringConfig() {
       var config = {
@@ -9741,20 +10596,32 @@ var require_configuration = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/shared-ini/ini-loader.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/shared-ini/ini-loader.js
 var require_ini_loader = __commonJS({
-  'node_modules/aws-sdk/lib/shared-ini/ini-loader.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/shared-ini/ini-loader.js'(exports, module2) {
     var AWS3 = require_core();
     var os = require('os');
     var path = require('path');
-    function parseFile(filename, isConfig) {
-      var content = AWS3.util.ini.parse(AWS3.util.readFileSync(filename));
+    function parseFile(filename) {
+      return AWS3.util.ini.parse(AWS3.util.readFileSync(filename));
+    }
+    function getProfiles(fileContent) {
       var tmpContent = {};
-      Object.keys(content).forEach(function (profileName) {
-        var profileContent = content[profileName];
-        profileName = isConfig ? profileName.replace(/^profile\s/, '') : profileName;
-        Object.defineProperty(tmpContent, profileName, {
-          value: profileContent,
+      Object.keys(fileContent).forEach(function (sectionName) {
+        if (/^sso-session\s/.test(sectionName)) return;
+        Object.defineProperty(tmpContent, sectionName.replace(/^profile\s/, ''), {
+          value: fileContent[sectionName],
+          enumerable: true,
+        });
+      });
+      return tmpContent;
+    }
+    function getSsoSessions(fileContent) {
+      var tmpContent = {};
+      Object.keys(fileContent).forEach(function (sectionName) {
+        if (!/^sso-session\s/.test(sectionName)) return;
+        Object.defineProperty(tmpContent, sectionName.replace(/^sso-session\s/, ''), {
+          value: fileContent[sectionName],
           enumerable: true,
         });
       });
@@ -9763,21 +10630,39 @@ var require_ini_loader = __commonJS({
     AWS3.IniLoader = AWS3.util.inherit({
       constructor: function IniLoader2() {
         this.resolvedProfiles = {};
+        this.resolvedSsoSessions = {};
       },
       clearCachedFiles: function clearCachedFiles() {
         this.resolvedProfiles = {};
+        this.resolvedSsoSessions = {};
       },
       loadFrom: function loadFrom(options) {
         options = options || {};
         var isConfig = options.isConfig === true;
         var filename = options.filename || this.getDefaultFilePath(isConfig);
         if (!this.resolvedProfiles[filename]) {
-          var fileContent = this.parseFile(filename, isConfig);
-          Object.defineProperty(this.resolvedProfiles, filename, { value: fileContent });
+          var fileContent = parseFile(filename);
+          if (isConfig) {
+            Object.defineProperty(this.resolvedProfiles, filename, {
+              value: getProfiles(fileContent),
+            });
+          } else {
+            Object.defineProperty(this.resolvedProfiles, filename, { value: fileContent });
+          }
         }
         return this.resolvedProfiles[filename];
       },
-      parseFile,
+      loadSsoSessionsFrom: function loadSsoSessionsFrom(options) {
+        options = options || {};
+        var filename = options.filename || this.getDefaultFilePath(true);
+        if (!this.resolvedSsoSessions[filename]) {
+          var fileContent = parseFile(filename);
+          Object.defineProperty(this.resolvedSsoSessions, filename, {
+            value: getSsoSessions(fileContent),
+          });
+        }
+        return this.resolvedSsoSessions[filename];
+      },
       getDefaultFilePath: function getDefaultFilePath(isConfig) {
         return path.join(this.getHomeDir(), '.aws', isConfig ? 'config' : 'credentials');
       },
@@ -9796,22 +10681,21 @@ var require_ini_loader = __commonJS({
     var IniLoader = AWS3.IniLoader;
     module2.exports = {
       IniLoader,
-      parseFile,
     };
   },
 });
 
-// node_modules/aws-sdk/lib/shared-ini/index.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/shared-ini/index.js
 var require_shared_ini = __commonJS({
-  'node_modules/aws-sdk/lib/shared-ini/index.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/shared-ini/index.js'(exports, module2) {
     var IniLoader = require_ini_loader().IniLoader;
     module2.exports.iniLoader = new IniLoader();
   },
 });
 
-// node_modules/aws-sdk/lib/config_regional_endpoint.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/config_regional_endpoint.js
 var require_config_regional_endpoint = __commonJS({
-  'node_modules/aws-sdk/lib/config_regional_endpoint.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/config_regional_endpoint.js'(exports, module2) {
     var AWS3 = require_core();
     function validateRegionalEndpointsFlagValue(configValue, errorOptions) {
       if (typeof configValue !== 'string') return void 0;
@@ -9874,9 +10758,9 @@ var require_config_regional_endpoint = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/services/sts.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/services/sts.js
 var require_sts = __commonJS({
-  'node_modules/aws-sdk/lib/services/sts.js'() {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/services/sts.js'() {
     var AWS3 = require_core();
     var resolveRegionalEndpointsFlag = require_config_regional_endpoint();
     var ENV_REGIONAL_ENDPOINT_ENABLED = 'AWS_STS_REGIONAL_ENDPOINTS';
@@ -9924,9 +10808,9 @@ var require_sts = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/apis/sts-2011-06-15.min.json
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/apis/sts-2011-06-15.min.json
 var require_sts_2011_06_15_min = __commonJS({
-  'node_modules/aws-sdk/apis/sts-2011-06-15.min.json'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/apis/sts-2011-06-15.min.json'(exports, module2) {
     module2.exports = {
       version: '2.0',
       metadata: {
@@ -9966,6 +10850,17 @@ var require_sts_2011_06_15_min = __commonJS({
               ExternalId: {},
               SerialNumber: {},
               TokenCode: {},
+              SourceIdentity: {},
+              ProvidedContexts: {
+                type: 'list',
+                member: {
+                  type: 'structure',
+                  members: {
+                    ProviderArn: {},
+                    ContextAssertion: {},
+                  },
+                },
+              },
             },
           },
           output: {
@@ -9973,14 +10868,15 @@ var require_sts_2011_06_15_min = __commonJS({
             type: 'structure',
             members: {
               Credentials: {
-                shape: 'Sh',
+                shape: 'Sl',
               },
               AssumedRoleUser: {
-                shape: 'Sm',
+                shape: 'Sq',
               },
               PackedPolicySize: {
                 type: 'integer',
               },
+              SourceIdentity: {},
             },
           },
         },
@@ -9991,7 +10887,10 @@ var require_sts_2011_06_15_min = __commonJS({
             members: {
               RoleArn: {},
               PrincipalArn: {},
-              SAMLAssertion: {},
+              SAMLAssertion: {
+                type: 'string',
+                sensitive: true,
+              },
               PolicyArns: {
                 shape: 'S4',
               },
@@ -10006,10 +10905,10 @@ var require_sts_2011_06_15_min = __commonJS({
             type: 'structure',
             members: {
               Credentials: {
-                shape: 'Sh',
+                shape: 'Sl',
               },
               AssumedRoleUser: {
-                shape: 'Sm',
+                shape: 'Sq',
               },
               PackedPolicySize: {
                 type: 'integer',
@@ -10019,6 +10918,7 @@ var require_sts_2011_06_15_min = __commonJS({
               Issuer: {},
               Audience: {},
               NameQualifier: {},
+              SourceIdentity: {},
             },
           },
         },
@@ -10029,7 +10929,10 @@ var require_sts_2011_06_15_min = __commonJS({
             members: {
               RoleArn: {},
               RoleSessionName: {},
-              WebIdentityToken: {},
+              WebIdentityToken: {
+                type: 'string',
+                sensitive: true,
+              },
               ProviderId: {},
               PolicyArns: {
                 shape: 'S4',
@@ -10045,17 +10948,18 @@ var require_sts_2011_06_15_min = __commonJS({
             type: 'structure',
             members: {
               Credentials: {
-                shape: 'Sh',
+                shape: 'Sl',
               },
               SubjectFromWebIdentityToken: {},
               AssumedRoleUser: {
-                shape: 'Sm',
+                shape: 'Sq',
               },
               PackedPolicySize: {
                 type: 'integer',
               },
               Provider: {},
               Audience: {},
+              SourceIdentity: {},
             },
           },
         },
@@ -10129,7 +11033,7 @@ var require_sts_2011_06_15_min = __commonJS({
             type: 'structure',
             members: {
               Credentials: {
-                shape: 'Sh',
+                shape: 'Sl',
               },
               FederatedUser: {
                 type: 'structure',
@@ -10161,7 +11065,7 @@ var require_sts_2011_06_15_min = __commonJS({
             type: 'structure',
             members: {
               Credentials: {
-                shape: 'Sh',
+                shape: 'Sl',
               },
             },
           },
@@ -10188,19 +11092,22 @@ var require_sts_2011_06_15_min = __commonJS({
             },
           },
         },
-        Sh: {
+        Sl: {
           type: 'structure',
           required: ['AccessKeyId', 'SecretAccessKey', 'SessionToken', 'Expiration'],
           members: {
             AccessKeyId: {},
-            SecretAccessKey: {},
+            SecretAccessKey: {
+              type: 'string',
+              sensitive: true,
+            },
             SessionToken: {},
             Expiration: {
               type: 'timestamp',
             },
           },
         },
-        Sm: {
+        Sq: {
           type: 'structure',
           required: ['AssumedRoleId', 'Arn'],
           members: {
@@ -10213,18 +11120,18 @@ var require_sts_2011_06_15_min = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/apis/sts-2011-06-15.paginators.json
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/apis/sts-2011-06-15.paginators.json
 var require_sts_2011_06_15_paginators = __commonJS({
-  'node_modules/aws-sdk/apis/sts-2011-06-15.paginators.json'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/apis/sts-2011-06-15.paginators.json'(exports, module2) {
     module2.exports = {
       pagination: {},
     };
   },
 });
 
-// node_modules/aws-sdk/clients/sts.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/clients/sts.js
 var require_sts2 = __commonJS({
-  'node_modules/aws-sdk/clients/sts.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/clients/sts.js'(exports, module2) {
     require_node_loader();
     var AWS3 = require_core();
     var Service = AWS3.Service;
@@ -10245,9 +11152,9 @@ var require_sts2 = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/credentials/temporary_credentials.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials/temporary_credentials.js
 var require_temporary_credentials = __commonJS({
-  'node_modules/aws-sdk/lib/credentials/temporary_credentials.js'() {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials/temporary_credentials.js'() {
     var AWS3 = require_core();
     var STS = require_sts2();
     AWS3.TemporaryCredentials = AWS3.util.inherit(AWS3.Credentials, {
@@ -10293,9 +11200,9 @@ var require_temporary_credentials = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/credentials/chainable_temporary_credentials.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials/chainable_temporary_credentials.js
 var require_chainable_temporary_credentials = __commonJS({
-  'node_modules/aws-sdk/lib/credentials/chainable_temporary_credentials.js'() {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials/chainable_temporary_credentials.js'() {
     var AWS3 = require_core();
     var STS = require_sts2();
     AWS3.ChainableTemporaryCredentials = AWS3.util.inherit(AWS3.Credentials, {
@@ -10372,9 +11279,9 @@ var require_chainable_temporary_credentials = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/credentials/web_identity_credentials.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials/web_identity_credentials.js
 var require_web_identity_credentials = __commonJS({
-  'node_modules/aws-sdk/lib/credentials/web_identity_credentials.js'() {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials/web_identity_credentials.js'() {
     var AWS3 = require_core();
     var STS = require_sts2();
     AWS3.WebIdentityCredentials = AWS3.util.inherit(AWS3.Credentials, {
@@ -10412,9 +11319,12 @@ var require_web_identity_credentials = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/apis/cognito-identity-2014-06-30.min.json
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/apis/cognito-identity-2014-06-30.min.json
 var require_cognito_identity_2014_06_30_min = __commonJS({
-  'node_modules/aws-sdk/apis/cognito-identity-2014-06-30.min.json'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/apis/cognito-identity-2014-06-30.min.json'(
+    exports,
+    module2
+  ) {
     module2.exports = {
       version: '2.0',
       metadata: {
@@ -10625,6 +11535,9 @@ var require_cognito_identity_2014_06_30_min = __commonJS({
               Logins: {
                 shape: 'S10',
               },
+              PrincipalTags: {
+                shape: 'S1s',
+              },
               TokenDuration: {
                 type: 'long',
               },
@@ -10635,6 +11548,29 @@ var require_cognito_identity_2014_06_30_min = __commonJS({
             members: {
               IdentityId: {},
               Token: {},
+            },
+          },
+        },
+        GetPrincipalTagAttributeMap: {
+          input: {
+            type: 'structure',
+            required: ['IdentityPoolId', 'IdentityProviderName'],
+            members: {
+              IdentityPoolId: {},
+              IdentityProviderName: {},
+            },
+          },
+          output: {
+            type: 'structure',
+            members: {
+              IdentityPoolId: {},
+              IdentityProviderName: {},
+              UseDefaults: {
+                type: 'boolean',
+              },
+              PrincipalTags: {
+                shape: 'S1s',
+              },
             },
           },
         },
@@ -10767,6 +11703,35 @@ var require_cognito_identity_2014_06_30_min = __commonJS({
               },
               RoleMappings: {
                 shape: 'S1e',
+              },
+            },
+          },
+        },
+        SetPrincipalTagAttributeMap: {
+          input: {
+            type: 'structure',
+            required: ['IdentityPoolId', 'IdentityProviderName'],
+            members: {
+              IdentityPoolId: {},
+              IdentityProviderName: {},
+              UseDefaults: {
+                type: 'boolean',
+              },
+              PrincipalTags: {
+                shape: 'S1s',
+              },
+            },
+          },
+          output: {
+            type: 'structure',
+            members: {
+              IdentityPoolId: {},
+              IdentityProviderName: {},
+              UseDefaults: {
+                type: 'boolean',
+              },
+              PrincipalTags: {
+                shape: 'S1s',
               },
             },
           },
@@ -10963,14 +11928,22 @@ var require_cognito_identity_2014_06_30_min = __commonJS({
             },
           },
         },
+        S1s: {
+          type: 'map',
+          key: {},
+          value: {},
+        },
       },
     };
   },
 });
 
-// node_modules/aws-sdk/apis/cognito-identity-2014-06-30.paginators.json
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/apis/cognito-identity-2014-06-30.paginators.json
 var require_cognito_identity_2014_06_30_paginators = __commonJS({
-  'node_modules/aws-sdk/apis/cognito-identity-2014-06-30.paginators.json'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/apis/cognito-identity-2014-06-30.paginators.json'(
+    exports,
+    module2
+  ) {
     module2.exports = {
       pagination: {
         ListIdentityPools: {
@@ -10984,9 +11957,9 @@ var require_cognito_identity_2014_06_30_paginators = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/clients/cognitoidentity.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/clients/cognitoidentity.js
 var require_cognitoidentity = __commonJS({
-  'node_modules/aws-sdk/clients/cognitoidentity.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/clients/cognitoidentity.js'(exports, module2) {
     require_node_loader();
     var AWS3 = require_core();
     var Service = AWS3.Service;
@@ -11006,9 +11979,9 @@ var require_cognitoidentity = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/credentials/cognito_identity_credentials.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials/cognito_identity_credentials.js
 var require_cognito_identity_credentials = __commonJS({
-  'node_modules/aws-sdk/lib/credentials/cognito_identity_credentials.js'() {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials/cognito_identity_credentials.js'() {
     var AWS3 = require_core();
     var CognitoIdentity = require_cognitoidentity();
     var STS = require_sts2();
@@ -11189,9 +12162,9 @@ var require_cognito_identity_credentials = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/credentials/saml_credentials.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials/saml_credentials.js
 var require_saml_credentials = __commonJS({
-  'node_modules/aws-sdk/lib/credentials/saml_credentials.js'() {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials/saml_credentials.js'() {
     var AWS3 = require_core();
     var STS = require_sts2();
     AWS3.SAMLCredentials = AWS3.util.inherit(AWS3.Credentials, {
@@ -11220,9 +12193,9 @@ var require_saml_credentials = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/credentials/process_credentials.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials/process_credentials.js
 var require_process_credentials = __commonJS({
-  'node_modules/aws-sdk/lib/credentials/process_credentials.js'() {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials/process_credentials.js'() {
     var AWS3 = require_core();
     var proc = require('child_process');
     var iniLoader = AWS3.util.iniLoader;
@@ -11269,7 +12242,7 @@ var require_process_credentials = __commonJS({
         }
       },
       loadViaCredentialProcess: function loadViaCredentialProcess(profile, callback) {
-        proc.exec(profile['credential_process'], function (err, stdOut, stdErr) {
+        proc.exec(profile['credential_process'], { env: process.env }, function (err, stdOut, stdErr) {
           if (err) {
             callback(
               AWS3.util.error(new Error('credential_process returned error'), {
@@ -15936,9 +16909,9 @@ var require_xml2js = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/xml/node_parser.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/xml/node_parser.js
 var require_node_parser = __commonJS({
-  'node_modules/aws-sdk/lib/xml/node_parser.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/xml/node_parser.js'(exports, module2) {
     var AWS3 = require_core();
     var util = AWS3.util;
     var Shape = AWS3.Model.Shape;
@@ -16078,9 +17051,9 @@ var require_node_parser = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/http/node.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/http/node.js
 var require_node = __commonJS({
-  'node_modules/aws-sdk/lib/http/node.js'() {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/http/node.js'() {
     var AWS3 = require_core();
     var Stream = AWS3.util.stream.Stream;
     var TransformStream = AWS3.util.stream.Transform;
@@ -16109,12 +17082,12 @@ var require_node = __commonJS({
           headers: httpRequest.headers,
           path: pathPrefix + httpRequest.path,
         };
+        AWS3.util.update(options, httpOptions);
         if (!httpOptions.agent) {
           options.agent = this.getAgent(useSSL, {
             keepAlive: process.env[CONNECTION_REUSE_ENV_NAME] === '1' ? true : false,
           });
         }
-        AWS3.util.update(options, httpOptions);
         delete options.proxy;
         delete options.timeout;
         var stream = http.request(options, function (httpResp) {
@@ -16152,18 +17125,22 @@ var require_node = __commonJS({
           errCallback(AWS3.util.error(new Error(msg), { code: 'TimeoutError' }));
           stream.abort();
         });
-        stream.on('error', function () {
+        stream.on('error', function (err) {
           if (connectTimeoutId) {
             clearTimeout(connectTimeoutId);
             connectTimeoutId = null;
           }
           if (stream.didCallback) return;
           stream.didCallback = true;
-          errCallback.apply(stream, arguments);
+          if (err.code === 'ECONNRESET' || err.code === 'EPIPE' || err.code === 'ETIMEDOUT') {
+            errCallback(AWS3.util.error(err, { code: 'TimeoutError' }));
+          } else {
+            errCallback(err);
+          }
         });
         var expect = httpRequest.headers.Expect || httpRequest.headers.expect;
         if (expect === '100-continue') {
-          stream.on('continue', function () {
+          stream.once('continue', function () {
             self.writeBody(stream, httpRequest);
           });
         } else {
@@ -16251,9 +17228,9 @@ var require_node = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/credentials/token_file_web_identity_credentials.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials/token_file_web_identity_credentials.js
 var require_token_file_web_identity_credentials = __commonJS({
-  'node_modules/aws-sdk/lib/credentials/token_file_web_identity_credentials.js'() {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials/token_file_web_identity_credentials.js'() {
     var AWS3 = require_core();
     var fs = require('fs');
     var STS = require_sts2();
@@ -16381,17 +17358,127 @@ var require_token_file_web_identity_credentials = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/metadata_service.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/metadata_service/get_endpoint.js
+var require_get_endpoint = __commonJS({
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/metadata_service/get_endpoint.js'(exports, module2) {
+    var getEndpoint = function () {
+      return {
+        IPv4: 'http://169.254.169.254',
+        IPv6: 'http://[fd00:ec2::254]',
+      };
+    };
+    module2.exports = getEndpoint;
+  },
+});
+
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/metadata_service/get_endpoint_mode.js
+var require_get_endpoint_mode = __commonJS({
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/metadata_service/get_endpoint_mode.js'(
+    exports,
+    module2
+  ) {
+    var getEndpointMode = function () {
+      return {
+        IPv4: 'IPv4',
+        IPv6: 'IPv6',
+      };
+    };
+    module2.exports = getEndpointMode;
+  },
+});
+
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/metadata_service/get_endpoint_config_options.js
+var require_get_endpoint_config_options = __commonJS({
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/metadata_service/get_endpoint_config_options.js'(
+    exports,
+    module2
+  ) {
+    var ENV_ENDPOINT_NAME = 'AWS_EC2_METADATA_SERVICE_ENDPOINT';
+    var CONFIG_ENDPOINT_NAME = 'ec2_metadata_service_endpoint';
+    var getEndpointConfigOptions = function () {
+      return {
+        environmentVariableSelector: function (env) {
+          return env[ENV_ENDPOINT_NAME];
+        },
+        configFileSelector: function (profile) {
+          return profile[CONFIG_ENDPOINT_NAME];
+        },
+        default: void 0,
+      };
+    };
+    module2.exports = getEndpointConfigOptions;
+  },
+});
+
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/metadata_service/get_endpoint_mode_config_options.js
+var require_get_endpoint_mode_config_options = __commonJS({
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/metadata_service/get_endpoint_mode_config_options.js'(
+    exports,
+    module2
+  ) {
+    var EndpointMode = require_get_endpoint_mode()();
+    var ENV_ENDPOINT_MODE_NAME = 'AWS_EC2_METADATA_SERVICE_ENDPOINT_MODE';
+    var CONFIG_ENDPOINT_MODE_NAME = 'ec2_metadata_service_endpoint_mode';
+    var getEndpointModeConfigOptions = function () {
+      return {
+        environmentVariableSelector: function (env) {
+          return env[ENV_ENDPOINT_MODE_NAME];
+        },
+        configFileSelector: function (profile) {
+          return profile[CONFIG_ENDPOINT_MODE_NAME];
+        },
+        default: EndpointMode.IPv4,
+      };
+    };
+    module2.exports = getEndpointModeConfigOptions;
+  },
+});
+
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/metadata_service/get_metadata_service_endpoint.js
+var require_get_metadata_service_endpoint = __commonJS({
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/metadata_service/get_metadata_service_endpoint.js'(
+    exports,
+    module2
+  ) {
+    var AWS3 = require_core();
+    var Endpoint = require_get_endpoint()();
+    var EndpointMode = require_get_endpoint_mode()();
+    var ENDPOINT_CONFIG_OPTIONS = require_get_endpoint_config_options()();
+    var ENDPOINT_MODE_CONFIG_OPTIONS = require_get_endpoint_mode_config_options()();
+    var getMetadataServiceEndpoint = function () {
+      var endpoint = AWS3.util.loadConfig(ENDPOINT_CONFIG_OPTIONS);
+      if (endpoint !== void 0) return endpoint;
+      var endpointMode = AWS3.util.loadConfig(ENDPOINT_MODE_CONFIG_OPTIONS);
+      switch (endpointMode) {
+        case EndpointMode.IPv4:
+          return Endpoint.IPv4;
+        case EndpointMode.IPv6:
+          return Endpoint.IPv6;
+        default:
+          throw new Error('Unsupported endpoint mode: ' + endpointMode);
+      }
+    };
+    module2.exports = getMetadataServiceEndpoint;
+  },
+});
+
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/metadata_service.js
 var require_metadata_service = __commonJS({
-  'node_modules/aws-sdk/lib/metadata_service.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/metadata_service.js'(exports, module2) {
     var AWS3 = require_core();
     require_http();
     var inherit = AWS3.util.inherit;
+    var getMetadataServiceEndpoint = require_get_metadata_service_endpoint();
+    var URL2 = require('url').URL;
     AWS3.MetadataService = inherit({
-      host: '169.254.169.254',
+      endpoint: getMetadataServiceEndpoint(),
       httpOptions: { timeout: 0 },
       disableFetchToken: false,
       constructor: function MetadataService(options) {
+        if (options && options.host) {
+          options.endpoint = 'http://' + options.host;
+          delete options.host;
+        }
         AWS3.util.update(this, options);
       },
       request: function request(path, options, callback) {
@@ -16404,7 +17491,10 @@ var require_metadata_service = __commonJS({
           return;
         }
         path = path || '/';
-        var httpRequest = new AWS3.HttpRequest('http://' + this.host + path);
+        if (URL2) {
+          new URL2(this.endpoint);
+        }
+        var httpRequest = new AWS3.HttpRequest(this.endpoint + path);
         httpRequest.method = options.method || 'GET';
         if (options.headers) {
           httpRequest.headers = options.headers;
@@ -16509,9 +17599,9 @@ var require_metadata_service = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/credentials/ec2_metadata_credentials.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials/ec2_metadata_credentials.js
 var require_ec2_metadata_credentials = __commonJS({
-  'node_modules/aws-sdk/lib/credentials/ec2_metadata_credentials.js'() {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials/ec2_metadata_credentials.js'() {
     var AWS3 = require_core();
     require_metadata_service();
     AWS3.EC2MetadataCredentials = AWS3.util.inherit(AWS3.Credentials, {
@@ -16528,43 +17618,66 @@ var require_ec2_metadata_credentials = __commonJS({
           options.httpOptions
         );
         this.metadataService = new AWS3.MetadataService(options);
-        this.metadata = {};
+        this.logger = options.logger || (AWS3.config && AWS3.config.logger);
       },
       defaultTimeout: 1e3,
       defaultConnectTimeout: 1e3,
       defaultMaxRetries: 3,
+      originalExpiration: void 0,
       refresh: function refresh(callback) {
         this.coalesceRefresh(callback || AWS3.util.fn.callback);
       },
       load: function load(callback) {
         var self = this;
         self.metadataService.loadCredentials(function (err, creds) {
-          if (!err) {
-            var currentTime = AWS3.util.date.getDate();
-            var expireTime = new Date(creds.Expiration);
-            if (expireTime < currentTime) {
-              err = AWS3.util.error(new Error('EC2 Instance Metadata Serivce provided expired credentials'), {
-                code: 'EC2MetadataCredentialsProviderFailure',
-              });
+          if (err) {
+            if (self.hasLoadedCredentials()) {
+              self.extendExpirationIfExpired();
+              callback();
             } else {
-              self.expired = false;
-              self.metadata = creds;
-              self.accessKeyId = creds.AccessKeyId;
-              self.secretAccessKey = creds.SecretAccessKey;
-              self.sessionToken = creds.Token;
-              self.expireTime = expireTime;
+              callback(err);
             }
+          } else {
+            self.setCredentials(creds);
+            self.extendExpirationIfExpired();
+            callback();
           }
-          callback(err);
         });
+      },
+      hasLoadedCredentials: function hasLoadedCredentials() {
+        return this.AccessKeyId && this.secretAccessKey;
+      },
+      extendExpirationIfExpired: function extendExpirationIfExpired() {
+        if (this.needsRefresh()) {
+          this.originalExpiration = this.originalExpiration || this.expireTime;
+          this.expired = false;
+          var nextTimeout = 15 * 60 + Math.floor(Math.random() * 5 * 60);
+          var currentTime = AWS3.util.date.getDate().getTime();
+          this.expireTime = new Date(currentTime + nextTimeout * 1e3);
+          this.logger.warn(
+            'Attempting credential expiration extension due to a credential service availability issue. A refresh of these credentials will be attempted again at ' +
+              this.expireTime +
+              '\nFor more information, please visit: https://docs.aws.amazon.com/sdkref/latest/guide/feature-static-credentials.html'
+          );
+        }
+      },
+      setCredentials: function setCredentials(creds) {
+        var currentTime = AWS3.util.date.getDate().getTime();
+        var expireTime = new Date(creds.Expiration);
+        this.expired = currentTime >= expireTime ? true : false;
+        this.metadata = creds;
+        this.accessKeyId = creds.AccessKeyId;
+        this.secretAccessKey = creds.SecretAccessKey;
+        this.sessionToken = creds.Token;
+        this.expireTime = expireTime;
       },
     });
   },
 });
 
-// node_modules/aws-sdk/lib/credentials/remote_credentials.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials/remote_credentials.js
 var require_remote_credentials = __commonJS({
-  'node_modules/aws-sdk/lib/credentials/remote_credentials.js'() {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials/remote_credentials.js'() {
     var AWS3 = require_core();
     var ENV_RELATIVE_URI = 'AWS_CONTAINER_CREDENTIALS_RELATIVE_URI';
     var ENV_FULL_URI = 'AWS_CONTAINER_CREDENTIALS_FULL_URI';
@@ -16702,17 +17815,17 @@ var require_remote_credentials = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/credentials/ecs_credentials.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials/ecs_credentials.js
 var require_ecs_credentials = __commonJS({
-  'node_modules/aws-sdk/lib/credentials/ecs_credentials.js'() {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials/ecs_credentials.js'() {
     var AWS3 = require_core();
     AWS3.ECSCredentials = AWS3.RemoteCredentials;
   },
 });
 
-// node_modules/aws-sdk/lib/credentials/environment_credentials.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials/environment_credentials.js
 var require_environment_credentials = __commonJS({
-  'node_modules/aws-sdk/lib/credentials/environment_credentials.js'() {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials/environment_credentials.js'() {
     var AWS3 = require_core();
     AWS3.EnvironmentCredentials = AWS3.util.inherit(AWS3.Credentials, {
       constructor: function EnvironmentCredentials(envPrefix) {
@@ -16753,9 +17866,9 @@ var require_environment_credentials = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/credentials/file_system_credentials.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials/file_system_credentials.js
 var require_file_system_credentials = __commonJS({
-  'node_modules/aws-sdk/lib/credentials/file_system_credentials.js'() {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials/file_system_credentials.js'() {
     var AWS3 = require_core();
     AWS3.FileSystemCredentials = AWS3.util.inherit(AWS3.Credentials, {
       constructor: function FileSystemCredentials(filename) {
@@ -16783,9 +17896,9 @@ var require_file_system_credentials = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/credentials/shared_ini_file_credentials.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials/shared_ini_file_credentials.js
 var require_shared_ini_file_credentials = __commonJS({
-  'node_modules/aws-sdk/lib/credentials/shared_ini_file_credentials.js'() {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials/shared_ini_file_credentials.js'() {
     var AWS3 = require_core();
     var STS = require_sts2();
     var iniLoader = AWS3.util.iniLoader;
@@ -16866,6 +17979,7 @@ var require_shared_ini_file_credentials = __commonJS({
         var externalId = roleProfile['external_id'];
         var mfaSerial = roleProfile['mfa_serial'];
         var sourceProfileName = roleProfile['source_profile'];
+        var durationSeconds = parseInt(roleProfile['duration_seconds'], 10) || void 0;
         var profileRegion = roleProfile['region'] || ASSUME_ROLE_DEFAULT_REGION;
         if (!sourceProfileName) {
           throw AWS3.util.error(new Error('source_profile is not set using profile ' + this.profile), {
@@ -16892,6 +18006,7 @@ var require_shared_ini_file_credentials = __commonJS({
           httpOptions: this.httpOptions,
         });
         var roleParams = {
+          DurationSeconds: durationSeconds,
           RoleArn: roleArn,
           RoleSessionName: roleSessionName || 'aws-sdk-js-' + Date.now(),
         };
@@ -16926,10 +18041,440 @@ var require_shared_ini_file_credentials = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/lib/node_loader.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials/sso_credentials.js
+var require_sso_credentials = __commonJS({
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/credentials/sso_credentials.js'() {
+    var AWS3 = require_core();
+    var path = require('path');
+    var crypto = require('crypto');
+    var iniLoader = AWS3.util.iniLoader;
+    AWS3.SsoCredentials = AWS3.util.inherit(AWS3.Credentials, {
+      constructor: function SsoCredentials(options) {
+        AWS3.Credentials.call(this);
+        options = options || {};
+        this.errorCode = 'SsoCredentialsProviderFailure';
+        this.expired = true;
+        this.filename = options.filename;
+        this.profile = options.profile || process.env.AWS_PROFILE || AWS3.util.defaultProfile;
+        this.service = options.ssoClient;
+        this.httpOptions = options.httpOptions || null;
+        this.get(options.callback || AWS3.util.fn.noop);
+      },
+      load: function load(callback) {
+        var self = this;
+        try {
+          var profiles = AWS3.util.getProfilesFromSharedConfig(iniLoader, this.filename);
+          var profile = profiles[this.profile] || {};
+          if (Object.keys(profile).length === 0) {
+            throw AWS3.util.error(new Error('Profile ' + this.profile + ' not found'), { code: self.errorCode });
+          }
+          if (profile.sso_session) {
+            if (!profile.sso_account_id || !profile.sso_role_name) {
+              throw AWS3.util.error(
+                new Error(
+                  'Profile ' +
+                    this.profile +
+                    ' with session ' +
+                    profile.sso_session +
+                    ' does not have valid SSO credentials. Required parameters "sso_account_id", "sso_session", "sso_role_name". Reference: https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html'
+                ),
+                { code: self.errorCode }
+              );
+            }
+          } else {
+            if (!profile.sso_start_url || !profile.sso_account_id || !profile.sso_region || !profile.sso_role_name) {
+              throw AWS3.util.error(
+                new Error(
+                  'Profile ' +
+                    this.profile +
+                    ' does not have valid SSO credentials. Required parameters "sso_account_id", "sso_region", "sso_role_name", "sso_start_url". Reference: https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html'
+                ),
+                { code: self.errorCode }
+              );
+            }
+          }
+          this.getToken(this.profile, profile, function (err, token) {
+            if (err) {
+              return callback(err);
+            }
+            var request = {
+              accessToken: token,
+              accountId: profile.sso_account_id,
+              roleName: profile.sso_role_name,
+            };
+            if (!self.service || self.service.config.region !== profile.sso_region) {
+              self.service = new AWS3.SSO({
+                region: profile.sso_region,
+                httpOptions: self.httpOptions,
+              });
+            }
+            self.service.getRoleCredentials(request, function (err2, data) {
+              if (err2 || !data || !data.roleCredentials) {
+                callback(
+                  AWS3.util.error(err2 || new Error('Please log in using "aws sso login"'), { code: self.errorCode }),
+                  null
+                );
+              } else if (
+                !data.roleCredentials.accessKeyId ||
+                !data.roleCredentials.secretAccessKey ||
+                !data.roleCredentials.sessionToken ||
+                !data.roleCredentials.expiration
+              ) {
+                throw AWS3.util.error(new Error('SSO returns an invalid temporary credential.'));
+              } else {
+                self.expired = false;
+                self.accessKeyId = data.roleCredentials.accessKeyId;
+                self.secretAccessKey = data.roleCredentials.secretAccessKey;
+                self.sessionToken = data.roleCredentials.sessionToken;
+                self.expireTime = new Date(data.roleCredentials.expiration);
+                callback(null);
+              }
+            });
+          });
+        } catch (err) {
+          callback(err);
+        }
+      },
+      getToken: function getToken(profileName, profile, callback) {
+        var self = this;
+        if (profile.sso_session) {
+          var _iniLoader = AWS3.util.iniLoader;
+          var ssoSessions = _iniLoader.loadSsoSessionsFrom();
+          var ssoSession = ssoSessions[profile.sso_session];
+          Object.assign(profile, ssoSession);
+          var ssoTokenProvider = new AWS3.SSOTokenProvider({
+            profile: profileName,
+          });
+          ssoTokenProvider.load(function (err) {
+            if (err) {
+              return callback(err);
+            }
+            return callback(null, ssoTokenProvider.token);
+          });
+          return;
+        }
+        try {
+          var EXPIRE_WINDOW_MS = 15 * 60 * 1e3;
+          var hasher = crypto.createHash('sha1');
+          var fileName = hasher.update(profile.sso_start_url).digest('hex') + '.json';
+          var cachePath = path.join(iniLoader.getHomeDir(), '.aws', 'sso', 'cache', fileName);
+          var cacheFile = AWS3.util.readFileSync(cachePath);
+          var cacheContent = null;
+          if (cacheFile) {
+            cacheContent = JSON.parse(cacheFile);
+          }
+          if (!cacheContent) {
+            throw AWS3.util.error(
+              new Error(
+                'Cached credentials not found under ' +
+                  this.profile +
+                  ' profile. Please make sure you log in with aws sso login first'
+              ),
+              { code: self.errorCode }
+            );
+          }
+          if (!cacheContent.startUrl || !cacheContent.region || !cacheContent.accessToken || !cacheContent.expiresAt) {
+            throw AWS3.util.error(
+              new Error('Cached credentials are missing required properties. Try running aws sso login.')
+            );
+          }
+          if (new Date(cacheContent.expiresAt).getTime() - Date.now() <= EXPIRE_WINDOW_MS) {
+            throw AWS3.util.error(
+              new Error(
+                'The SSO session associated with this profile has expired. To refresh this SSO session run aws sso login with the corresponding profile.'
+              )
+            );
+          }
+          return callback(null, cacheContent.accessToken);
+        } catch (err) {
+          return callback(err, null);
+        }
+      },
+      refresh: function refresh(callback) {
+        iniLoader.clearCachedFiles();
+        this.coalesceRefresh(callback || AWS3.util.fn.callback);
+      },
+    });
+  },
+});
+
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/token.js
+var require_token = __commonJS({
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/token.js'() {
+    var AWS3 = require_core();
+    AWS3.Token = AWS3.util.inherit({
+      constructor: function Token(options) {
+        AWS3.util.hideProperties(this, ['token']);
+        this.expired = false;
+        this.expireTime = null;
+        this.refreshCallbacks = [];
+        if (arguments.length === 1) {
+          var options = arguments[0];
+          this.token = options.token;
+          this.expireTime = options.expireTime;
+        }
+      },
+      expiryWindow: 15,
+      needsRefresh: function needsRefresh() {
+        var currentTime = AWS3.util.date.getDate().getTime();
+        var adjustedTime = new Date(currentTime + this.expiryWindow * 1e3);
+        if (this.expireTime && adjustedTime > this.expireTime) return true;
+        return this.expired || !this.token;
+      },
+      get: function get(callback) {
+        var self = this;
+        if (this.needsRefresh()) {
+          this.refresh(function (err) {
+            if (!err) self.expired = false;
+            if (callback) callback(err);
+          });
+        } else if (callback) {
+          callback();
+        }
+      },
+      refresh: function refresh(callback) {
+        this.expired = false;
+        callback();
+      },
+      coalesceRefresh: function coalesceRefresh(callback, sync) {
+        var self = this;
+        if (self.refreshCallbacks.push(callback) === 1) {
+          self.load(function onLoad(err) {
+            AWS3.util.arrayEach(self.refreshCallbacks, function (callback2) {
+              if (sync) {
+                callback2(err);
+              } else {
+                AWS3.util.defer(function () {
+                  callback2(err);
+                });
+              }
+            });
+            self.refreshCallbacks.length = 0;
+          });
+        }
+      },
+      load: function load(callback) {
+        callback();
+      },
+    });
+    AWS3.Token.addPromisesToClass = function addPromisesToClass(PromiseDependency) {
+      this.prototype.getPromise = AWS3.util.promisifyMethod('get', PromiseDependency);
+      this.prototype.refreshPromise = AWS3.util.promisifyMethod('refresh', PromiseDependency);
+    };
+    AWS3.Token.deletePromisesFromClass = function deletePromisesFromClass() {
+      delete this.prototype.getPromise;
+      delete this.prototype.refreshPromise;
+    };
+    AWS3.util.addPromises(AWS3.Token);
+  },
+});
+
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/token/token_provider_chain.js
+var require_token_provider_chain = __commonJS({
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/token/token_provider_chain.js'() {
+    var AWS3 = require_core();
+    AWS3.TokenProviderChain = AWS3.util.inherit(AWS3.Token, {
+      constructor: function TokenProviderChain(providers) {
+        if (providers) {
+          this.providers = providers;
+        } else {
+          this.providers = AWS3.TokenProviderChain.defaultProviders.slice(0);
+        }
+        this.resolveCallbacks = [];
+      },
+      resolve: function resolve(callback) {
+        var self = this;
+        if (self.providers.length === 0) {
+          callback(new Error('No providers'));
+          return self;
+        }
+        if (self.resolveCallbacks.push(callback) === 1) {
+          let resolveNext2 = function (err, token) {
+            if ((!err && token) || index === providers.length) {
+              AWS3.util.arrayEach(self.resolveCallbacks, function (callback2) {
+                callback2(err, token);
+              });
+              self.resolveCallbacks.length = 0;
+              return;
+            }
+            var provider = providers[index++];
+            if (typeof provider === 'function') {
+              token = provider.call();
+            } else {
+              token = provider;
+            }
+            if (token.get) {
+              token.get(function (getErr) {
+                resolveNext2(getErr, getErr ? null : token);
+              });
+            } else {
+              resolveNext2(null, token);
+            }
+          };
+          var resolveNext = resolveNext2;
+          var index = 0;
+          var providers = self.providers.slice(0);
+          resolveNext2();
+        }
+        return self;
+      },
+    });
+    AWS3.TokenProviderChain.defaultProviders = [];
+    AWS3.TokenProviderChain.addPromisesToClass = function addPromisesToClass(PromiseDependency) {
+      this.prototype.resolvePromise = AWS3.util.promisifyMethod('resolve', PromiseDependency);
+    };
+    AWS3.TokenProviderChain.deletePromisesFromClass = function deletePromisesFromClass() {
+      delete this.prototype.resolvePromise;
+    };
+    AWS3.util.addPromises(AWS3.TokenProviderChain);
+  },
+});
+
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/token/sso_token_provider.js
+var require_sso_token_provider = __commonJS({
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/token/sso_token_provider.js'() {
+    var AWS3 = require_core();
+    var crypto = require('crypto');
+    var fs = require('fs');
+    var path = require('path');
+    var iniLoader = AWS3.util.iniLoader;
+    var lastRefreshAttemptTime = 0;
+    var validateTokenKey = function validateTokenKey2(token, key) {
+      if (!token[key]) {
+        throw AWS3.util.error(new Error('Key "' + key + '" not present in SSO Token'), {
+          code: 'SSOTokenProviderFailure',
+        });
+      }
+    };
+    var refreshUnsuccessful = function refreshUnsuccessful2(currentTime, tokenExpireTime, callback) {
+      if (tokenExpireTime > currentTime) {
+        callback(null);
+      } else {
+        throw AWS3.util.error(new Error('SSO Token refresh failed. Please log in using "aws sso login"'), {
+          code: 'SSOTokenProviderFailure',
+        });
+      }
+    };
+    AWS3.SSOTokenProvider = AWS3.util.inherit(AWS3.Token, {
+      expiryWindow: 5 * 60,
+      constructor: function SSOTokenProvider(options) {
+        AWS3.Token.call(this);
+        options = options || {};
+        this.expired = true;
+        this.profile = options.profile || process.env.AWS_PROFILE || AWS3.util.defaultProfile;
+        this.get(options.callback || AWS3.util.fn.noop);
+      },
+      load: function load(callback) {
+        var self = this;
+        var profiles = iniLoader.loadFrom({ isConfig: true });
+        var profile = profiles[this.profile] || {};
+        if (Object.keys(profile).length === 0) {
+          throw AWS3.util.error(new Error('Profile "' + this.profile + '" not found'), {
+            code: 'SSOTokenProviderFailure',
+          });
+        } else if (!profile['sso_session']) {
+          throw AWS3.util.error(
+            new Error('Profile "' + this.profile + '" is missing required property "sso_session".'),
+            { code: 'SSOTokenProviderFailure' }
+          );
+        }
+        var ssoSessionName = profile['sso_session'];
+        var ssoSessions = iniLoader.loadSsoSessionsFrom();
+        var ssoSession = ssoSessions[ssoSessionName];
+        if (!ssoSession) {
+          throw AWS3.util.error(new Error('Sso session "' + ssoSessionName + '" not found'), {
+            code: 'SSOTokenProviderFailure',
+          });
+        } else if (!ssoSession['sso_start_url']) {
+          throw AWS3.util.error(
+            new Error('Sso session "' + this.profile + '" is missing required property "sso_start_url".'),
+            { code: 'SSOTokenProviderFailure' }
+          );
+        } else if (!ssoSession['sso_region']) {
+          throw AWS3.util.error(
+            new Error('Sso session "' + this.profile + '" is missing required property "sso_region".'),
+            { code: 'SSOTokenProviderFailure' }
+          );
+        }
+        var hasher = crypto.createHash('sha1');
+        var fileName = hasher.update(ssoSessionName).digest('hex') + '.json';
+        var cachePath = path.join(iniLoader.getHomeDir(), '.aws', 'sso', 'cache', fileName);
+        var tokenFromCache = JSON.parse(fs.readFileSync(cachePath));
+        if (!tokenFromCache) {
+          throw AWS3.util.error(
+            new Error(
+              'Cached token not found. Please log in using "aws sso login" for profile "' + this.profile + '".'
+            ),
+            { code: 'SSOTokenProviderFailure' }
+          );
+        }
+        validateTokenKey(tokenFromCache, 'accessToken');
+        validateTokenKey(tokenFromCache, 'expiresAt');
+        var currentTime = AWS3.util.date.getDate().getTime();
+        var adjustedTime = new Date(currentTime + this.expiryWindow * 1e3);
+        var tokenExpireTime = new Date(tokenFromCache['expiresAt']);
+        if (tokenExpireTime > adjustedTime) {
+          self.token = tokenFromCache.accessToken;
+          self.expireTime = tokenExpireTime;
+          self.expired = false;
+          callback(null);
+          return;
+        }
+        if (currentTime - lastRefreshAttemptTime < 30 * 1e3) {
+          refreshUnsuccessful(currentTime, tokenExpireTime, callback);
+          return;
+        }
+        validateTokenKey(tokenFromCache, 'clientId');
+        validateTokenKey(tokenFromCache, 'clientSecret');
+        validateTokenKey(tokenFromCache, 'refreshToken');
+        if (!self.service || self.service.config.region !== ssoSession.sso_region) {
+          self.service = new AWS3.SSOOIDC({ region: ssoSession.sso_region });
+        }
+        var params = {
+          clientId: tokenFromCache.clientId,
+          clientSecret: tokenFromCache.clientSecret,
+          refreshToken: tokenFromCache.refreshToken,
+          grantType: 'refresh_token',
+        };
+        lastRefreshAttemptTime = AWS3.util.date.getDate().getTime();
+        self.service.createToken(params, function (err, data) {
+          if (err || !data) {
+            refreshUnsuccessful(currentTime, tokenExpireTime, callback);
+          } else {
+            try {
+              validateTokenKey(data, 'accessToken');
+              validateTokenKey(data, 'expiresIn');
+              self.expired = false;
+              self.token = data.accessToken;
+              self.expireTime = new Date(Date.now() + data.expiresIn * 1e3);
+              callback(null);
+              try {
+                tokenFromCache.accessToken = data.accessToken;
+                tokenFromCache.expiresAt = self.expireTime.toISOString();
+                tokenFromCache.refreshToken = data.refreshToken;
+                fs.writeFileSync(cachePath, JSON.stringify(tokenFromCache, null, 2));
+              } catch (error) {}
+            } catch (error) {
+              refreshUnsuccessful(currentTime, tokenExpireTime, callback);
+            }
+          }
+        });
+      },
+      refresh: function refresh(callback) {
+        iniLoader.clearCachedFiles();
+        this.coalesceRefresh(callback || AWS3.util.fn.callback);
+      },
+    });
+  },
+});
+
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/node_loader.js
 var require_node_loader = __commonJS({
-  'node_modules/aws-sdk/lib/node_loader.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/node_loader.js'(exports, module2) {
     var util = require_util();
+    var region_utils = require_utils();
+    var isFipsRegion = region_utils.isFipsRegion;
+    var getRealRegion = region_utils.getRealRegion;
     util.isBrowser = function () {
       return false;
     };
@@ -16953,6 +18498,30 @@ var require_node_loader = __commonJS({
     };
     util.iniLoader = require_shared_ini().iniLoader;
     util.getSystemErrorName = require('util').getSystemErrorName;
+    util.loadConfig = function (options) {
+      var envValue = options.environmentVariableSelector(process.env);
+      if (envValue !== void 0) {
+        return envValue;
+      }
+      var configFile = {};
+      try {
+        configFile = util.iniLoader
+          ? util.iniLoader.loadFrom({
+              isConfig: true,
+              filename: process.env[util.sharedConfigFileEnv],
+            })
+          : {};
+      } catch (e) {}
+      var sharedFileConfig = configFile[process.env.AWS_PROFILE || util.defaultProfile] || {};
+      var configValue = options.configFileSelector(sharedFileConfig);
+      if (configValue !== void 0) {
+        return configValue;
+      }
+      if (typeof options.default === 'function') {
+        return options.default();
+      }
+      return options.default;
+    };
     var AWS3;
     module2.exports = AWS3 = require_core();
     require_credentials();
@@ -16974,12 +18543,16 @@ var require_node_loader = __commonJS({
     require_file_system_credentials();
     require_shared_ini_file_credentials();
     require_process_credentials();
+    require_sso_credentials();
     AWS3.CredentialProviderChain.defaultProviders = [
       function () {
         return new AWS3.EnvironmentCredentials('AWS');
       },
       function () {
         return new AWS3.EnvironmentCredentials('AMAZON');
+      },
+      function () {
+        return new AWS3.SsoCredentials();
       },
       function () {
         return new AWS3.SharedIniFileCredentials();
@@ -16997,6 +18570,58 @@ var require_node_loader = __commonJS({
         return new AWS3.EC2MetadataCredentials();
       },
     ];
+    require_token();
+    require_token_provider_chain();
+    require_sso_token_provider();
+    AWS3.TokenProviderChain.defaultProviders = [
+      function () {
+        return new AWS3.SSOTokenProvider();
+      },
+    ];
+    var getRegion = function () {
+      var env = process.env;
+      var region = env.AWS_REGION || env.AMAZON_REGION;
+      if (env[AWS3.util.configOptInEnv]) {
+        var toCheck = [
+          { filename: env[AWS3.util.sharedCredentialsFileEnv] },
+          { isConfig: true, filename: env[AWS3.util.sharedConfigFileEnv] },
+        ];
+        var iniLoader = AWS3.util.iniLoader;
+        while (!region && toCheck.length) {
+          var configFile = {};
+          var fileInfo = toCheck.shift();
+          try {
+            configFile = iniLoader.loadFrom(fileInfo);
+          } catch (err) {
+            if (fileInfo.isConfig) throw err;
+          }
+          var profile = configFile[env.AWS_PROFILE || AWS3.util.defaultProfile];
+          region = profile && profile.region;
+        }
+      }
+      return region;
+    };
+    var getBooleanValue = function (value) {
+      return value === 'true' ? true : value === 'false' ? false : void 0;
+    };
+    var USE_FIPS_ENDPOINT_CONFIG_OPTIONS = {
+      environmentVariableSelector: function (env) {
+        return getBooleanValue(env['AWS_USE_FIPS_ENDPOINT']);
+      },
+      configFileSelector: function (profile) {
+        return getBooleanValue(profile['use_fips_endpoint']);
+      },
+      default: false,
+    };
+    var USE_DUALSTACK_ENDPOINT_CONFIG_OPTIONS = {
+      environmentVariableSelector: function (env) {
+        return getBooleanValue(env['AWS_USE_DUALSTACK_ENDPOINT']);
+      },
+      configFileSelector: function (profile) {
+        return getBooleanValue(profile['use_dualstack_endpoint']);
+      },
+      default: false,
+    };
     AWS3.util.update(AWS3.Config.prototype.keys, {
       credentials: function () {
         var credentials = null;
@@ -17022,38 +18647,35 @@ var require_node_loader = __commonJS({
         return process.env.AWSJS_DEBUG ? console : null;
       },
       region: function () {
-        var env = process.env;
-        var region = env.AWS_REGION || env.AMAZON_REGION;
-        if (env[AWS3.util.configOptInEnv]) {
-          var toCheck = [
-            { filename: env[AWS3.util.sharedCredentialsFileEnv] },
-            { isConfig: true, filename: env[AWS3.util.sharedConfigFileEnv] },
-          ];
-          var iniLoader = AWS3.util.iniLoader;
-          while (!region && toCheck.length) {
-            var configFile = iniLoader.loadFrom(toCheck.shift());
-            var profile = configFile[env.AWS_PROFILE || AWS3.util.defaultProfile];
-            region = profile && profile.region;
-          }
-        }
-        return region;
+        var region = getRegion();
+        return region ? getRealRegion(region) : void 0;
+      },
+      tokenProvider: function () {
+        return new AWS3.TokenProviderChain();
+      },
+      useFipsEndpoint: function () {
+        var region = getRegion();
+        return isFipsRegion(region) ? true : util.loadConfig(USE_FIPS_ENDPOINT_CONFIG_OPTIONS);
+      },
+      useDualstackEndpoint: function () {
+        return util.loadConfig(USE_DUALSTACK_ENDPOINT_CONFIG_OPTIONS);
       },
     });
     AWS3.config = new AWS3.Config();
   },
 });
 
-// node_modules/aws-sdk/global.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/global.js
 var require_global = __commonJS({
-  'node_modules/aws-sdk/global.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/global.js'(exports, module2) {
     require_node_loader();
     module2.exports = require_core();
   },
 });
 
-// node_modules/aws-sdk/lib/services/lambda.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/services/lambda.js
 var require_lambda = __commonJS({
-  'node_modules/aws-sdk/lib/services/lambda.js'() {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/lib/services/lambda.js'() {
     var AWS3 = require_core();
     AWS3.util.update(AWS3.Lambda.prototype, {
       setupRequestListeners: function setupRequestListeners(request) {
@@ -17065,9 +18687,9 @@ var require_lambda = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/apis/lambda-2014-11-11.min.json
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/apis/lambda-2014-11-11.min.json
 var require_lambda_2014_11_11_min = __commonJS({
-  'node_modules/aws-sdk/apis/lambda-2014-11-11.min.json'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/apis/lambda-2014-11-11.min.json'(exports, module2) {
     module2.exports = {
       metadata: {
         apiVersion: '2014-11-11',
@@ -17469,9 +19091,9 @@ var require_lambda_2014_11_11_min = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/apis/lambda-2014-11-11.paginators.json
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/apis/lambda-2014-11-11.paginators.json
 var require_lambda_2014_11_11_paginators = __commonJS({
-  'node_modules/aws-sdk/apis/lambda-2014-11-11.paginators.json'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/apis/lambda-2014-11-11.paginators.json'(exports, module2) {
     module2.exports = {
       pagination: {
         ListEventSources: {
@@ -17491,9 +19113,9 @@ var require_lambda_2014_11_11_paginators = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/apis/lambda-2015-03-31.min.json
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/apis/lambda-2015-03-31.min.json
 var require_lambda_2015_03_31_min = __commonJS({
-  'node_modules/aws-sdk/apis/lambda-2015-03-31.min.json'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/apis/lambda-2015-03-31.min.json'(exports, module2) {
     module2.exports = {
       version: '2.0',
       metadata: {
@@ -17566,6 +19188,8 @@ var require_lambda_2015_03_31_min = __commonJS({
                 locationName: 'Qualifier',
               },
               RevisionId: {},
+              PrincipalOrgID: {},
+              FunctionUrlAuthType: {},
             },
           },
           output: {
@@ -17592,12 +19216,12 @@ var require_lambda_2015_03_31_min = __commonJS({
               FunctionVersion: {},
               Description: {},
               RoutingConfig: {
-                shape: 'Sn',
+                shape: 'Sp',
               },
             },
           },
           output: {
-            shape: 'Sr',
+            shape: 'St',
           },
         },
         CreateCodeSigningConfig: {
@@ -17611,10 +19235,10 @@ var require_lambda_2015_03_31_min = __commonJS({
             members: {
               Description: {},
               AllowedPublishers: {
-                shape: 'Su',
+                shape: 'Sw',
               },
               CodeSigningPolicies: {
-                shape: 'Sw',
+                shape: 'Sy',
               },
             },
           },
@@ -17623,7 +19247,7 @@ var require_lambda_2015_03_31_min = __commonJS({
             required: ['CodeSigningConfig'],
             members: {
               CodeSigningConfig: {
-                shape: 'Sz',
+                shape: 'S11',
               },
             },
           },
@@ -17645,6 +19269,9 @@ var require_lambda_2015_03_31_min = __commonJS({
               BatchSize: {
                 type: 'integer',
               },
+              FilterCriteria: {
+                shape: 'S18',
+              },
               MaximumBatchingWindowInSeconds: {
                 type: 'integer',
               },
@@ -17656,7 +19283,7 @@ var require_lambda_2015_03_31_min = __commonJS({
                 type: 'timestamp',
               },
               DestinationConfig: {
-                shape: 'S1a',
+                shape: 'S1g',
               },
               MaximumRecordAgeInSeconds: {
                 type: 'integer',
@@ -17671,24 +19298,36 @@ var require_lambda_2015_03_31_min = __commonJS({
                 type: 'integer',
               },
               Topics: {
-                shape: 'S1i',
+                shape: 'S1o',
               },
               Queues: {
-                shape: 'S1k',
-              },
-              SourceAccessConfigurations: {
-                shape: 'S1m',
-              },
-              SelfManagedEventSource: {
                 shape: 'S1q',
               },
+              SourceAccessConfigurations: {
+                shape: 'S1s',
+              },
+              SelfManagedEventSource: {
+                shape: 'S1w',
+              },
               FunctionResponseTypes: {
-                shape: 'S1v',
+                shape: 'S21',
+              },
+              AmazonManagedKafkaEventSourceConfig: {
+                shape: 'S23',
+              },
+              SelfManagedKafkaEventSourceConfig: {
+                shape: 'S24',
+              },
+              ScalingConfig: {
+                shape: 'S25',
+              },
+              DocumentDBEventSourceConfig: {
+                shape: 'S27',
               },
             },
           },
           output: {
-            shape: 'S1x',
+            shape: 'S2b',
           },
         },
         CreateFunction: {
@@ -17708,7 +19347,7 @@ var require_lambda_2015_03_31_min = __commonJS({
                 type: 'structure',
                 members: {
                   ZipFile: {
-                    shape: 'S23',
+                    shape: 'S2h',
                   },
                   S3Bucket: {},
                   S3Key: {},
@@ -17727,36 +19366,84 @@ var require_lambda_2015_03_31_min = __commonJS({
                 type: 'boolean',
               },
               VpcConfig: {
-                shape: 'S2a',
+                shape: 'S2o',
               },
               PackageType: {},
               DeadLetterConfig: {
-                shape: 'S2g',
+                shape: 'S2v',
               },
               Environment: {
-                shape: 'S2i',
+                shape: 'S2x',
               },
               KMSKeyArn: {},
               TracingConfig: {
-                shape: 'S2n',
+                shape: 'S32',
               },
               Tags: {
-                shape: 'S2p',
+                shape: 'S34',
               },
               Layers: {
-                shape: 'S2s',
+                shape: 'S37',
               },
               FileSystemConfigs: {
-                shape: 'S2u',
+                shape: 'S39',
               },
               ImageConfig: {
-                shape: 'S2y',
+                shape: 'S3d',
               },
               CodeSigningConfigArn: {},
+              Architectures: {
+                shape: 'S3g',
+              },
+              EphemeralStorage: {
+                shape: 'S3i',
+              },
+              SnapStart: {
+                shape: 'S3k',
+              },
             },
           },
           output: {
-            shape: 'S31',
+            shape: 'S3m',
+          },
+        },
+        CreateFunctionUrlConfig: {
+          http: {
+            requestUri: '/2021-10-31/functions/{FunctionName}/url',
+            responseCode: 201,
+          },
+          input: {
+            type: 'structure',
+            required: ['FunctionName', 'AuthType'],
+            members: {
+              FunctionName: {
+                location: 'uri',
+                locationName: 'FunctionName',
+              },
+              Qualifier: {
+                location: 'querystring',
+                locationName: 'Qualifier',
+              },
+              AuthType: {},
+              Cors: {
+                shape: 'S4d',
+              },
+              InvokeMode: {},
+            },
+          },
+          output: {
+            type: 'structure',
+            required: ['FunctionUrl', 'FunctionArn', 'AuthType', 'CreationTime'],
+            members: {
+              FunctionUrl: {},
+              FunctionArn: {},
+              AuthType: {},
+              Cors: {
+                shape: 'S4d',
+              },
+              CreationTime: {},
+              InvokeMode: {},
+            },
           },
         },
         DeleteAlias: {
@@ -17818,7 +19505,7 @@ var require_lambda_2015_03_31_min = __commonJS({
             },
           },
           output: {
-            shape: 'S1x',
+            shape: 'S2b',
           },
         },
         DeleteFunction: {
@@ -17880,6 +19567,27 @@ var require_lambda_2015_03_31_min = __commonJS({
           http: {
             method: 'DELETE',
             requestUri: '/2019-09-25/functions/{FunctionName}/event-invoke-config',
+            responseCode: 204,
+          },
+          input: {
+            type: 'structure',
+            required: ['FunctionName'],
+            members: {
+              FunctionName: {
+                location: 'uri',
+                locationName: 'FunctionName',
+              },
+              Qualifier: {
+                location: 'querystring',
+                locationName: 'Qualifier',
+              },
+            },
+          },
+        },
+        DeleteFunctionUrlConfig: {
+          http: {
+            method: 'DELETE',
+            requestUri: '/2021-10-31/functions/{FunctionName}/url',
             responseCode: 204,
           },
           input: {
@@ -18008,7 +19716,7 @@ var require_lambda_2015_03_31_min = __commonJS({
             },
           },
           output: {
-            shape: 'Sr',
+            shape: 'St',
           },
         },
         GetCodeSigningConfig: {
@@ -18032,7 +19740,7 @@ var require_lambda_2015_03_31_min = __commonJS({
             required: ['CodeSigningConfig'],
             members: {
               CodeSigningConfig: {
-                shape: 'Sz',
+                shape: 'S11',
               },
             },
           },
@@ -18054,7 +19762,7 @@ var require_lambda_2015_03_31_min = __commonJS({
             },
           },
           output: {
-            shape: 'S1x',
+            shape: 'S2b',
           },
         },
         GetFunction: {
@@ -18081,7 +19789,7 @@ var require_lambda_2015_03_31_min = __commonJS({
             type: 'structure',
             members: {
               Configuration: {
-                shape: 'S31',
+                shape: 'S3m',
               },
               Code: {
                 type: 'structure',
@@ -18093,10 +19801,10 @@ var require_lambda_2015_03_31_min = __commonJS({
                 },
               },
               Tags: {
-                shape: 'S2p',
+                shape: 'S34',
               },
               Concurrency: {
-                shape: 'S48',
+                shape: 'S5d',
               },
             },
           },
@@ -18172,7 +19880,7 @@ var require_lambda_2015_03_31_min = __commonJS({
             },
           },
           output: {
-            shape: 'S31',
+            shape: 'S3m',
           },
         },
         GetFunctionEventInvokeConfig: {
@@ -18196,7 +19904,43 @@ var require_lambda_2015_03_31_min = __commonJS({
             },
           },
           output: {
-            shape: 'S4g',
+            shape: 'S5l',
+          },
+        },
+        GetFunctionUrlConfig: {
+          http: {
+            method: 'GET',
+            requestUri: '/2021-10-31/functions/{FunctionName}/url',
+            responseCode: 200,
+          },
+          input: {
+            type: 'structure',
+            required: ['FunctionName'],
+            members: {
+              FunctionName: {
+                location: 'uri',
+                locationName: 'FunctionName',
+              },
+              Qualifier: {
+                location: 'querystring',
+                locationName: 'Qualifier',
+              },
+            },
+          },
+          output: {
+            type: 'structure',
+            required: ['FunctionUrl', 'FunctionArn', 'AuthType', 'CreationTime', 'LastModifiedTime'],
+            members: {
+              FunctionUrl: {},
+              FunctionArn: {},
+              AuthType: {},
+              Cors: {
+                shape: 'S4d',
+              },
+              CreationTime: {},
+              LastModifiedTime: {},
+              InvokeMode: {},
+            },
           },
         },
         GetLayerVersion: {
@@ -18221,7 +19965,7 @@ var require_lambda_2015_03_31_min = __commonJS({
             },
           },
           output: {
-            shape: 'S4k',
+            shape: 'S5r',
           },
         },
         GetLayerVersionByArn: {
@@ -18241,7 +19985,7 @@ var require_lambda_2015_03_31_min = __commonJS({
             },
           },
           output: {
-            shape: 'S4k',
+            shape: 'S5r',
           },
         },
         GetLayerVersionPolicy: {
@@ -18339,6 +20083,35 @@ var require_lambda_2015_03_31_min = __commonJS({
             },
           },
         },
+        GetRuntimeManagementConfig: {
+          http: {
+            method: 'GET',
+            requestUri: '/2021-07-20/functions/{FunctionName}/runtime-management-config',
+            responseCode: 200,
+          },
+          input: {
+            type: 'structure',
+            required: ['FunctionName'],
+            members: {
+              FunctionName: {
+                location: 'uri',
+                locationName: 'FunctionName',
+              },
+              Qualifier: {
+                location: 'querystring',
+                locationName: 'Qualifier',
+              },
+            },
+          },
+          output: {
+            type: 'structure',
+            members: {
+              UpdateRuntimeOn: {},
+              RuntimeVersionArn: {},
+              FunctionArn: {},
+            },
+          },
+        },
         Invoke: {
           http: {
             requestUri: '/2015-03-31/functions/{FunctionName}/invocations',
@@ -18364,7 +20137,7 @@ var require_lambda_2015_03_31_min = __commonJS({
                 locationName: 'X-Amz-Client-Context',
               },
               Payload: {
-                shape: 'S23',
+                shape: 'S2h',
               },
               Qualifier: {
                 location: 'querystring',
@@ -18389,7 +20162,7 @@ var require_lambda_2015_03_31_min = __commonJS({
                 locationName: 'X-Amz-Log-Result',
               },
               Payload: {
-                shape: 'S23',
+                shape: 'S2h',
               },
               ExecutedVersion: {
                 location: 'header',
@@ -18432,6 +20205,84 @@ var require_lambda_2015_03_31_min = __commonJS({
           },
           deprecated: true,
         },
+        InvokeWithResponseStream: {
+          http: {
+            requestUri: '/2021-11-15/functions/{FunctionName}/response-streaming-invocations',
+          },
+          input: {
+            type: 'structure',
+            required: ['FunctionName'],
+            members: {
+              FunctionName: {
+                location: 'uri',
+                locationName: 'FunctionName',
+              },
+              InvocationType: {
+                location: 'header',
+                locationName: 'X-Amz-Invocation-Type',
+              },
+              LogType: {
+                location: 'header',
+                locationName: 'X-Amz-Log-Type',
+              },
+              ClientContext: {
+                location: 'header',
+                locationName: 'X-Amz-Client-Context',
+              },
+              Qualifier: {
+                location: 'querystring',
+                locationName: 'Qualifier',
+              },
+              Payload: {
+                shape: 'S2h',
+              },
+            },
+            payload: 'Payload',
+          },
+          output: {
+            type: 'structure',
+            members: {
+              StatusCode: {
+                location: 'statusCode',
+                type: 'integer',
+              },
+              ExecutedVersion: {
+                location: 'header',
+                locationName: 'X-Amz-Executed-Version',
+              },
+              EventStream: {
+                type: 'structure',
+                members: {
+                  PayloadChunk: {
+                    type: 'structure',
+                    members: {
+                      Payload: {
+                        shape: 'S2h',
+                        eventpayload: true,
+                      },
+                    },
+                    event: true,
+                  },
+                  InvokeComplete: {
+                    type: 'structure',
+                    members: {
+                      ErrorCode: {},
+                      ErrorDetails: {},
+                      LogResult: {},
+                    },
+                    event: true,
+                  },
+                },
+                eventstream: true,
+              },
+              ResponseStreamContentType: {
+                location: 'header',
+                locationName: 'Content-Type',
+              },
+            },
+            payload: 'EventStream',
+          },
+        },
         ListAliases: {
           http: {
             method: 'GET',
@@ -18468,7 +20319,7 @@ var require_lambda_2015_03_31_min = __commonJS({
               Aliases: {
                 type: 'list',
                 member: {
-                  shape: 'Sr',
+                  shape: 'St',
                 },
               },
             },
@@ -18501,7 +20352,7 @@ var require_lambda_2015_03_31_min = __commonJS({
               CodeSigningConfigs: {
                 type: 'list',
                 member: {
-                  shape: 'Sz',
+                  shape: 'S11',
                 },
               },
             },
@@ -18542,7 +20393,7 @@ var require_lambda_2015_03_31_min = __commonJS({
               EventSourceMappings: {
                 type: 'list',
                 member: {
-                  shape: 'S1x',
+                  shape: 'S2b',
                 },
               },
             },
@@ -18579,7 +20430,58 @@ var require_lambda_2015_03_31_min = __commonJS({
               FunctionEventInvokeConfigs: {
                 type: 'list',
                 member: {
-                  shape: 'S4g',
+                  shape: 'S5l',
+                },
+              },
+              NextMarker: {},
+            },
+          },
+        },
+        ListFunctionUrlConfigs: {
+          http: {
+            method: 'GET',
+            requestUri: '/2021-10-31/functions/{FunctionName}/urls',
+            responseCode: 200,
+          },
+          input: {
+            type: 'structure',
+            required: ['FunctionName'],
+            members: {
+              FunctionName: {
+                location: 'uri',
+                locationName: 'FunctionName',
+              },
+              Marker: {
+                location: 'querystring',
+                locationName: 'Marker',
+              },
+              MaxItems: {
+                location: 'querystring',
+                locationName: 'MaxItems',
+                type: 'integer',
+              },
+            },
+          },
+          output: {
+            type: 'structure',
+            required: ['FunctionUrlConfigs'],
+            members: {
+              FunctionUrlConfigs: {
+                type: 'list',
+                member: {
+                  type: 'structure',
+                  required: ['FunctionUrl', 'FunctionArn', 'CreationTime', 'LastModifiedTime', 'AuthType'],
+                  members: {
+                    FunctionUrl: {},
+                    FunctionArn: {},
+                    CreationTime: {},
+                    LastModifiedTime: {},
+                    Cors: {
+                      shape: 'S4d',
+                    },
+                    AuthType: {},
+                    InvokeMode: {},
+                  },
                 },
               },
               NextMarker: {},
@@ -18619,7 +20521,7 @@ var require_lambda_2015_03_31_min = __commonJS({
             members: {
               NextMarker: {},
               Functions: {
-                shape: 'S5p',
+                shape: 'S7b',
               },
             },
           },
@@ -18687,6 +20589,10 @@ var require_lambda_2015_03_31_min = __commonJS({
                 locationName: 'MaxItems',
                 type: 'integer',
               },
+              CompatibleArchitecture: {
+                location: 'querystring',
+                locationName: 'CompatibleArchitecture',
+              },
             },
           },
           output: {
@@ -18696,7 +20602,7 @@ var require_lambda_2015_03_31_min = __commonJS({
               LayerVersions: {
                 type: 'list',
                 member: {
-                  shape: 'S5x',
+                  shape: 'S7j',
                 },
               },
             },
@@ -18724,6 +20630,10 @@ var require_lambda_2015_03_31_min = __commonJS({
                 locationName: 'MaxItems',
                 type: 'integer',
               },
+              CompatibleArchitecture: {
+                location: 'querystring',
+                locationName: 'CompatibleArchitecture',
+              },
             },
           },
           output: {
@@ -18738,7 +20648,7 @@ var require_lambda_2015_03_31_min = __commonJS({
                     LayerName: {},
                     LayerArn: {},
                     LatestMatchingVersion: {
-                      shape: 'S5x',
+                      shape: 'S7j',
                     },
                   },
                 },
@@ -18818,7 +20728,7 @@ var require_lambda_2015_03_31_min = __commonJS({
             type: 'structure',
             members: {
               Tags: {
-                shape: 'S2p',
+                shape: 'S34',
               },
             },
           },
@@ -18853,7 +20763,7 @@ var require_lambda_2015_03_31_min = __commonJS({
             members: {
               NextMarker: {},
               Versions: {
-                shape: 'S5p',
+                shape: 'S7b',
               },
             },
           },
@@ -18879,21 +20789,24 @@ var require_lambda_2015_03_31_min = __commonJS({
                   S3Key: {},
                   S3ObjectVersion: {},
                   ZipFile: {
-                    shape: 'S23',
+                    shape: 'S2h',
                   },
                 },
               },
               CompatibleRuntimes: {
-                shape: 'S4n',
+                shape: 'S5u',
               },
               LicenseInfo: {},
+              CompatibleArchitectures: {
+                shape: 'S5w',
+              },
             },
           },
           output: {
             type: 'structure',
             members: {
               Content: {
-                shape: 'S4l',
+                shape: 'S5s',
               },
               LayerArn: {},
               LayerVersionArn: {},
@@ -18903,9 +20816,12 @@ var require_lambda_2015_03_31_min = __commonJS({
                 type: 'long',
               },
               CompatibleRuntimes: {
-                shape: 'S4n',
+                shape: 'S5u',
               },
               LicenseInfo: {},
+              CompatibleArchitectures: {
+                shape: 'S5w',
+              },
             },
           },
         },
@@ -18928,7 +20844,7 @@ var require_lambda_2015_03_31_min = __commonJS({
             },
           },
           output: {
-            shape: 'S31',
+            shape: 'S3m',
           },
         },
         PutFunctionCodeSigningConfig: {
@@ -18977,7 +20893,7 @@ var require_lambda_2015_03_31_min = __commonJS({
             },
           },
           output: {
-            shape: 'S48',
+            shape: 'S5d',
           },
         },
         PutFunctionEventInvokeConfig: {
@@ -19005,12 +20921,12 @@ var require_lambda_2015_03_31_min = __commonJS({
                 type: 'integer',
               },
               DestinationConfig: {
-                shape: 'S1a',
+                shape: 'S1g',
               },
             },
           },
           output: {
-            shape: 'S4g',
+            shape: 'S5l',
           },
         },
         PutProvisionedConcurrencyConfig: {
@@ -19051,6 +20967,38 @@ var require_lambda_2015_03_31_min = __commonJS({
               Status: {},
               StatusReason: {},
               LastModified: {},
+            },
+          },
+        },
+        PutRuntimeManagementConfig: {
+          http: {
+            method: 'PUT',
+            requestUri: '/2021-07-20/functions/{FunctionName}/runtime-management-config',
+            responseCode: 200,
+          },
+          input: {
+            type: 'structure',
+            required: ['FunctionName', 'UpdateRuntimeOn'],
+            members: {
+              FunctionName: {
+                location: 'uri',
+                locationName: 'FunctionName',
+              },
+              Qualifier: {
+                location: 'querystring',
+                locationName: 'Qualifier',
+              },
+              UpdateRuntimeOn: {},
+              RuntimeVersionArn: {},
+            },
+          },
+          output: {
+            type: 'structure',
+            required: ['UpdateRuntimeOn', 'FunctionArn'],
+            members: {
+              UpdateRuntimeOn: {},
+              FunctionArn: {},
+              RuntimeVersionArn: {},
             },
           },
         },
@@ -19127,7 +21075,7 @@ var require_lambda_2015_03_31_min = __commonJS({
                 locationName: 'ARN',
               },
               Tags: {
-                shape: 'S2p',
+                shape: 'S34',
               },
             },
           },
@@ -19176,13 +21124,13 @@ var require_lambda_2015_03_31_min = __commonJS({
               FunctionVersion: {},
               Description: {},
               RoutingConfig: {
-                shape: 'Sn',
+                shape: 'Sp',
               },
               RevisionId: {},
             },
           },
           output: {
-            shape: 'Sr',
+            shape: 'St',
           },
         },
         UpdateCodeSigningConfig: {
@@ -19201,10 +21149,10 @@ var require_lambda_2015_03_31_min = __commonJS({
               },
               Description: {},
               AllowedPublishers: {
-                shape: 'Su',
+                shape: 'Sw',
               },
               CodeSigningPolicies: {
-                shape: 'Sw',
+                shape: 'Sy',
               },
             },
           },
@@ -19213,7 +21161,7 @@ var require_lambda_2015_03_31_min = __commonJS({
             required: ['CodeSigningConfig'],
             members: {
               CodeSigningConfig: {
-                shape: 'Sz',
+                shape: 'S11',
               },
             },
           },
@@ -19239,11 +21187,14 @@ var require_lambda_2015_03_31_min = __commonJS({
               BatchSize: {
                 type: 'integer',
               },
+              FilterCriteria: {
+                shape: 'S18',
+              },
               MaximumBatchingWindowInSeconds: {
                 type: 'integer',
               },
               DestinationConfig: {
-                shape: 'S1a',
+                shape: 'S1g',
               },
               MaximumRecordAgeInSeconds: {
                 type: 'integer',
@@ -19258,18 +21209,24 @@ var require_lambda_2015_03_31_min = __commonJS({
                 type: 'integer',
               },
               SourceAccessConfigurations: {
-                shape: 'S1m',
+                shape: 'S1s',
               },
               TumblingWindowInSeconds: {
                 type: 'integer',
               },
               FunctionResponseTypes: {
-                shape: 'S1v',
+                shape: 'S21',
+              },
+              ScalingConfig: {
+                shape: 'S25',
+              },
+              DocumentDBEventSourceConfig: {
+                shape: 'S27',
               },
             },
           },
           output: {
-            shape: 'S1x',
+            shape: 'S2b',
           },
         },
         UpdateFunctionCode: {
@@ -19287,7 +21244,7 @@ var require_lambda_2015_03_31_min = __commonJS({
                 locationName: 'FunctionName',
               },
               ZipFile: {
-                shape: 'S23',
+                shape: 'S2h',
               },
               S3Bucket: {},
               S3Key: {},
@@ -19300,10 +21257,13 @@ var require_lambda_2015_03_31_min = __commonJS({
                 type: 'boolean',
               },
               RevisionId: {},
+              Architectures: {
+                shape: 'S3g',
+              },
             },
           },
           output: {
-            shape: 'S31',
+            shape: 'S3m',
           },
         },
         UpdateFunctionConfiguration: {
@@ -19330,33 +21290,39 @@ var require_lambda_2015_03_31_min = __commonJS({
                 type: 'integer',
               },
               VpcConfig: {
-                shape: 'S2a',
+                shape: 'S2o',
               },
               Environment: {
-                shape: 'S2i',
+                shape: 'S2x',
               },
               Runtime: {},
               DeadLetterConfig: {
-                shape: 'S2g',
+                shape: 'S2v',
               },
               KMSKeyArn: {},
               TracingConfig: {
-                shape: 'S2n',
+                shape: 'S32',
               },
               RevisionId: {},
               Layers: {
-                shape: 'S2s',
+                shape: 'S37',
               },
               FileSystemConfigs: {
-                shape: 'S2u',
+                shape: 'S39',
               },
               ImageConfig: {
-                shape: 'S2y',
+                shape: 'S3d',
+              },
+              EphemeralStorage: {
+                shape: 'S3i',
+              },
+              SnapStart: {
+                shape: 'S3k',
               },
             },
           },
           output: {
-            shape: 'S31',
+            shape: 'S3m',
           },
         },
         UpdateFunctionEventInvokeConfig: {
@@ -19383,17 +21349,58 @@ var require_lambda_2015_03_31_min = __commonJS({
                 type: 'integer',
               },
               DestinationConfig: {
-                shape: 'S1a',
+                shape: 'S1g',
               },
             },
           },
           output: {
-            shape: 'S4g',
+            shape: 'S5l',
+          },
+        },
+        UpdateFunctionUrlConfig: {
+          http: {
+            method: 'PUT',
+            requestUri: '/2021-10-31/functions/{FunctionName}/url',
+            responseCode: 200,
+          },
+          input: {
+            type: 'structure',
+            required: ['FunctionName'],
+            members: {
+              FunctionName: {
+                location: 'uri',
+                locationName: 'FunctionName',
+              },
+              Qualifier: {
+                location: 'querystring',
+                locationName: 'Qualifier',
+              },
+              AuthType: {},
+              Cors: {
+                shape: 'S4d',
+              },
+              InvokeMode: {},
+            },
+          },
+          output: {
+            type: 'structure',
+            required: ['FunctionUrl', 'FunctionArn', 'AuthType', 'CreationTime', 'LastModifiedTime'],
+            members: {
+              FunctionUrl: {},
+              FunctionArn: {},
+              AuthType: {},
+              Cors: {
+                shape: 'S4d',
+              },
+              CreationTime: {},
+              LastModifiedTime: {},
+              InvokeMode: {},
+            },
           },
         },
       },
       shapes: {
-        Sn: {
+        Sp: {
           type: 'structure',
           members: {
             AdditionalVersionWeights: {
@@ -19405,7 +21412,7 @@ var require_lambda_2015_03_31_min = __commonJS({
             },
           },
         },
-        Sr: {
+        St: {
           type: 'structure',
           members: {
             AliasArn: {},
@@ -19413,12 +21420,12 @@ var require_lambda_2015_03_31_min = __commonJS({
             FunctionVersion: {},
             Description: {},
             RoutingConfig: {
-              shape: 'Sn',
+              shape: 'Sp',
             },
             RevisionId: {},
           },
         },
-        Su: {
+        Sw: {
           type: 'structure',
           required: ['SigningProfileVersionArns'],
           members: {
@@ -19428,13 +21435,13 @@ var require_lambda_2015_03_31_min = __commonJS({
             },
           },
         },
-        Sw: {
+        Sy: {
           type: 'structure',
           members: {
             UntrustedArtifactOnDeployment: {},
           },
         },
-        Sz: {
+        S11: {
           type: 'structure',
           required: [
             'CodeSigningConfigId',
@@ -19448,15 +21455,29 @@ var require_lambda_2015_03_31_min = __commonJS({
             CodeSigningConfigArn: {},
             Description: {},
             AllowedPublishers: {
-              shape: 'Su',
+              shape: 'Sw',
             },
             CodeSigningPolicies: {
-              shape: 'Sw',
+              shape: 'Sy',
             },
             LastModified: {},
           },
         },
-        S1a: {
+        S18: {
+          type: 'structure',
+          members: {
+            Filters: {
+              type: 'list',
+              member: {
+                type: 'structure',
+                members: {
+                  Pattern: {},
+                },
+              },
+            },
+          },
+        },
+        S1g: {
           type: 'structure',
           members: {
             OnSuccess: {
@@ -19473,15 +21494,15 @@ var require_lambda_2015_03_31_min = __commonJS({
             },
           },
         },
-        S1i: {
+        S1o: {
           type: 'list',
           member: {},
         },
-        S1k: {
+        S1q: {
           type: 'list',
           member: {},
         },
-        S1m: {
+        S1s: {
           type: 'list',
           member: {
             type: 'structure',
@@ -19491,7 +21512,7 @@ var require_lambda_2015_03_31_min = __commonJS({
             },
           },
         },
-        S1q: {
+        S1w: {
           type: 'structure',
           members: {
             Endpoints: {
@@ -19504,11 +21525,39 @@ var require_lambda_2015_03_31_min = __commonJS({
             },
           },
         },
-        S1v: {
+        S21: {
           type: 'list',
           member: {},
         },
-        S1x: {
+        S23: {
+          type: 'structure',
+          members: {
+            ConsumerGroupId: {},
+          },
+        },
+        S24: {
+          type: 'structure',
+          members: {
+            ConsumerGroupId: {},
+          },
+        },
+        S25: {
+          type: 'structure',
+          members: {
+            MaximumConcurrency: {
+              type: 'integer',
+            },
+          },
+        },
+        S27: {
+          type: 'structure',
+          members: {
+            DatabaseName: {},
+            CollectionName: {},
+            FullDocument: {},
+          },
+        },
+        S2b: {
           type: 'structure',
           members: {
             UUID: {},
@@ -19526,6 +21575,9 @@ var require_lambda_2015_03_31_min = __commonJS({
               type: 'integer',
             },
             EventSourceArn: {},
+            FilterCriteria: {
+              shape: 'S18',
+            },
             FunctionArn: {},
             LastModified: {
               type: 'timestamp',
@@ -19534,19 +21586,19 @@ var require_lambda_2015_03_31_min = __commonJS({
             State: {},
             StateTransitionReason: {},
             DestinationConfig: {
-              shape: 'S1a',
+              shape: 'S1g',
             },
             Topics: {
-              shape: 'S1i',
+              shape: 'S1o',
             },
             Queues: {
-              shape: 'S1k',
+              shape: 'S1q',
             },
             SourceAccessConfigurations: {
-              shape: 'S1m',
+              shape: 'S1s',
             },
             SelfManagedEventSource: {
-              shape: 'S1q',
+              shape: 'S1w',
             },
             MaximumRecordAgeInSeconds: {
               type: 'integer',
@@ -19561,48 +21613,63 @@ var require_lambda_2015_03_31_min = __commonJS({
               type: 'integer',
             },
             FunctionResponseTypes: {
-              shape: 'S1v',
+              shape: 'S21',
+            },
+            AmazonManagedKafkaEventSourceConfig: {
+              shape: 'S23',
+            },
+            SelfManagedKafkaEventSourceConfig: {
+              shape: 'S24',
+            },
+            ScalingConfig: {
+              shape: 'S25',
+            },
+            DocumentDBEventSourceConfig: {
+              shape: 'S27',
             },
           },
         },
-        S23: {
+        S2h: {
           type: 'blob',
           sensitive: true,
         },
-        S2a: {
+        S2o: {
           type: 'structure',
           members: {
             SubnetIds: {
-              shape: 'S2b',
+              shape: 'S2p',
             },
             SecurityGroupIds: {
-              shape: 'S2d',
+              shape: 'S2r',
+            },
+            Ipv6AllowedForDualStack: {
+              type: 'boolean',
             },
           },
         },
-        S2b: {
+        S2p: {
           type: 'list',
           member: {},
         },
-        S2d: {
+        S2r: {
           type: 'list',
           member: {},
         },
-        S2g: {
+        S2v: {
           type: 'structure',
           members: {
             TargetArn: {},
           },
         },
-        S2i: {
+        S2x: {
           type: 'structure',
           members: {
             Variables: {
-              shape: 'S2j',
+              shape: 'S2y',
             },
           },
         },
-        S2j: {
+        S2y: {
           type: 'map',
           key: {
             type: 'string',
@@ -19614,22 +21681,22 @@ var require_lambda_2015_03_31_min = __commonJS({
           },
           sensitive: true,
         },
-        S2n: {
+        S32: {
           type: 'structure',
           members: {
             Mode: {},
           },
         },
-        S2p: {
+        S34: {
           type: 'map',
           key: {},
           value: {},
         },
-        S2s: {
+        S37: {
           type: 'list',
           member: {},
         },
-        S2u: {
+        S39: {
           type: 'list',
           member: {
             type: 'structure',
@@ -19640,23 +21707,42 @@ var require_lambda_2015_03_31_min = __commonJS({
             },
           },
         },
-        S2y: {
+        S3d: {
           type: 'structure',
           members: {
             EntryPoint: {
-              shape: 'S2z',
+              shape: 'S3e',
             },
             Command: {
-              shape: 'S2z',
+              shape: 'S3e',
             },
             WorkingDirectory: {},
           },
         },
-        S2z: {
+        S3e: {
           type: 'list',
           member: {},
         },
-        S31: {
+        S3g: {
+          type: 'list',
+          member: {},
+        },
+        S3i: {
+          type: 'structure',
+          required: ['Size'],
+          members: {
+            Size: {
+              type: 'integer',
+            },
+          },
+        },
+        S3k: {
+          type: 'structure',
+          members: {
+            ApplyOn: {},
+          },
+        },
+        S3m: {
           type: 'structure',
           members: {
             FunctionName: {},
@@ -19681,29 +21767,32 @@ var require_lambda_2015_03_31_min = __commonJS({
               type: 'structure',
               members: {
                 SubnetIds: {
-                  shape: 'S2b',
+                  shape: 'S2p',
                 },
                 SecurityGroupIds: {
-                  shape: 'S2d',
+                  shape: 'S2r',
                 },
                 VpcId: {},
+                Ipv6AllowedForDualStack: {
+                  type: 'boolean',
+                },
               },
             },
             DeadLetterConfig: {
-              shape: 'S2g',
+              shape: 'S2v',
             },
             Environment: {
               type: 'structure',
               members: {
                 Variables: {
-                  shape: 'S2j',
+                  shape: 'S2y',
                 },
                 Error: {
                   type: 'structure',
                   members: {
                     ErrorCode: {},
                     Message: {
-                      shape: 'S39',
+                      shape: 'S3u',
                     },
                   },
                 },
@@ -19739,21 +21828,21 @@ var require_lambda_2015_03_31_min = __commonJS({
             LastUpdateStatusReason: {},
             LastUpdateStatusReasonCode: {},
             FileSystemConfigs: {
-              shape: 'S2u',
+              shape: 'S39',
             },
             PackageType: {},
             ImageConfigResponse: {
               type: 'structure',
               members: {
                 ImageConfig: {
-                  shape: 'S2y',
+                  shape: 'S3d',
                 },
                 Error: {
                   type: 'structure',
                   members: {
                     ErrorCode: {},
                     Message: {
-                      shape: 'S39',
+                      shape: 'S3u',
                     },
                   },
                 },
@@ -19761,13 +21850,70 @@ var require_lambda_2015_03_31_min = __commonJS({
             },
             SigningProfileVersionArn: {},
             SigningJobArn: {},
+            Architectures: {
+              shape: 'S3g',
+            },
+            EphemeralStorage: {
+              shape: 'S3i',
+            },
+            SnapStart: {
+              type: 'structure',
+              members: {
+                ApplyOn: {},
+                OptimizationStatus: {},
+              },
+            },
+            RuntimeVersionConfig: {
+              type: 'structure',
+              members: {
+                RuntimeVersionArn: {},
+                Error: {
+                  type: 'structure',
+                  members: {
+                    ErrorCode: {},
+                    Message: {
+                      shape: 'S3u',
+                    },
+                  },
+                },
+              },
+            },
           },
         },
-        S39: {
+        S3u: {
           type: 'string',
           sensitive: true,
         },
-        S48: {
+        S4d: {
+          type: 'structure',
+          members: {
+            AllowCredentials: {
+              type: 'boolean',
+            },
+            AllowHeaders: {
+              shape: 'S4f',
+            },
+            AllowMethods: {
+              type: 'list',
+              member: {},
+            },
+            AllowOrigins: {
+              type: 'list',
+              member: {},
+            },
+            ExposeHeaders: {
+              shape: 'S4f',
+            },
+            MaxAge: {
+              type: 'integer',
+            },
+          },
+        },
+        S4f: {
+          type: 'list',
+          member: {},
+        },
+        S5d: {
           type: 'structure',
           members: {
             ReservedConcurrentExecutions: {
@@ -19775,7 +21921,7 @@ var require_lambda_2015_03_31_min = __commonJS({
             },
           },
         },
-        S4g: {
+        S5l: {
           type: 'structure',
           members: {
             LastModified: {
@@ -19789,15 +21935,15 @@ var require_lambda_2015_03_31_min = __commonJS({
               type: 'integer',
             },
             DestinationConfig: {
-              shape: 'S1a',
+              shape: 'S1g',
             },
           },
         },
-        S4k: {
+        S5r: {
           type: 'structure',
           members: {
             Content: {
-              shape: 'S4l',
+              shape: 'S5s',
             },
             LayerArn: {},
             LayerVersionArn: {},
@@ -19807,12 +21953,15 @@ var require_lambda_2015_03_31_min = __commonJS({
               type: 'long',
             },
             CompatibleRuntimes: {
-              shape: 'S4n',
+              shape: 'S5u',
             },
             LicenseInfo: {},
+            CompatibleArchitectures: {
+              shape: 'S5w',
+            },
           },
         },
-        S4l: {
+        S5s: {
           type: 'structure',
           members: {
             Location: {},
@@ -19824,17 +21973,21 @@ var require_lambda_2015_03_31_min = __commonJS({
             SigningJobArn: {},
           },
         },
-        S4n: {
+        S5u: {
           type: 'list',
           member: {},
         },
-        S5p: {
+        S5w: {
+          type: 'list',
+          member: {},
+        },
+        S7b: {
           type: 'list',
           member: {
-            shape: 'S31',
+            shape: 'S3m',
           },
         },
-        S5x: {
+        S7j: {
           type: 'structure',
           members: {
             LayerVersionArn: {},
@@ -19844,9 +21997,12 @@ var require_lambda_2015_03_31_min = __commonJS({
             Description: {},
             CreatedDate: {},
             CompatibleRuntimes: {
-              shape: 'S4n',
+              shape: 'S5u',
             },
             LicenseInfo: {},
+            CompatibleArchitectures: {
+              shape: 'S5w',
+            },
           },
         },
       },
@@ -19854,9 +22010,9 @@ var require_lambda_2015_03_31_min = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/apis/lambda-2015-03-31.paginators.json
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/apis/lambda-2015-03-31.paginators.json
 var require_lambda_2015_03_31_paginators = __commonJS({
-  'node_modules/aws-sdk/apis/lambda-2015-03-31.paginators.json'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/apis/lambda-2015-03-31.paginators.json'(exports, module2) {
     module2.exports = {
       pagination: {
         ListAliases: {
@@ -19882,6 +22038,12 @@ var require_lambda_2015_03_31_paginators = __commonJS({
           limit_key: 'MaxItems',
           output_token: 'NextMarker',
           result_key: 'FunctionEventInvokeConfigs',
+        },
+        ListFunctionUrlConfigs: {
+          input_token: 'Marker',
+          limit_key: 'MaxItems',
+          output_token: 'NextMarker',
+          result_key: 'FunctionUrlConfigs',
         },
         ListFunctions: {
           input_token: 'Marker',
@@ -19924,9 +22086,9 @@ var require_lambda_2015_03_31_paginators = __commonJS({
   },
 });
 
-// node_modules/aws-sdk/apis/lambda-2015-03-31.waiters2.json
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/apis/lambda-2015-03-31.waiters2.json
 var require_lambda_2015_03_31_waiters2 = __commonJS({
-  'node_modules/aws-sdk/apis/lambda-2015-03-31.waiters2.json'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/apis/lambda-2015-03-31.waiters2.json'(exports, module2) {
     module2.exports = {
       version: 2,
       waiters: {
@@ -19951,7 +22113,8 @@ var require_lambda_2015_03_31_waiters2 = __commonJS({
           delay: 5,
           maxAttempts: 60,
           operation: 'GetFunctionConfiguration',
-          description: "Waits for the function's State to be Active.",
+          description:
+            "Waits for the function's State to be Active. This waiter uses GetFunctionConfiguration API. This should be used after new function creation.",
           acceptors: [
             {
               state: 'success',
@@ -19977,7 +22140,8 @@ var require_lambda_2015_03_31_waiters2 = __commonJS({
           delay: 5,
           maxAttempts: 60,
           operation: 'GetFunctionConfiguration',
-          description: "Waits for the function's LastUpdateStatus to be Successful.",
+          description:
+            "Waits for the function's LastUpdateStatus to be Successful. This waiter uses GetFunctionConfiguration API. This should be used after function updates.",
           acceptors: [
             {
               state: 'success',
@@ -19999,14 +22163,95 @@ var require_lambda_2015_03_31_waiters2 = __commonJS({
             },
           ],
         },
+        FunctionActiveV2: {
+          delay: 1,
+          maxAttempts: 300,
+          operation: 'GetFunction',
+          description:
+            "Waits for the function's State to be Active. This waiter uses GetFunction API. This should be used after new function creation.",
+          acceptors: [
+            {
+              state: 'success',
+              matcher: 'path',
+              argument: 'Configuration.State',
+              expected: 'Active',
+            },
+            {
+              state: 'failure',
+              matcher: 'path',
+              argument: 'Configuration.State',
+              expected: 'Failed',
+            },
+            {
+              state: 'retry',
+              matcher: 'path',
+              argument: 'Configuration.State',
+              expected: 'Pending',
+            },
+          ],
+        },
+        FunctionUpdatedV2: {
+          delay: 1,
+          maxAttempts: 300,
+          operation: 'GetFunction',
+          description:
+            "Waits for the function's LastUpdateStatus to be Successful. This waiter uses GetFunction API. This should be used after function updates.",
+          acceptors: [
+            {
+              state: 'success',
+              matcher: 'path',
+              argument: 'Configuration.LastUpdateStatus',
+              expected: 'Successful',
+            },
+            {
+              state: 'failure',
+              matcher: 'path',
+              argument: 'Configuration.LastUpdateStatus',
+              expected: 'Failed',
+            },
+            {
+              state: 'retry',
+              matcher: 'path',
+              argument: 'Configuration.LastUpdateStatus',
+              expected: 'InProgress',
+            },
+          ],
+        },
+        PublishedVersionActive: {
+          delay: 5,
+          maxAttempts: 312,
+          operation: 'GetFunctionConfiguration',
+          description:
+            "Waits for the published version's State to be Active. This waiter uses GetFunctionConfiguration API. This should be used after new version is published.",
+          acceptors: [
+            {
+              state: 'success',
+              matcher: 'path',
+              argument: 'State',
+              expected: 'Active',
+            },
+            {
+              state: 'failure',
+              matcher: 'path',
+              argument: 'State',
+              expected: 'Failed',
+            },
+            {
+              state: 'retry',
+              matcher: 'path',
+              argument: 'State',
+              expected: 'Pending',
+            },
+          ],
+        },
       },
     };
   },
 });
 
-// node_modules/aws-sdk/clients/lambda.js
+// node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/clients/lambda.js
 var require_lambda2 = __commonJS({
-  'node_modules/aws-sdk/clients/lambda.js'(exports, module2) {
+  'node_modules/.pnpm/aws-sdk@2.1481.0/node_modules/aws-sdk/clients/lambda.js'(exports, module2) {
     require_node_loader();
     var AWS3 = require_core();
     var Service = AWS3.Service;
@@ -20037,9 +22282,9 @@ var require_lambda2 = __commonJS({
   },
 });
 
-// node_modules/@actions/core/lib/utils.js
-var require_utils = __commonJS({
-  'node_modules/@actions/core/lib/utils.js'(exports) {
+// node_modules/.pnpm/@actions+core@1.10.1/node_modules/@actions/core/lib/utils.js
+var require_utils2 = __commonJS({
+  'node_modules/.pnpm/@actions+core@1.10.1/node_modules/@actions/core/lib/utils.js'(exports) {
     'use strict';
     Object.defineProperty(exports, '__esModule', { value: true });
     exports.toCommandProperties = exports.toCommandValue = void 0;
@@ -20069,9 +22314,9 @@ var require_utils = __commonJS({
   },
 });
 
-// node_modules/@actions/core/lib/command.js
+// node_modules/.pnpm/@actions+core@1.10.1/node_modules/@actions/core/lib/command.js
 var require_command = __commonJS({
-  'node_modules/@actions/core/lib/command.js'(exports) {
+  'node_modules/.pnpm/@actions+core@1.10.1/node_modules/@actions/core/lib/command.js'(exports) {
     'use strict';
     var __createBinding =
       (exports && exports.__createBinding) ||
@@ -20112,7 +22357,7 @@ var require_command = __commonJS({
     Object.defineProperty(exports, '__esModule', { value: true });
     exports.issue = exports.issueCommand = void 0;
     var os = __importStar(require('os'));
-    var utils_1 = require_utils();
+    var utils_1 = require_utils2();
     function issueCommand(command, properties, message) {
       const cmd = new Command(command, properties, message);
       process.stdout.write(cmd.toString() + os.EOL);
@@ -20170,9 +22415,9 @@ var require_command = __commonJS({
   },
 });
 
-// node_modules/@actions/core/lib/file-command.js
+// node_modules/.pnpm/@actions+core@1.10.1/node_modules/@actions/core/lib/file-command.js
 var require_file_command = __commonJS({
-  'node_modules/@actions/core/lib/file-command.js'(exports) {
+  'node_modules/.pnpm/@actions+core@1.10.1/node_modules/@actions/core/lib/file-command.js'(exports) {
     'use strict';
     var __createBinding =
       (exports && exports.__createBinding) ||
@@ -20215,7 +22460,7 @@ var require_file_command = __commonJS({
     var fs = __importStar(require('fs'));
     var os = __importStar(require('os'));
     var uuid_1 = require_dist();
-    var utils_1 = require_utils();
+    var utils_1 = require_utils2();
     function issueFileCommand(command, message) {
       const filePath = process.env[`GITHUB_${command}`];
       if (!filePath) {
@@ -21255,9 +23500,9 @@ var require_auth = __commonJS({
   },
 });
 
-// node_modules/@actions/core/lib/oidc-utils.js
+// node_modules/.pnpm/@actions+core@1.10.1/node_modules/@actions/core/lib/oidc-utils.js
 var require_oidc_utils = __commonJS({
-  'node_modules/@actions/core/lib/oidc-utils.js'(exports) {
+  'node_modules/.pnpm/@actions+core@1.10.1/node_modules/@actions/core/lib/oidc-utils.js'(exports) {
     'use strict';
     var __awaiter =
       (exports && exports.__awaiter) ||
@@ -21330,7 +23575,7 @@ var require_oidc_utils = __commonJS({
  
         Error Code : ${error.statusCode}
  
-        Error Message: ${error.result.message}`);
+        Error Message: ${error.message}`);
           });
           const id_token = (_a = res.result) === null || _a === void 0 ? void 0 : _a.value;
           if (!id_token) {
@@ -21361,9 +23606,9 @@ var require_oidc_utils = __commonJS({
   },
 });
 
-// node_modules/@actions/core/lib/summary.js
+// node_modules/.pnpm/@actions+core@1.10.1/node_modules/@actions/core/lib/summary.js
 var require_summary = __commonJS({
-  'node_modules/@actions/core/lib/summary.js'(exports) {
+  'node_modules/.pnpm/@actions+core@1.10.1/node_modules/@actions/core/lib/summary.js'(exports) {
     'use strict';
     var __awaiter =
       (exports && exports.__awaiter) ||
@@ -21541,9 +23786,9 @@ var require_summary = __commonJS({
   },
 });
 
-// node_modules/@actions/core/lib/path-utils.js
+// node_modules/.pnpm/@actions+core@1.10.1/node_modules/@actions/core/lib/path-utils.js
 var require_path_utils = __commonJS({
-  'node_modules/@actions/core/lib/path-utils.js'(exports) {
+  'node_modules/.pnpm/@actions+core@1.10.1/node_modules/@actions/core/lib/path-utils.js'(exports) {
     'use strict';
     var __createBinding =
       (exports && exports.__createBinding) ||
@@ -21599,9 +23844,9 @@ var require_path_utils = __commonJS({
   },
 });
 
-// node_modules/@actions/core/lib/core.js
+// node_modules/.pnpm/@actions+core@1.10.1/node_modules/@actions/core/lib/core.js
 var require_core2 = __commonJS({
-  'node_modules/@actions/core/lib/core.js'(exports) {
+  'node_modules/.pnpm/@actions+core@1.10.1/node_modules/@actions/core/lib/core.js'(exports) {
     'use strict';
     var __createBinding =
       (exports && exports.__createBinding) ||
@@ -21696,7 +23941,7 @@ var require_core2 = __commonJS({
         void 0;
     var command_1 = require_command();
     var file_command_1 = require_file_command();
-    var utils_1 = require_utils();
+    var utils_1 = require_utils2();
     var os = __importStar(require('os'));
     var path = __importStar(require('path'));
     var oidc_utils_1 = require_oidc_utils();
