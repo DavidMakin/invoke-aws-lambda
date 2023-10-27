@@ -22555,7 +22555,7 @@ var require_tunnel = __commonJS({
     var net = require('net');
     var tls = require('tls');
     var http = require('http');
-    var https = require('https');
+    var https2 = require('https');
     var events = require('events');
     var assert = require('assert');
     var util = require('util');
@@ -22577,12 +22577,12 @@ var require_tunnel = __commonJS({
     }
     function httpOverHttps(options) {
       var agent = new TunnelingAgent(options);
-      agent.request = https.request;
+      agent.request = https2.request;
       return agent;
     }
     function httpsOverHttps(options) {
       var agent = new TunnelingAgent(options);
-      agent.request = https.request;
+      agent.request = https2.request;
       agent.createSocket = createSecureSocket;
       agent.defaultPort = 443;
       return agent;
@@ -22860,7 +22860,7 @@ var require_lib2 = __commonJS({
       exports.HttpCodes =
         void 0;
     var http = __importStar(require('http'));
-    var https = __importStar(require('https'));
+    var https2 = __importStar(require('https'));
     var pm = __importStar(require_proxy());
     var tunnel = __importStar(require_tunnel2());
     var HttpCodes;
@@ -23237,7 +23237,7 @@ var require_lib2 = __commonJS({
         const info = {};
         info.parsedUrl = requestUrl;
         const usingSsl = info.parsedUrl.protocol === 'https:';
-        info.httpModule = usingSsl ? https : http;
+        info.httpModule = usingSsl ? https2 : http;
         const defaultPort = usingSsl ? 443 : 80;
         info.options = {};
         info.options.host = info.parsedUrl.hostname;
@@ -23313,11 +23313,11 @@ var require_lib2 = __commonJS({
         }
         if (this._keepAlive && !agent) {
           const options = { keepAlive: this._keepAlive, maxSockets };
-          agent = usingSsl ? new https.Agent(options) : new http.Agent(options);
+          agent = usingSsl ? new https2.Agent(options) : new http.Agent(options);
           this._agent = agent;
         }
         if (!agent) {
-          agent = usingSsl ? https.globalAgent : http.globalAgent;
+          agent = usingSsl ? https2.globalAgent : http.globalAgent;
         }
         if (usingSsl && this._ignoreSslError) {
           agent.options = Object.assign(agent.options || {}, {
@@ -24136,6 +24136,7 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
 
 // src/index.ts
 var import_global = __toESM(require_global());
+var import_https = __toESM(require('https'));
 var import_lambda = __toESM(require_lambda2());
 var import_core = __toESM(require_core2());
 var apiVersion = '2015-03-31';
@@ -24183,8 +24184,15 @@ var main = async () => {
   try {
     setAWSCredentials();
     setAWSConfigOptions();
+    const agent = new import_https.default.Agent({
+      keepAlive: true,
+    });
     const params = getParams();
-    const lambda = new import_lambda.default({ apiVersion, region: (0, import_core.getInput)('REGION') });
+    const lambda = new import_lambda.default({
+      apiVersion,
+      region: (0, import_core.getInput)('REGION'),
+      httpOptions: { agent },
+    });
     const response = await lambda.invoke(params).promise();
     (0, import_core.setOutput)('response', response);
     const succeedOnFailure =

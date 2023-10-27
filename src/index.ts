@@ -1,4 +1,5 @@
 import AWS from 'aws-sdk/global';
+import https from 'https';
 import Lambda from 'aws-sdk/clients/lambda';
 import { getInput, setOutput, setFailed, setSecret } from '@actions/core';
 
@@ -72,9 +73,17 @@ export const main = async () => {
 
     setAWSConfigOptions();
 
+    const agent = new https.Agent({
+      keepAlive: true,
+    });
+
     const params = getParams();
 
-    const lambda = new Lambda({ apiVersion, region: getInput('REGION') });
+    const lambda = new Lambda({
+      apiVersion,
+      region: getInput('REGION'),
+      httpOptions: { agent: agent },
+    });
 
     const response = await lambda.invoke(params).promise();
 
