@@ -12,7 +12,7 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "esbuild --bundle ./index.ts --platform=node --target=node16 --main-fields=main --outdir=dist && pretty-quick dist/index.js",
+    "build": "esbuild --bundle ./index.ts --platform=node --target=node12 --main-fields=main --outdir=dist && pretty-quick dist/index.js",
     "lint": "eslint src/* --ext .ts",
     "prepare": "husky install"
   },
