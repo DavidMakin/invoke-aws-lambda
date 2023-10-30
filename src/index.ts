@@ -75,6 +75,8 @@ export const main = async () => {
 
     const agent = new https.Agent({
       keepAlive: true,
+      keepAliveMsecs: 500,
+      timeout: 600000, // 10 minutes
     });
 
     const params = getParams();

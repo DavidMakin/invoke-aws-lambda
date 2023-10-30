@@ -24186,6 +24186,8 @@ var main = async () => {
     setAWSConfigOptions();
     const agent = new import_https.default.Agent({
       keepAlive: true,
+      keepAliveMsecs: 500,
+      timeout: 6e5,
     });
     const params = getParams();
     const lambda = new import_lambda.default({
