@@ -77,6 +77,7 @@ export const main = async () => {
       keepAlive: true,
       keepAliveMsecs: 500,
       timeout: 600000, // 10 minutes
+      maxTotalSockets: 50,
     });
 
     const params = getParams();
