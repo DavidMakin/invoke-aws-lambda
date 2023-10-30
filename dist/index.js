@@ -11084,10 +11084,9 @@ var require_EndpointParameters = __commonJS({
     Object.defineProperty(exports, '__esModule', { value: true });
     exports.resolveClientEndpointParameters = void 0;
     var resolveClientEndpointParameters = (options) => {
-      var _a, _b;
       return __spreadProps(__spreadValues({}, options), {
-        useDualstackEndpoint: (_a = options.useDualstackEndpoint) != null ? _a : false,
-        useFipsEndpoint: (_b = options.useFipsEndpoint) != null ? _b : false,
+        useDualstackEndpoint: options.useDualstackEndpoint ?? false,
+        useFipsEndpoint: options.useFipsEndpoint ?? false,
         defaultSigningName: 'lambda',
       });
     };
@@ -11228,11 +11227,10 @@ var require_EndpointParameters2 = __commonJS({
     Object.defineProperty(exports, '__esModule', { value: true });
     exports.resolveClientEndpointParameters = void 0;
     var resolveClientEndpointParameters = (options) => {
-      var _a, _b, _c;
       return __spreadProps(__spreadValues({}, options), {
-        useDualstackEndpoint: (_a = options.useDualstackEndpoint) != null ? _a : false,
-        useFipsEndpoint: (_b = options.useFipsEndpoint) != null ? _b : false,
-        useGlobalEndpoint: (_c = options.useGlobalEndpoint) != null ? _c : false,
+        useDualstackEndpoint: options.useDualstackEndpoint ?? false,
+        useFipsEndpoint: options.useFipsEndpoint ?? false,
+        useGlobalEndpoint: options.useGlobalEndpoint ?? false,
         defaultSigningName: 'sts',
       });
     };
@@ -13857,7 +13855,6 @@ var require_Aws_query = __commonJS({
       return (0, smithy_client_1.decorateServiceException)(exception, body);
     };
     var se_AssumeRoleRequest = (input, context) => {
-      var _a, _b, _c, _d;
       const entries = {};
       if (input.RoleArn != null) {
         entries['RoleArn'] = input.RoleArn;
@@ -13867,7 +13864,7 @@ var require_Aws_query = __commonJS({
       }
       if (input.PolicyArns != null) {
         const memberEntries = se_policyDescriptorListType(input.PolicyArns, context);
-        if (((_a = input.PolicyArns) == null ? void 0 : _a.length) === 0) {
+        if (input.PolicyArns?.length === 0) {
           entries.PolicyArns = [];
         }
         Object.entries(memberEntries).forEach(([key, value]) => {
@@ -13883,7 +13880,7 @@ var require_Aws_query = __commonJS({
       }
       if (input.Tags != null) {
         const memberEntries = se_tagListType(input.Tags, context);
-        if (((_b = input.Tags) == null ? void 0 : _b.length) === 0) {
+        if (input.Tags?.length === 0) {
           entries.Tags = [];
         }
         Object.entries(memberEntries).forEach(([key, value]) => {
@@ -13893,7 +13890,7 @@ var require_Aws_query = __commonJS({
       }
       if (input.TransitiveTagKeys != null) {
         const memberEntries = se_tagKeyListType(input.TransitiveTagKeys, context);
-        if (((_c = input.TransitiveTagKeys) == null ? void 0 : _c.length) === 0) {
+        if (input.TransitiveTagKeys?.length === 0) {
           entries.TransitiveTagKeys = [];
         }
         Object.entries(memberEntries).forEach(([key, value]) => {
@@ -13915,7 +13912,7 @@ var require_Aws_query = __commonJS({
       }
       if (input.ProvidedContexts != null) {
         const memberEntries = se_ProvidedContextsListType(input.ProvidedContexts, context);
-        if (((_d = input.ProvidedContexts) == null ? void 0 : _d.length) === 0) {
+        if (input.ProvidedContexts?.length === 0) {
           entries.ProvidedContexts = [];
         }
         Object.entries(memberEntries).forEach(([key, value]) => {
@@ -13926,7 +13923,6 @@ var require_Aws_query = __commonJS({
       return entries;
     };
     var se_AssumeRoleWithSAMLRequest = (input, context) => {
-      var _a;
       const entries = {};
       if (input.RoleArn != null) {
         entries['RoleArn'] = input.RoleArn;
@@ -13939,7 +13935,7 @@ var require_Aws_query = __commonJS({
       }
       if (input.PolicyArns != null) {
         const memberEntries = se_policyDescriptorListType(input.PolicyArns, context);
-        if (((_a = input.PolicyArns) == null ? void 0 : _a.length) === 0) {
+        if (input.PolicyArns?.length === 0) {
           entries.PolicyArns = [];
         }
         Object.entries(memberEntries).forEach(([key, value]) => {
@@ -13956,7 +13952,6 @@ var require_Aws_query = __commonJS({
       return entries;
     };
     var se_AssumeRoleWithWebIdentityRequest = (input, context) => {
-      var _a;
       const entries = {};
       if (input.RoleArn != null) {
         entries['RoleArn'] = input.RoleArn;
@@ -13972,7 +13967,7 @@ var require_Aws_query = __commonJS({
       }
       if (input.PolicyArns != null) {
         const memberEntries = se_policyDescriptorListType(input.PolicyArns, context);
-        if (((_a = input.PolicyArns) == null ? void 0 : _a.length) === 0) {
+        if (input.PolicyArns?.length === 0) {
           entries.PolicyArns = [];
         }
         Object.entries(memberEntries).forEach(([key, value]) => {
@@ -14007,7 +14002,6 @@ var require_Aws_query = __commonJS({
       return entries;
     };
     var se_GetFederationTokenRequest = (input, context) => {
-      var _a, _b;
       const entries = {};
       if (input.Name != null) {
         entries['Name'] = input.Name;
@@ -14017,7 +14011,7 @@ var require_Aws_query = __commonJS({
       }
       if (input.PolicyArns != null) {
         const memberEntries = se_policyDescriptorListType(input.PolicyArns, context);
-        if (((_a = input.PolicyArns) == null ? void 0 : _a.length) === 0) {
+        if (input.PolicyArns?.length === 0) {
           entries.PolicyArns = [];
         }
         Object.entries(memberEntries).forEach(([key, value]) => {
@@ -14030,7 +14024,7 @@ var require_Aws_query = __commonJS({
       }
       if (input.Tags != null) {
         const memberEntries = se_tagListType(input.Tags, context);
-        if (((_b = input.Tags) == null ? void 0 : _b.length) === 0) {
+        if (input.Tags?.length === 0) {
           entries.Tags = [];
         }
         Object.entries(memberEntries).forEach(([key, value]) => {
@@ -14350,18 +14344,13 @@ var require_Aws_query = __commonJS({
       }
       return contents;
     };
-    var deserializeMetadata = (output) => {
-      var _a, _b;
-      return {
-        httpStatusCode: output.statusCode,
-        requestId:
-          (_b = (_a = output.headers['x-amzn-requestid']) != null ? _a : output.headers['x-amzn-request-id']) != null
-            ? _b
-            : output.headers['x-amz-request-id'],
-        extendedRequestId: output.headers['x-amz-id-2'],
-        cfId: output.headers['x-amz-cf-id'],
-      };
-    };
+    var deserializeMetadata = (output) => ({
+      httpStatusCode: output.statusCode,
+      requestId:
+        output.headers['x-amzn-requestid'] ?? output.headers['x-amzn-request-id'] ?? output.headers['x-amz-request-id'],
+      extendedRequestId: output.headers['x-amz-id-2'],
+      cfId: output.headers['x-amz-cf-id'],
+    });
     var collectBodyString = (streamBody, context) =>
       (0, smithy_client_1.collectBody)(streamBody, context).then((body) => context.utf8Encoder(body));
     var throwDefaultError = (0, smithy_client_1.withBaseException)(STSServiceException_1.STSServiceException);
@@ -14413,10 +14402,9 @@ var require_Aws_query = __commonJS({
         return {};
       });
     var parseErrorBody = async (errorBody, context) => {
-      var _a;
       const value = await parseBody(errorBody, context);
       if (value.Error) {
-        value.Error.message = (_a = value.Error.message) != null ? _a : value.Error.Message;
+        value.Error.message = value.Error.message ?? value.Error.Message;
       }
       return value;
     };
@@ -14430,8 +14418,7 @@ var require_Aws_query = __commonJS({
         )
         .join('&');
     var loadQueryErrorCode = (output, data) => {
-      var _a;
-      if (((_a = data.Error) == null ? void 0 : _a.Code) !== void 0) {
+      if (data.Error?.Code !== void 0) {
         return data.Error.Code;
       }
       if (output.statusCode == 404) {
@@ -15586,10 +15573,9 @@ var require_EndpointParameters3 = __commonJS({
     Object.defineProperty(exports, '__esModule', { value: true });
     exports.resolveClientEndpointParameters = void 0;
     var resolveClientEndpointParameters = (options) => {
-      var _a, _b;
       return __spreadProps(__spreadValues({}, options), {
-        useDualstackEndpoint: (_a = options.useDualstackEndpoint) != null ? _a : false,
-        useFipsEndpoint: (_b = options.useFipsEndpoint) != null ? _b : false,
+        useDualstackEndpoint: options.useDualstackEndpoint ?? false,
+        useFipsEndpoint: options.useFipsEndpoint ?? false,
         defaultSigningName: 'awsssoportal',
       });
     };
@@ -16041,22 +16027,18 @@ var require_runtimeConfig_shared = __commonJS({
     var util_utf8_1 = require_dist_cjs13();
     var endpointResolver_1 = require_endpointResolver();
     var getRuntimeConfig = (config) => {
-      var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j;
       return {
         apiVersion: '2019-06-10',
-        base64Decoder: (_a = config == null ? void 0 : config.base64Decoder) != null ? _a : util_base64_1.fromBase64,
-        base64Encoder: (_b = config == null ? void 0 : config.base64Encoder) != null ? _b : util_base64_1.toBase64,
-        disableHostPrefix: (_c = config == null ? void 0 : config.disableHostPrefix) != null ? _c : false,
-        endpointProvider:
-          (_d = config == null ? void 0 : config.endpointProvider) != null
-            ? _d
-            : endpointResolver_1.defaultEndpointResolver,
-        extensions: (_e = config == null ? void 0 : config.extensions) != null ? _e : [],
-        logger: (_f = config == null ? void 0 : config.logger) != null ? _f : new smithy_client_1.NoOpLogger(),
-        serviceId: (_g = config == null ? void 0 : config.serviceId) != null ? _g : 'SSO',
-        urlParser: (_h = config == null ? void 0 : config.urlParser) != null ? _h : url_parser_1.parseUrl,
-        utf8Decoder: (_i = config == null ? void 0 : config.utf8Decoder) != null ? _i : util_utf8_1.fromUtf8,
-        utf8Encoder: (_j = config == null ? void 0 : config.utf8Encoder) != null ? _j : util_utf8_1.toUtf8,
+        base64Decoder: config?.base64Decoder ?? util_base64_1.fromBase64,
+        base64Encoder: config?.base64Encoder ?? util_base64_1.toBase64,
+        disableHostPrefix: config?.disableHostPrefix ?? false,
+        endpointProvider: config?.endpointProvider ?? endpointResolver_1.defaultEndpointResolver,
+        extensions: config?.extensions ?? [],
+        logger: config?.logger ?? new smithy_client_1.NoOpLogger(),
+        serviceId: config?.serviceId ?? 'SSO',
+        urlParser: config?.urlParser ?? url_parser_1.parseUrl,
+        utf8Decoder: config?.utf8Decoder ?? util_utf8_1.fromUtf8,
+        utf8Encoder: config?.utf8Encoder ?? util_utf8_1.toUtf8,
       };
     };
     exports.getRuntimeConfig = getRuntimeConfig;
@@ -16213,7 +16195,6 @@ var require_runtimeConfig = __commonJS({
     var util_defaults_mode_node_1 = require_dist_cjs47();
     var smithy_client_2 = require_dist_cjs38();
     var getRuntimeConfig = (config) => {
-      var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j;
       (0, smithy_client_2.emitWarningIfUnsupportedVersion)(process.version);
       const defaultsMode = (0, util_defaults_mode_node_1.resolveDefaultsModeConfig)(config);
       const defaultConfigProvider = () => defaultsMode().then(smithy_client_1.loadConfigsForDefaultMode);
@@ -16222,51 +16203,38 @@ var require_runtimeConfig = __commonJS({
       return __spreadProps(__spreadValues(__spreadValues({}, clientSharedValues), config), {
         runtime: 'node',
         defaultsMode,
-        bodyLengthChecker:
-          (_a = config == null ? void 0 : config.bodyLengthChecker) != null
-            ? _a
-            : util_body_length_node_1.calculateBodyLength,
+        bodyLengthChecker: config?.bodyLengthChecker ?? util_body_length_node_1.calculateBodyLength,
         defaultUserAgentProvider:
-          (_b = config == null ? void 0 : config.defaultUserAgentProvider) != null
-            ? _b
-            : (0, util_user_agent_node_1.defaultUserAgent)({
-                serviceId: clientSharedValues.serviceId,
-                clientVersion: package_json_1.default.version,
-              }),
+          config?.defaultUserAgentProvider ??
+          (0, util_user_agent_node_1.defaultUserAgent)({
+            serviceId: clientSharedValues.serviceId,
+            clientVersion: package_json_1.default.version,
+          }),
         maxAttempts:
-          (_c = config == null ? void 0 : config.maxAttempts) != null
-            ? _c
-            : (0, node_config_provider_1.loadConfig)(middleware_retry_1.NODE_MAX_ATTEMPT_CONFIG_OPTIONS),
+          config?.maxAttempts ??
+          (0, node_config_provider_1.loadConfig)(middleware_retry_1.NODE_MAX_ATTEMPT_CONFIG_OPTIONS),
         region:
-          (_d = config == null ? void 0 : config.region) != null
-            ? _d
-            : (0, node_config_provider_1.loadConfig)(
-                config_resolver_1.NODE_REGION_CONFIG_OPTIONS,
-                config_resolver_1.NODE_REGION_CONFIG_FILE_OPTIONS
-              ),
-        requestHandler:
-          (_e = config == null ? void 0 : config.requestHandler) != null
-            ? _e
-            : new node_http_handler_1.NodeHttpHandler(defaultConfigProvider),
+          config?.region ??
+          (0, node_config_provider_1.loadConfig)(
+            config_resolver_1.NODE_REGION_CONFIG_OPTIONS,
+            config_resolver_1.NODE_REGION_CONFIG_FILE_OPTIONS
+          ),
+        requestHandler: config?.requestHandler ?? new node_http_handler_1.NodeHttpHandler(defaultConfigProvider),
         retryMode:
-          (_f = config == null ? void 0 : config.retryMode) != null
-            ? _f
-            : (0, node_config_provider_1.loadConfig)(
-                __spreadProps(__spreadValues({}, middleware_retry_1.NODE_RETRY_MODE_CONFIG_OPTIONS), {
-                  default: async () => (await defaultConfigProvider()).retryMode || util_retry_1.DEFAULT_RETRY_MODE,
-                })
-              ),
-        sha256: (_g = config == null ? void 0 : config.sha256) != null ? _g : hash_node_1.Hash.bind(null, 'sha256'),
-        streamCollector:
-          (_h = config == null ? void 0 : config.streamCollector) != null ? _h : node_http_handler_1.streamCollector,
+          config?.retryMode ??
+          (0, node_config_provider_1.loadConfig)(
+            __spreadProps(__spreadValues({}, middleware_retry_1.NODE_RETRY_MODE_CONFIG_OPTIONS), {
+              default: async () => (await defaultConfigProvider()).retryMode || util_retry_1.DEFAULT_RETRY_MODE,
+            })
+          ),
+        sha256: config?.sha256 ?? hash_node_1.Hash.bind(null, 'sha256'),
+        streamCollector: config?.streamCollector ?? node_http_handler_1.streamCollector,
         useDualstackEndpoint:
-          (_i = config == null ? void 0 : config.useDualstackEndpoint) != null
-            ? _i
-            : (0, node_config_provider_1.loadConfig)(config_resolver_1.NODE_USE_DUALSTACK_ENDPOINT_CONFIG_OPTIONS),
+          config?.useDualstackEndpoint ??
+          (0, node_config_provider_1.loadConfig)(config_resolver_1.NODE_USE_DUALSTACK_ENDPOINT_CONFIG_OPTIONS),
         useFipsEndpoint:
-          (_j = config == null ? void 0 : config.useFipsEndpoint) != null
-            ? _j
-            : (0, node_config_provider_1.loadConfig)(config_resolver_1.NODE_USE_FIPS_ENDPOINT_CONFIG_OPTIONS),
+          config?.useFipsEndpoint ??
+          (0, node_config_provider_1.loadConfig)(config_resolver_1.NODE_USE_FIPS_ENDPOINT_CONFIG_OPTIONS),
       });
     };
     exports.getRuntimeConfig = getRuntimeConfig;
@@ -16489,10 +16457,7 @@ var require_SSOClient = __commonJS({
         const _config_4 = (0, middleware_retry_1.resolveRetryConfig)(_config_3);
         const _config_5 = (0, middleware_host_header_1.resolveHostHeaderConfig)(_config_4);
         const _config_6 = (0, middleware_user_agent_1.resolveUserAgentConfig)(_config_5);
-        const _config_7 = (0, runtimeExtensions_1.resolveRuntimeExtensions)(
-          _config_6,
-          (configuration == null ? void 0 : configuration.extensions) || []
-        );
+        const _config_7 = (0, runtimeExtensions_1.resolveRuntimeExtensions)(_config_6, configuration?.extensions || []);
         super(_config_7);
         this.config = _config_7;
         this.middlewareStack.use((0, middleware_retry_1.getRetryPlugin)(this.config));
@@ -16672,9 +16637,7 @@ var require_Aws_restJson1 = __commonJS({
       const headers = (0, smithy_client_1.map)({}, isSerializableHeaderValue, {
         'x-amz-sso_bearer_token': input.accessToken,
       });
-      const resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
-      }/federation/credentials`;
+      const resolvedPath = `${basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''}/federation/credentials`;
       const query = (0, smithy_client_1.map)({
         role_name: [, (0, smithy_client_1.expectNonNull)(input.roleName, `roleName`)],
         account_id: [, (0, smithy_client_1.expectNonNull)(input.accountId, `accountId`)],
@@ -16697,9 +16660,7 @@ var require_Aws_restJson1 = __commonJS({
       const headers = (0, smithy_client_1.map)({}, isSerializableHeaderValue, {
         'x-amz-sso_bearer_token': input.accessToken,
       });
-      const resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
-      }/assignment/roles`;
+      const resolvedPath = `${basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''}/assignment/roles`;
       const query = (0, smithy_client_1.map)({
         next_token: [, input.nextToken],
         max_result: [() => input.maxResults !== void 0, () => input.maxResults.toString()],
@@ -16723,9 +16684,7 @@ var require_Aws_restJson1 = __commonJS({
       const headers = (0, smithy_client_1.map)({}, isSerializableHeaderValue, {
         'x-amz-sso_bearer_token': input.accessToken,
       });
-      const resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
-      }/assignment/accounts`;
+      const resolvedPath = `${basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''}/assignment/accounts`;
       const query = (0, smithy_client_1.map)({
         next_token: [, input.nextToken],
         max_result: [() => input.maxResults !== void 0, () => input.maxResults.toString()],
@@ -16748,9 +16707,7 @@ var require_Aws_restJson1 = __commonJS({
       const headers = (0, smithy_client_1.map)({}, isSerializableHeaderValue, {
         'x-amz-sso_bearer_token': input.accessToken,
       });
-      const resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
-      }/logout`;
+      const resolvedPath = `${basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''}/logout`;
       let body;
       return new protocol_http_1.HttpRequest({
         protocol,
@@ -17004,18 +16961,13 @@ var require_Aws_restJson1 = __commonJS({
       );
       return (0, smithy_client_1.decorateServiceException)(exception, parsedOutput.body);
     };
-    var deserializeMetadata = (output) => {
-      var _a, _b;
-      return {
-        httpStatusCode: output.statusCode,
-        requestId:
-          (_b = (_a = output.headers['x-amzn-requestid']) != null ? _a : output.headers['x-amzn-request-id']) != null
-            ? _b
-            : output.headers['x-amz-request-id'],
-        extendedRequestId: output.headers['x-amz-id-2'],
-        cfId: output.headers['x-amz-cf-id'],
-      };
-    };
+    var deserializeMetadata = (output) => ({
+      httpStatusCode: output.statusCode,
+      requestId:
+        output.headers['x-amzn-requestid'] ?? output.headers['x-amzn-request-id'] ?? output.headers['x-amz-request-id'],
+      extendedRequestId: output.headers['x-amz-id-2'],
+      cfId: output.headers['x-amz-cf-id'],
+    });
     var collectBodyString = (streamBody, context) =>
       (0, smithy_client_1.collectBody)(streamBody, context).then((body) => context.utf8Encoder(body));
     var isSerializableHeaderValue = (value) =>
@@ -17032,9 +16984,8 @@ var require_Aws_restJson1 = __commonJS({
         return {};
       });
     var parseErrorBody = async (errorBody, context) => {
-      var _a;
       const value = await parseBody(errorBody, context);
-      value.message = (_a = value.message) != null ? _a : value.Message;
+      value.message = value.message ?? value.Message;
       return value;
     };
     var loadRestJsonErrorCode = (output, data) => {
@@ -19803,22 +19754,18 @@ var require_runtimeConfig_shared2 = __commonJS({
     var util_utf8_1 = require_dist_cjs13();
     var endpointResolver_1 = require_endpointResolver2();
     var getRuntimeConfig = (config) => {
-      var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j;
       return {
         apiVersion: '2011-06-15',
-        base64Decoder: (_a = config == null ? void 0 : config.base64Decoder) != null ? _a : util_base64_1.fromBase64,
-        base64Encoder: (_b = config == null ? void 0 : config.base64Encoder) != null ? _b : util_base64_1.toBase64,
-        disableHostPrefix: (_c = config == null ? void 0 : config.disableHostPrefix) != null ? _c : false,
-        endpointProvider:
-          (_d = config == null ? void 0 : config.endpointProvider) != null
-            ? _d
-            : endpointResolver_1.defaultEndpointResolver,
-        extensions: (_e = config == null ? void 0 : config.extensions) != null ? _e : [],
-        logger: (_f = config == null ? void 0 : config.logger) != null ? _f : new smithy_client_1.NoOpLogger(),
-        serviceId: (_g = config == null ? void 0 : config.serviceId) != null ? _g : 'STS',
-        urlParser: (_h = config == null ? void 0 : config.urlParser) != null ? _h : url_parser_1.parseUrl,
-        utf8Decoder: (_i = config == null ? void 0 : config.utf8Decoder) != null ? _i : util_utf8_1.fromUtf8,
-        utf8Encoder: (_j = config == null ? void 0 : config.utf8Encoder) != null ? _j : util_utf8_1.toUtf8,
+        base64Decoder: config?.base64Decoder ?? util_base64_1.fromBase64,
+        base64Encoder: config?.base64Encoder ?? util_base64_1.toBase64,
+        disableHostPrefix: config?.disableHostPrefix ?? false,
+        endpointProvider: config?.endpointProvider ?? endpointResolver_1.defaultEndpointResolver,
+        extensions: config?.extensions ?? [],
+        logger: config?.logger ?? new smithy_client_1.NoOpLogger(),
+        serviceId: config?.serviceId ?? 'STS',
+        urlParser: config?.urlParser ?? url_parser_1.parseUrl,
+        utf8Decoder: config?.utf8Decoder ?? util_utf8_1.fromUtf8,
+        utf8Encoder: config?.utf8Encoder ?? util_utf8_1.toUtf8,
       };
     };
     exports.getRuntimeConfig = getRuntimeConfig;
@@ -19849,7 +19796,6 @@ var require_runtimeConfig2 = __commonJS({
     var util_defaults_mode_node_1 = require_dist_cjs47();
     var smithy_client_2 = require_dist_cjs38();
     var getRuntimeConfig = (config) => {
-      var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k;
       (0, smithy_client_2.emitWarningIfUnsupportedVersion)(process.version);
       const defaultsMode = (0, util_defaults_mode_node_1.resolveDefaultsModeConfig)(config);
       const defaultConfigProvider = () => defaultsMode().then(smithy_client_1.loadConfigsForDefaultMode);
@@ -19858,57 +19804,41 @@ var require_runtimeConfig2 = __commonJS({
       return __spreadProps(__spreadValues(__spreadValues({}, clientSharedValues), config), {
         runtime: 'node',
         defaultsMode,
-        bodyLengthChecker:
-          (_a = config == null ? void 0 : config.bodyLengthChecker) != null
-            ? _a
-            : util_body_length_node_1.calculateBodyLength,
+        bodyLengthChecker: config?.bodyLengthChecker ?? util_body_length_node_1.calculateBodyLength,
         credentialDefaultProvider:
-          (_b = config == null ? void 0 : config.credentialDefaultProvider) != null
-            ? _b
-            : (0, defaultStsRoleAssumers_1.decorateDefaultCredentialProvider)(
-                credential_provider_node_1.defaultProvider
-              ),
+          config?.credentialDefaultProvider ??
+          (0, defaultStsRoleAssumers_1.decorateDefaultCredentialProvider)(credential_provider_node_1.defaultProvider),
         defaultUserAgentProvider:
-          (_c = config == null ? void 0 : config.defaultUserAgentProvider) != null
-            ? _c
-            : (0, util_user_agent_node_1.defaultUserAgent)({
-                serviceId: clientSharedValues.serviceId,
-                clientVersion: package_json_1.default.version,
-              }),
+          config?.defaultUserAgentProvider ??
+          (0, util_user_agent_node_1.defaultUserAgent)({
+            serviceId: clientSharedValues.serviceId,
+            clientVersion: package_json_1.default.version,
+          }),
         maxAttempts:
-          (_d = config == null ? void 0 : config.maxAttempts) != null
-            ? _d
-            : (0, node_config_provider_1.loadConfig)(middleware_retry_1.NODE_MAX_ATTEMPT_CONFIG_OPTIONS),
+          config?.maxAttempts ??
+          (0, node_config_provider_1.loadConfig)(middleware_retry_1.NODE_MAX_ATTEMPT_CONFIG_OPTIONS),
         region:
-          (_e = config == null ? void 0 : config.region) != null
-            ? _e
-            : (0, node_config_provider_1.loadConfig)(
-                config_resolver_1.NODE_REGION_CONFIG_OPTIONS,
-                config_resolver_1.NODE_REGION_CONFIG_FILE_OPTIONS
-              ),
-        requestHandler:
-          (_f = config == null ? void 0 : config.requestHandler) != null
-            ? _f
-            : new node_http_handler_1.NodeHttpHandler(defaultConfigProvider),
+          config?.region ??
+          (0, node_config_provider_1.loadConfig)(
+            config_resolver_1.NODE_REGION_CONFIG_OPTIONS,
+            config_resolver_1.NODE_REGION_CONFIG_FILE_OPTIONS
+          ),
+        requestHandler: config?.requestHandler ?? new node_http_handler_1.NodeHttpHandler(defaultConfigProvider),
         retryMode:
-          (_g = config == null ? void 0 : config.retryMode) != null
-            ? _g
-            : (0, node_config_provider_1.loadConfig)(
-                __spreadProps(__spreadValues({}, middleware_retry_1.NODE_RETRY_MODE_CONFIG_OPTIONS), {
-                  default: async () => (await defaultConfigProvider()).retryMode || util_retry_1.DEFAULT_RETRY_MODE,
-                })
-              ),
-        sha256: (_h = config == null ? void 0 : config.sha256) != null ? _h : hash_node_1.Hash.bind(null, 'sha256'),
-        streamCollector:
-          (_i = config == null ? void 0 : config.streamCollector) != null ? _i : node_http_handler_1.streamCollector,
+          config?.retryMode ??
+          (0, node_config_provider_1.loadConfig)(
+            __spreadProps(__spreadValues({}, middleware_retry_1.NODE_RETRY_MODE_CONFIG_OPTIONS), {
+              default: async () => (await defaultConfigProvider()).retryMode || util_retry_1.DEFAULT_RETRY_MODE,
+            })
+          ),
+        sha256: config?.sha256 ?? hash_node_1.Hash.bind(null, 'sha256'),
+        streamCollector: config?.streamCollector ?? node_http_handler_1.streamCollector,
         useDualstackEndpoint:
-          (_j = config == null ? void 0 : config.useDualstackEndpoint) != null
-            ? _j
-            : (0, node_config_provider_1.loadConfig)(config_resolver_1.NODE_USE_DUALSTACK_ENDPOINT_CONFIG_OPTIONS),
+          config?.useDualstackEndpoint ??
+          (0, node_config_provider_1.loadConfig)(config_resolver_1.NODE_USE_DUALSTACK_ENDPOINT_CONFIG_OPTIONS),
         useFipsEndpoint:
-          (_k = config == null ? void 0 : config.useFipsEndpoint) != null
-            ? _k
-            : (0, node_config_provider_1.loadConfig)(config_resolver_1.NODE_USE_FIPS_ENDPOINT_CONFIG_OPTIONS),
+          config?.useFipsEndpoint ??
+          (0, node_config_provider_1.loadConfig)(config_resolver_1.NODE_USE_FIPS_ENDPOINT_CONFIG_OPTIONS),
       });
     };
     exports.getRuntimeConfig = getRuntimeConfig;
@@ -19987,10 +19917,7 @@ var require_STSClient = __commonJS({
         const _config_5 = (0, middleware_host_header_1.resolveHostHeaderConfig)(_config_4);
         const _config_6 = (0, middleware_sdk_sts_1.resolveStsAuthConfig)(_config_5, { stsClientCtor: STSClient });
         const _config_7 = (0, middleware_user_agent_1.resolveUserAgentConfig)(_config_6);
-        const _config_8 = (0, runtimeExtensions_1.resolveRuntimeExtensions)(
-          _config_7,
-          (configuration == null ? void 0 : configuration.extensions) || []
-        );
+        const _config_8 = (0, runtimeExtensions_1.resolveRuntimeExtensions)(_config_7, configuration?.extensions || []);
         super(_config_8);
         this.config = _config_8;
         this.middlewareStack.use((0, middleware_retry_1.getRetryPlugin)(this.config));
@@ -21030,22 +20957,18 @@ var require_runtimeConfig_shared3 = __commonJS({
     var util_utf8_1 = require_dist_cjs13();
     var endpointResolver_1 = require_endpointResolver3();
     var getRuntimeConfig = (config) => {
-      var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j;
       return {
         apiVersion: '2015-03-31',
-        base64Decoder: (_a = config == null ? void 0 : config.base64Decoder) != null ? _a : util_base64_1.fromBase64,
-        base64Encoder: (_b = config == null ? void 0 : config.base64Encoder) != null ? _b : util_base64_1.toBase64,
-        disableHostPrefix: (_c = config == null ? void 0 : config.disableHostPrefix) != null ? _c : false,
-        endpointProvider:
-          (_d = config == null ? void 0 : config.endpointProvider) != null
-            ? _d
-            : endpointResolver_1.defaultEndpointResolver,
-        extensions: (_e = config == null ? void 0 : config.extensions) != null ? _e : [],
-        logger: (_f = config == null ? void 0 : config.logger) != null ? _f : new smithy_client_1.NoOpLogger(),
-        serviceId: (_g = config == null ? void 0 : config.serviceId) != null ? _g : 'Lambda',
-        urlParser: (_h = config == null ? void 0 : config.urlParser) != null ? _h : url_parser_1.parseUrl,
-        utf8Decoder: (_i = config == null ? void 0 : config.utf8Decoder) != null ? _i : util_utf8_1.fromUtf8,
-        utf8Encoder: (_j = config == null ? void 0 : config.utf8Encoder) != null ? _j : util_utf8_1.toUtf8,
+        base64Decoder: config?.base64Decoder ?? util_base64_1.fromBase64,
+        base64Encoder: config?.base64Encoder ?? util_base64_1.toBase64,
+        disableHostPrefix: config?.disableHostPrefix ?? false,
+        endpointProvider: config?.endpointProvider ?? endpointResolver_1.defaultEndpointResolver,
+        extensions: config?.extensions ?? [],
+        logger: config?.logger ?? new smithy_client_1.NoOpLogger(),
+        serviceId: config?.serviceId ?? 'Lambda',
+        urlParser: config?.urlParser ?? url_parser_1.parseUrl,
+        utf8Decoder: config?.utf8Decoder ?? util_utf8_1.fromUtf8,
+        utf8Encoder: config?.utf8Encoder ?? util_utf8_1.toUtf8,
       };
     };
     exports.getRuntimeConfig = getRuntimeConfig;
@@ -21077,7 +21000,6 @@ var require_runtimeConfig3 = __commonJS({
     var util_defaults_mode_node_1 = require_dist_cjs47();
     var smithy_client_2 = require_dist_cjs38();
     var getRuntimeConfig = (config) => {
-      var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l;
       (0, smithy_client_2.emitWarningIfUnsupportedVersion)(process.version);
       const defaultsMode = (0, util_defaults_mode_node_1.resolveDefaultsModeConfig)(config);
       const defaultConfigProvider = () => defaultsMode().then(smithy_client_1.loadConfigsForDefaultMode);
@@ -21086,59 +21008,42 @@ var require_runtimeConfig3 = __commonJS({
       return __spreadProps(__spreadValues(__spreadValues({}, clientSharedValues), config), {
         runtime: 'node',
         defaultsMode,
-        bodyLengthChecker:
-          (_a = config == null ? void 0 : config.bodyLengthChecker) != null
-            ? _a
-            : util_body_length_node_1.calculateBodyLength,
+        bodyLengthChecker: config?.bodyLengthChecker ?? util_body_length_node_1.calculateBodyLength,
         credentialDefaultProvider:
-          (_b = config == null ? void 0 : config.credentialDefaultProvider) != null
-            ? _b
-            : (0, client_sts_1.decorateDefaultCredentialProvider)(credential_provider_node_1.defaultProvider),
+          config?.credentialDefaultProvider ??
+          (0, client_sts_1.decorateDefaultCredentialProvider)(credential_provider_node_1.defaultProvider),
         defaultUserAgentProvider:
-          (_c = config == null ? void 0 : config.defaultUserAgentProvider) != null
-            ? _c
-            : (0, util_user_agent_node_1.defaultUserAgent)({
-                serviceId: clientSharedValues.serviceId,
-                clientVersion: package_json_1.default.version,
-              }),
-        eventStreamSerdeProvider:
-          (_d = config == null ? void 0 : config.eventStreamSerdeProvider) != null
-            ? _d
-            : eventstream_serde_node_1.eventStreamSerdeProvider,
+          config?.defaultUserAgentProvider ??
+          (0, util_user_agent_node_1.defaultUserAgent)({
+            serviceId: clientSharedValues.serviceId,
+            clientVersion: package_json_1.default.version,
+          }),
+        eventStreamSerdeProvider: config?.eventStreamSerdeProvider ?? eventstream_serde_node_1.eventStreamSerdeProvider,
         maxAttempts:
-          (_e = config == null ? void 0 : config.maxAttempts) != null
-            ? _e
-            : (0, node_config_provider_1.loadConfig)(middleware_retry_1.NODE_MAX_ATTEMPT_CONFIG_OPTIONS),
+          config?.maxAttempts ??
+          (0, node_config_provider_1.loadConfig)(middleware_retry_1.NODE_MAX_ATTEMPT_CONFIG_OPTIONS),
         region:
-          (_f = config == null ? void 0 : config.region) != null
-            ? _f
-            : (0, node_config_provider_1.loadConfig)(
-                config_resolver_1.NODE_REGION_CONFIG_OPTIONS,
-                config_resolver_1.NODE_REGION_CONFIG_FILE_OPTIONS
-              ),
-        requestHandler:
-          (_g = config == null ? void 0 : config.requestHandler) != null
-            ? _g
-            : new node_http_handler_1.NodeHttpHandler(defaultConfigProvider),
+          config?.region ??
+          (0, node_config_provider_1.loadConfig)(
+            config_resolver_1.NODE_REGION_CONFIG_OPTIONS,
+            config_resolver_1.NODE_REGION_CONFIG_FILE_OPTIONS
+          ),
+        requestHandler: config?.requestHandler ?? new node_http_handler_1.NodeHttpHandler(defaultConfigProvider),
         retryMode:
-          (_h = config == null ? void 0 : config.retryMode) != null
-            ? _h
-            : (0, node_config_provider_1.loadConfig)(
-                __spreadProps(__spreadValues({}, middleware_retry_1.NODE_RETRY_MODE_CONFIG_OPTIONS), {
-                  default: async () => (await defaultConfigProvider()).retryMode || util_retry_1.DEFAULT_RETRY_MODE,
-                })
-              ),
-        sha256: (_i = config == null ? void 0 : config.sha256) != null ? _i : hash_node_1.Hash.bind(null, 'sha256'),
-        streamCollector:
-          (_j = config == null ? void 0 : config.streamCollector) != null ? _j : node_http_handler_1.streamCollector,
+          config?.retryMode ??
+          (0, node_config_provider_1.loadConfig)(
+            __spreadProps(__spreadValues({}, middleware_retry_1.NODE_RETRY_MODE_CONFIG_OPTIONS), {
+              default: async () => (await defaultConfigProvider()).retryMode || util_retry_1.DEFAULT_RETRY_MODE,
+            })
+          ),
+        sha256: config?.sha256 ?? hash_node_1.Hash.bind(null, 'sha256'),
+        streamCollector: config?.streamCollector ?? node_http_handler_1.streamCollector,
         useDualstackEndpoint:
-          (_k = config == null ? void 0 : config.useDualstackEndpoint) != null
-            ? _k
-            : (0, node_config_provider_1.loadConfig)(config_resolver_1.NODE_USE_DUALSTACK_ENDPOINT_CONFIG_OPTIONS),
+          config?.useDualstackEndpoint ??
+          (0, node_config_provider_1.loadConfig)(config_resolver_1.NODE_USE_DUALSTACK_ENDPOINT_CONFIG_OPTIONS),
         useFipsEndpoint:
-          (_l = config == null ? void 0 : config.useFipsEndpoint) != null
-            ? _l
-            : (0, node_config_provider_1.loadConfig)(config_resolver_1.NODE_USE_FIPS_ENDPOINT_CONFIG_OPTIONS),
+          config?.useFipsEndpoint ??
+          (0, node_config_provider_1.loadConfig)(config_resolver_1.NODE_USE_FIPS_ENDPOINT_CONFIG_OPTIONS),
       });
     };
     exports.getRuntimeConfig = getRuntimeConfig;
@@ -21219,10 +21124,7 @@ var require_LambdaClient = __commonJS({
         const _config_6 = (0, middleware_signing_1.resolveAwsAuthConfig)(_config_5);
         const _config_7 = (0, middleware_user_agent_1.resolveUserAgentConfig)(_config_6);
         const _config_8 = (0, eventstream_serde_config_resolver_1.resolveEventStreamSerdeConfig)(_config_7);
-        const _config_9 = (0, runtimeExtensions_1.resolveRuntimeExtensions)(
-          _config_8,
-          (configuration == null ? void 0 : configuration.extensions) || []
-        );
+        const _config_9 = (0, runtimeExtensions_1.resolveRuntimeExtensions)(_config_8, configuration?.extensions || []);
         super(_config_9);
         this.config = _config_9;
         this.middlewareStack.use((0, middleware_retry_1.getRetryPlugin)(this.config));
@@ -22547,7 +22449,7 @@ var require_Aws_restJson12 = __commonJS({
         'content-type': 'application/json',
       };
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2018-10-31/layers/{LayerName}/versions/{VersionNumber}/policy`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -22595,7 +22497,7 @@ var require_Aws_restJson12 = __commonJS({
         'content-type': 'application/json',
       };
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2015-03-31/functions/{FunctionName}/policy`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -22640,7 +22542,7 @@ var require_Aws_restJson12 = __commonJS({
         'content-type': 'application/json',
       };
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2015-03-31/functions/{FunctionName}/aliases`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -22676,7 +22578,7 @@ var require_Aws_restJson12 = __commonJS({
         'content-type': 'application/json',
       };
       const resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2020-04-22/code-signing-configs`;
       let body;
       body = JSON.stringify(
@@ -22703,7 +22605,7 @@ var require_Aws_restJson12 = __commonJS({
         'content-type': 'application/json',
       };
       const resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2015-03-31/event-source-mappings`;
       let body;
       body = JSON.stringify(
@@ -22749,9 +22651,7 @@ var require_Aws_restJson12 = __commonJS({
       const headers = {
         'content-type': 'application/json',
       };
-      const resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
-      }/2015-03-31/functions`;
+      const resolvedPath = `${basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''}/2015-03-31/functions`;
       let body;
       body = JSON.stringify(
         (0, smithy_client_1.take)(input, {
@@ -22797,7 +22697,7 @@ var require_Aws_restJson12 = __commonJS({
         'content-type': 'application/json',
       };
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2021-10-31/functions/{FunctionName}/url`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -22834,7 +22734,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2015-03-31/functions/{FunctionName}/aliases/{Name}`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -22861,7 +22761,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2020-04-22/code-signing-configs/{CodeSigningConfigArn}`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -22887,7 +22787,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2015-03-31/event-source-mappings/{UUID}`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(resolvedPath, input, 'UUID', () => input.UUID, '{UUID}', false);
       let body;
@@ -22906,7 +22806,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2015-03-31/functions/{FunctionName}`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -22936,7 +22836,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2020-06-30/functions/{FunctionName}/code-signing-config`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -22962,7 +22862,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2017-10-31/functions/{FunctionName}/concurrency`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -22988,7 +22888,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2019-09-25/functions/{FunctionName}/event-invoke-config`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -23018,7 +22918,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2021-10-31/functions/{FunctionName}/url`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -23048,7 +22948,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2018-10-31/layers/{LayerName}/versions/{VersionNumber}`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -23082,7 +22982,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2019-09-30/functions/{FunctionName}/provisioned-concurrency`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -23114,7 +23014,7 @@ var require_Aws_restJson12 = __commonJS({
         'content-type': 'application/json',
       };
       const resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2016-08-19/account-settings`;
       let body;
       body = '';
@@ -23133,7 +23033,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2015-03-31/functions/{FunctionName}/aliases/{Name}`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -23160,7 +23060,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2020-04-22/code-signing-configs/{CodeSigningConfigArn}`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -23186,7 +23086,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2015-03-31/event-source-mappings/{UUID}`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(resolvedPath, input, 'UUID', () => input.UUID, '{UUID}', false);
       let body;
@@ -23205,7 +23105,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2015-03-31/functions/{FunctionName}`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -23235,7 +23135,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2020-06-30/functions/{FunctionName}/code-signing-config`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -23261,7 +23161,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2019-09-30/functions/{FunctionName}/concurrency`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -23287,7 +23187,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2015-03-31/functions/{FunctionName}/configuration`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -23317,7 +23217,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2019-09-25/functions/{FunctionName}/event-invoke-config`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -23347,7 +23247,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2021-10-31/functions/{FunctionName}/url`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -23377,7 +23277,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2018-10-31/layers/{LayerName}/versions/{VersionNumber}`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -23410,9 +23310,7 @@ var require_Aws_restJson12 = __commonJS({
     var se_GetLayerVersionByArnCommand = async (input, context) => {
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
-      const resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
-      }/2018-10-31/layers`;
+      const resolvedPath = `${basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''}/2018-10-31/layers`;
       const query = (0, smithy_client_1.map)({
         find: [, 'LayerVersion'],
         Arn: [, (0, smithy_client_1.expectNonNull)(input.Arn, `Arn`)],
@@ -23434,7 +23332,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2018-10-31/layers/{LayerName}/versions/{VersionNumber}/policy`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -23468,7 +23366,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2015-03-31/functions/{FunctionName}/policy`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -23498,7 +23396,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2019-09-30/functions/{FunctionName}/provisioned-concurrency`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -23528,7 +23426,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2021-07-20/functions/{FunctionName}/runtime-management-config`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -23563,7 +23461,7 @@ var require_Aws_restJson12 = __commonJS({
         'x-amz-client-context': input.ClientContext,
       });
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2015-03-31/functions/{FunctionName}/invocations`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -23598,7 +23496,7 @@ var require_Aws_restJson12 = __commonJS({
         'content-type': 'application/octet-stream',
       };
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2014-11-13/functions/{FunctionName}/invoke-async`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -23632,7 +23530,7 @@ var require_Aws_restJson12 = __commonJS({
         'x-amz-client-context': input.ClientContext,
       });
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2021-11-15/functions/{FunctionName}/response-streaming-invocations`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -23665,7 +23563,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2015-03-31/functions/{FunctionName}/aliases`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -23697,7 +23595,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       const resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2020-04-22/code-signing-configs`;
       const query = (0, smithy_client_1.map)({
         Marker: [, input.Marker],
@@ -23720,7 +23618,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       const resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2015-03-31/event-source-mappings`;
       const query = (0, smithy_client_1.map)({
         EventSourceArn: [, input.EventSourceArn],
@@ -23745,7 +23643,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2019-09-25/functions/{FunctionName}/event-invoke-config/list`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -23775,9 +23673,7 @@ var require_Aws_restJson12 = __commonJS({
     var se_ListFunctionsCommand = async (input, context) => {
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
-      const resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
-      }/2015-03-31/functions`;
+      const resolvedPath = `${basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''}/2015-03-31/functions`;
       const query = (0, smithy_client_1.map)({
         MasterRegion: [, input.MasterRegion],
         FunctionVersion: [, input.FunctionVersion],
@@ -23801,7 +23697,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2020-04-22/code-signing-configs/{CodeSigningConfigArn}/functions`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -23832,7 +23728,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2021-10-31/functions/{FunctionName}/urls`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -23862,9 +23758,7 @@ var require_Aws_restJson12 = __commonJS({
     var se_ListLayersCommand = async (input, context) => {
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
-      const resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
-      }/2018-10-31/layers`;
+      const resolvedPath = `${basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''}/2018-10-31/layers`;
       const query = (0, smithy_client_1.map)({
         CompatibleRuntime: [, input.CompatibleRuntime],
         Marker: [, input.Marker],
@@ -23888,7 +23782,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2018-10-31/layers/{LayerName}/versions`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -23921,7 +23815,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2019-09-30/functions/{FunctionName}/provisioned-concurrency`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -23953,7 +23847,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2017-03-31/tags/{Resource}`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -23979,7 +23873,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2015-03-31/functions/{FunctionName}/versions`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -24012,7 +23906,7 @@ var require_Aws_restJson12 = __commonJS({
         'content-type': 'application/json',
       };
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2018-10-31/layers/{LayerName}/versions`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -24049,7 +23943,7 @@ var require_Aws_restJson12 = __commonJS({
         'content-type': 'application/json',
       };
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2015-03-31/functions/{FunctionName}/versions`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -24084,7 +23978,7 @@ var require_Aws_restJson12 = __commonJS({
         'content-type': 'application/json',
       };
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2020-06-30/functions/{FunctionName}/code-signing-config`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -24117,7 +24011,7 @@ var require_Aws_restJson12 = __commonJS({
         'content-type': 'application/json',
       };
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2017-10-31/functions/{FunctionName}/concurrency`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -24150,7 +24044,7 @@ var require_Aws_restJson12 = __commonJS({
         'content-type': 'application/json',
       };
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2019-09-25/functions/{FunctionName}/event-invoke-config`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -24189,7 +24083,7 @@ var require_Aws_restJson12 = __commonJS({
         'content-type': 'application/json',
       };
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2019-09-30/functions/{FunctionName}/provisioned-concurrency`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -24226,7 +24120,7 @@ var require_Aws_restJson12 = __commonJS({
         'content-type': 'application/json',
       };
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2021-07-20/functions/{FunctionName}/runtime-management-config`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -24262,7 +24156,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2018-10-31/layers/{LayerName}/versions/{VersionNumber}/policy/{StatementId}`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -24308,7 +24202,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2015-03-31/functions/{FunctionName}/policy/{StatementId}`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -24349,7 +24243,7 @@ var require_Aws_restJson12 = __commonJS({
         'content-type': 'application/json',
       };
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2017-03-31/tags/{Resource}`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -24380,7 +24274,7 @@ var require_Aws_restJson12 = __commonJS({
       const { hostname, protocol = 'https', port, path: basePath } = await context.endpoint();
       const headers = {};
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2017-03-31/tags/{Resource}`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -24415,7 +24309,7 @@ var require_Aws_restJson12 = __commonJS({
         'content-type': 'application/json',
       };
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2015-03-31/functions/{FunctionName}/aliases/{Name}`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -24452,7 +24346,7 @@ var require_Aws_restJson12 = __commonJS({
         'content-type': 'application/json',
       };
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2020-04-22/code-signing-configs/{CodeSigningConfigArn}`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -24487,7 +24381,7 @@ var require_Aws_restJson12 = __commonJS({
         'content-type': 'application/json',
       };
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2015-03-31/event-source-mappings/{UUID}`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(resolvedPath, input, 'UUID', () => input.UUID, '{UUID}', false);
       let body;
@@ -24527,7 +24421,7 @@ var require_Aws_restJson12 = __commonJS({
         'content-type': 'application/json',
       };
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2015-03-31/functions/{FunctionName}/code`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -24568,7 +24462,7 @@ var require_Aws_restJson12 = __commonJS({
         'content-type': 'application/json',
       };
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2015-03-31/functions/{FunctionName}/configuration`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -24617,7 +24511,7 @@ var require_Aws_restJson12 = __commonJS({
         'content-type': 'application/json',
       };
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2019-09-25/functions/{FunctionName}/event-invoke-config`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -24656,7 +24550,7 @@ var require_Aws_restJson12 = __commonJS({
         'content-type': 'application/json',
       };
       let resolvedPath = `${
-        (basePath == null ? void 0 : basePath.endsWith('/')) ? basePath.slice(0, -1) : basePath || ''
+        basePath?.endsWith('/') ? basePath.slice(0, -1) : basePath || ''
       }/2021-10-31/functions/{FunctionName}/url`;
       resolvedPath = (0, smithy_client_1.resolvedPath)(
         resolvedPath,
@@ -29097,18 +28991,13 @@ var require_Aws_restJson12 = __commonJS({
         });
       return retVal;
     };
-    var deserializeMetadata = (output) => {
-      var _a, _b;
-      return {
-        httpStatusCode: output.statusCode,
-        requestId:
-          (_b = (_a = output.headers['x-amzn-requestid']) != null ? _a : output.headers['x-amzn-request-id']) != null
-            ? _b
-            : output.headers['x-amz-request-id'],
-        extendedRequestId: output.headers['x-amz-id-2'],
-        cfId: output.headers['x-amz-cf-id'],
-      };
-    };
+    var deserializeMetadata = (output) => ({
+      httpStatusCode: output.statusCode,
+      requestId:
+        output.headers['x-amzn-requestid'] ?? output.headers['x-amzn-request-id'] ?? output.headers['x-amz-request-id'],
+      extendedRequestId: output.headers['x-amz-id-2'],
+      cfId: output.headers['x-amz-cf-id'],
+    });
     var collectBodyString = (streamBody, context) =>
       (0, smithy_client_1.collectBody)(streamBody, context).then((body) => context.utf8Encoder(body));
     var isSerializableHeaderValue = (value) =>
@@ -29125,9 +29014,8 @@ var require_Aws_restJson12 = __commonJS({
         return {};
       });
     var parseErrorBody = async (errorBody, context) => {
-      var _a;
       const value = await parseBody(errorBody, context);
-      value.message = (_a = value.message) != null ? _a : value.Message;
+      value.message = value.message ?? value.Message;
       return value;
     };
     var loadRestJsonErrorCode = (output, data) => {
