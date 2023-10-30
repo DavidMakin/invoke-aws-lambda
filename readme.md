@@ -17,17 +17,21 @@
 
 This action allows you to synchronously invoke a Lambda function and get the response (if desired).
 
+This has been "updated" to use aws-sdk-js-v3 and in the process has broken tests.
+
 ## Table of contents
 
-- [Input parameters](#input-parameters)
-  - [Credentials](#credentials)
-  - [Invocation](#invocation)
-- [Output](#output)
-- [Examples](#examples)
-  - [Basic example](#basic-example)
-  - [Using output](#using-output)
-  - [Specifying alias/version](#specifying-aliasversion)
-  - [Handling logs](#handling-logs)
+- [Invoke AWS Lambda](#invoke-aws-lambda)
+  - [Table of contents](#table-of-contents)
+  - [Input parameters](#input-parameters)
+    - [Credentials](#credentials)
+    - [Invocation](#invocation)
+  - [Output](#output)
+  - [Examples](#examples)
+    - [Basic example](#basic-example)
+    - [Using output](#using-output)
+    - [Specifying alias/version](#specifying-aliasversion)
+    - [Handling logs](#handling-logs)
 
 <hr>
 
