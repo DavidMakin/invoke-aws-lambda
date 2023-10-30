@@ -1,9 +1,7 @@
-import AWS from 'aws-sdk/global';
-import https from 'https';
-import Lambda from 'aws-sdk/clients/lambda';
-import { getInput, setOutput, setFailed, setSecret } from '@actions/core';
+import { InvocationRequest, InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
+import { getInput, setOutput, setFailed } from '@actions/core';
 
-const apiVersion = '2015-03-31';
+// const apiVersion = '2015-03-31';
 
 export enum ExtraOptions {
   HTTP_TIMEOUT = 'HTTP_TIMEOUT',
@@ -26,69 +24,62 @@ export enum Props {
   Qualifier = 'Qualifier',
 }
 
-const setAWSCredentials = () => {
-  const accessKeyId = getInput(Credentials.AWS_ACCESS_KEY_ID);
-  setSecret(accessKeyId);
+// const setAWSCredentials = () => {
+//   const accessKeyId = getInput(Credentials.AWS_ACCESS_KEY_ID);
+//   setSecret(accessKeyId);
 
-  const secretAccessKey = getInput(Credentials.AWS_SECRET_ACCESS_KEY);
-  setSecret(secretAccessKey);
+//   const secretAccessKey = getInput(Credentials.AWS_SECRET_ACCESS_KEY);
+//   setSecret(secretAccessKey);
 
-  const sessionToken = getInput(Credentials.AWS_SESSION_TOKEN);
-  // Make sure we only mask if specified
-  if (sessionToken) {
-    setSecret(sessionToken);
-  }
+//   const sessionToken = getInput(Credentials.AWS_SESSION_TOKEN);
+//   // Make sure we only mask if specified
+//   if (sessionToken) {
+//     setSecret(sessionToken);
+//   }
 
-  AWS.config.credentials = {
-    accessKeyId,
-    secretAccessKey,
-    sessionToken,
-  };
-};
+//   AwsCredentialIdentityProvider = {
+//     accessKeyId,
+//     secretAccessKey,
+//     sessionToken,
+//   };
+// };
 
 const getParams = () => {
   return Object.keys(Props).reduce((memo, prop) => {
     const value = getInput(prop);
     return value ? { ...memo, [prop]: value } : memo;
-  }, {} as Lambda.InvocationRequest);
+  }, {} as InvocationRequest);
 };
 
-const setAWSConfigOptions = () => {
-  const httpTimeout = getInput(ExtraOptions.HTTP_TIMEOUT);
+// const setAWSConfigOptions = () => {
+//   const httpTimeout = getInput(ExtraOptions.HTTP_TIMEOUT);
 
-  if (httpTimeout) {
-    AWS.config.httpOptions = { timeout: parseInt(httpTimeout, 10) };
-  }
+//   if (httpTimeout) {
+//     AWS.config.httpOptions = { timeout: parseInt(httpTimeout, 10) };
+//   }
 
-  const maxRetries = getInput(ExtraOptions.MAX_RETRIES);
+//   const maxRetries = getInput(ExtraOptions.MAX_RETRIES);
 
-  if (maxRetries) {
-    AWS.config.maxRetries = parseInt(maxRetries, 10);
-  }
-};
+//   if (maxRetries) {
+//     AWS.config.maxRetries = parseInt(maxRetries, 10);
+//   }
+// };
 
 export const main = async () => {
   try {
-    setAWSCredentials();
+    // setAWSCredentials();
 
-    setAWSConfigOptions();
+    // setAWSConfigOptions();
 
-    const agent = new https.Agent({
-      keepAlive: true,
-      keepAliveMsecs: 500,
-      timeout: 600000, // 10 minutes
-      maxTotalSockets: 50,
+    const client = new LambdaClient({
+      region: getInput('REGION'),
+      maxAttempts: parseInt(getInput(ExtraOptions.MAX_RETRIES), 10),
     });
 
     const params = getParams();
 
-    const lambda = new Lambda({
-      apiVersion,
-      region: getInput('REGION'),
-      httpOptions: { agent: agent },
-    });
-
-    const response = await lambda.invoke(params).promise();
+    const command = new InvokeCommand(params);
+    const response = await client.send(command);
 
     setOutput('response', response);
 
